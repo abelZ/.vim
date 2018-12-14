@@ -30,11 +30,6 @@ Plug 'Raimondi/delimitMate'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus'
 Plug 'skywind3000/vim-preview'
-let s:has_keysound = 0
-if has('win32') || has('gui_macvim')
-	Plug 'skywind3000/vim-keysound'
-	let s:has_keysound = 1
-endif
 Plug 'skywind3000/asyncrun.vim'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-indent'
@@ -45,19 +40,21 @@ Plug 't9md/vim-choosewin'
 Plug 'w0rp/ale'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'terryma/vim-multiple-cursors'
-if has('win32')
-	Plug 'haya14busa/vim-gtrans'
-else
-	Plug 'echuraev/translate-shell.vim'
-endif
 Plug 'gyim/vim-boxdraw'
 Plug 'ap/vim-css-color', { 'for':['css', 'html'] }
 Plug 'mattn/emmet-vim', { 'for':['css', 'html'] }
 let s:has_calendar = 0
+let s:has_keysound = 0
 if has('win32') || has('gui_macvim')
-	Plug 'itchyny/calendar.vim'
 	let s:has_calendar = 1
+	Plug 'itchyny/calendar.vim'
+	let s:has_keysound = 1
+	Plug 'skywind3000/vim-keysound'
+endif
+if has('win32')
+	Plug 'haya14busa/vim-gtrans'
 else
+	Plug 'echuraev/translate-shell.vim'
 endif
 let languageclient = 0
 if languageclient == 1
@@ -116,10 +113,9 @@ let g:echodoc#enable_at_startup = 1
 set noshowmode
 
 "--languageclient options-- 
-set runtimepath+=~/vimfiles/bundle/LanguageClient-neovim
-set hidden
-
 if languageclient == 1
+	set runtimepath+=~/.vim/bundle/LanguageClient-neovim
+	set hidden
 	let g:LanguageClient_serverCommands = {
 				\ 'c': ['cquery', '--log-file=~\\vimfiles\\cq.log'],
 				\ 'cpp': ['cquery', '--log-file=~\\vimfiles\\cq.log'],
