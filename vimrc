@@ -45,16 +45,20 @@ Plug 'ap/vim-css-color', { 'for':['css', 'html'] }
 Plug 'mattn/emmet-vim', { 'for':['css', 'html'] }
 let s:has_calendar = 0
 let s:has_keysound = 0
+let s:has_instant_mark = 0
 if has('win32') || has('gui_macvim')
 	let s:has_calendar = 1
 	Plug 'itchyny/calendar.vim'
 	let s:has_keysound = 1
 	Plug 'skywind3000/vim-keysound'
+	let s:has_instant_mark = 1
+	Plug 'suan/vim-instant-markdown'
 endif
 if has('win32')
 	Plug 'haya14busa/vim-gtrans'
 else
 	Plug 'echuraev/translate-shell.vim'
+	Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 endif
 let languageclient = 0
 if languageclient == 1
@@ -80,6 +84,7 @@ set softtabstop=4
 set shiftwidth=4
 set cindent "use c\c++ indent style
 set autoindent
+set history=50
 set nobackup
 set hlsearch
 set incsearch
@@ -141,6 +146,9 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_comments = 0
 let g:ycm_min_num_of_chars_for_completion=2
 let g:ycm_key_invoke_completion = '<c-z>'
+if has('gui_macvim')
+	let g:ycm_python_binary_path = '/usr/local/bin/python3'
+endif
 let g:ycm_filetype_whitelist = { 
 			\ "c":1,
 			\ "cpp":1, 
@@ -160,7 +168,7 @@ let g:ycm_filetype_whitelist = {
 			\ "conf":1,
 			\ "config":1,
 			\ }
-nmap <c-z> <NOP>
+map <c-z> <NOP>
 nmap <leader>fx :YcmCompleter FixIt<CR>
 nmap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nmap <leader>gr :YcmCompleter GoToReferences<CR>
@@ -176,7 +184,7 @@ let $GTAGSLABEL = 'native-pygments'
 if has('win32')
 	let $GTAGSCONF = 'c:\\Users\\Dell\\vimfiles\\gtags.conf'
 elseif has('gui_macvim')
-	"
+	let $GTAGSCONF = '/usr/local/share/gtags/gtags.conf'
 else
 	let $GTAGSCONF = '/home/abel/.vim/gtags.conf'
 endif
@@ -282,6 +290,14 @@ if s:has_calendar == 1
 	let g:calendar_google_task = 1
 endif
 
+"--vim-instant-markdown options--
+if s:has_instant_mark == 1
+	let g:instant_markdown_slow = 1
+	let g:instant_markdown_autostart = 0
+	let g:instant_markdown_open_to_the_world = 1
+	let g:instant_markdown_allow_unsafe_content = 1
+endif
+
 "--user defined options--
 nmap <silent> dg :diffg<CR>
 nmap <silent> dp :diffp<CR>
@@ -300,6 +316,10 @@ if has('win32')
 	map <C-i> :pyf d:/Program Files (x86)/LLVM/share/clang/clang-format.py<CR>
 	imap <C-i> <C-o>:pyf d:/Program Files (x86)/LLVM/share/clang/clang-format.py<CR>
 	vmap <leader>tr :Gtrans -o=buffer<CR>
+elseif has('gui_macvim')
+	map <C-i> :pyf /usr/local/opt/llvm/share/clang/clang-format.py<CR>
+	imap <C-i> <C-o>:pyf /usr/local/opt/llvm/share/clang/clang-format.py<CR>
+	vmap <leader>tr :Trans :zh<CR>
 else
 	vmap <leader>tr :Trans :zh<CR>
 endif
