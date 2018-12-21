@@ -208,6 +208,7 @@ let g:Lf_WildIgnore = {
 let g:Lf_WorkingDirectoryMode = 'Ac'
 let g:Lf_Ctags = "universal-ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
+let g:Lf_DefaultExternalTool = 'rg'
 
 "--preview_vim options--
 autocmd FileType qf nnoremap <silent><buffer> p :PreviewQuickfix<cr>
@@ -298,7 +299,7 @@ vnoremap // y/\V<C-r>=escape(@",'/\')<CR><CR>
 if has('win32')
 	map <C-i> :pyf d:/Program Files (x86)/LLVM/share/clang/clang-format.py<CR>
 	imap <C-i> <C-o>:pyf d:/Program Files (x86)/LLVM/share/clang/clang-format.py<CR>
-	nmap <leader>tr :Gtrans --to=zh_CN 
+	vmap <leader>tr :Gtrans -o=buffer<CR>
 else
 	vmap <leader>tr :Trans :zh<CR>
 endif
@@ -337,6 +338,50 @@ else
 	nmap <F9> :call ToggleList("Location", 'l')<CR>
 endif
 nmap <F10> :call asyncrun#quickfix_toggle(10)<CR>
+
+"index:1 index:2
+"index:3 index:4 --> index:4 index:6
+"
+"100
+"200 --> 300
+function! s:sum_visual(sep1, sep2) range
+	let l:lines = []
+    let [line_start, column_start] = getpos("'<")[1:2]
+    let [line_end, column_end] = getpos("'>")[1:2]
+	for i in range(line_start, line_end)
+		call add(l:lines, getline(i)[column_start - 1: column_end - (&selection == 'inclusive' ? 1 : 2)])
+	endfor
+	let l:sum_value = []
+	for l:linestr in lines
+		let l:idx = 0
+		for j in split(l:linestr, a:sep1)
+			let l:attr = split(j, a:sep2)
+			if len(l:attr) == 1
+				call insert(l:attr, '')
+			endif
+			if len(l:attr) == 2
+				if len(l:sum_value) > l:idx
+					let l:sum_value[l:idx][1] += l:attr[1]
+				else
+					call add(l:sum_value, l:attr)
+				endif
+				let l:idx += 1
+			endif
+		endfor
+	endfor
+	let l:tmp2 = []
+	for i in range(len(l:sum_value))
+		call add(l:tmp2, join(l:sum_value[i], a:sep2))
+	endfor
+	call setline(a:lastline+1, join(l:tmp2, a:sep1) . getline(a:lastline+1))
+	call setpos('.', [0, a:lastline+1, 1, 0])
+endfunction
+command -range Sum <line1>,<line2>call s:sum_visual(' ', ':')
+
+function! CalcCurrentLine()
+	return ' = ' . eval(split(getline('.'), '=')[0])
+endfunction
+imap <C-D><C-C> <C-R>=CalcCurrentLine()<CR>
 
 "--Ctrl + X map--
 nmap <C-h> <C-w>h
