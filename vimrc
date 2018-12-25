@@ -109,9 +109,6 @@ endif
 let mapleader = ","
 set grepprg=rg\ --vimgrep
 
-"--signify options--
-let g:signify_vcs_list = [ 'svn', 'git' ]
-
 "--echodoc options--
 let g:echodoc#enable_at_startup = 1
 set noshowmode
