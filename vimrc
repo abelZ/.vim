@@ -17,7 +17,6 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'Shougo/echodoc.vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'chrisbra/vim-diff-enhanced'
 Plug 'vim-scripts/a.vim'
@@ -175,9 +174,9 @@ nmap <leader>gr :YcmCompleter GoToReferences<CR>
 nmap <leader>gt :YcmCompleter GetDoc<CR>
 
 "--ultisnips options--
-let g:UltiSnipsExpandTrigger = "<C-k>"
-let g:UltiSnipsJumpForwardTrigger = "<C-k>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-l>"
+let g:UltiSnipsExpandTrigger = "<C-j>"
+let g:UltiSnipsJumpForwardTrigger = "<C-j>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 
 "--gtags options--
 let $GTAGSLABEL = 'native-pygments'
