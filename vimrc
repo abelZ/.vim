@@ -164,11 +164,11 @@ let g:ycm_filetype_whitelist = {
 			\ "conf":1,
 			\ "config":1,
 			\ }
-map <c-z> <NOP>
-nmap <leader>fx :YcmCompleter FixIt<CR>
-nmap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nmap <leader>gr :YcmCompleter GoToReferences<CR>
-nmap <leader>gt :YcmCompleter GetDoc<CR>
+noremap <c-z> <NOP>
+nnoremap <leader>fx :YcmCompleter FixIt<CR>
+nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
+nnoremap <leader>gt :YcmCompleter GetDoc<CR>
 
 "--ultisnips options--
 let g:UltiSnipsExpandTrigger = "<C-j>"
@@ -238,9 +238,9 @@ let g:asyncrun_encs = 'gbk'
 
 "--vim-choosewin options--
 if has ('gui_macvim')
-	nmap <D-e> <Plug>(choosewin)
+	nnoremap <D-e> <Plug>(choosewin)
 else
-	nmap <m-e> <Plug>(choosewin)
+	nnoremap <m-e> <Plug>(choosewin)
 endif
 
 "--ale options--
@@ -295,29 +295,29 @@ if s:has_instant_mark == 1
 endif
 
 "--user defined options--
-nmap <silent> dg :diffg<CR>
-nmap <silent> dp :diffp<CR>
-nmap <silent> <leader><leader>a :A<CR>
-nmap <silent> <leader><leader>t :LeaderfBufTag<CR>
-nmap <silent> <leader><leader>n :LeaderfFunction<CR>
-nmap <silent> <leader><leader>m :LeaderfMarks<CR>
+nnoremap <silent> dg :diffg<CR>
+nnoremap <silent> dp :diffp<CR>
+nnoremap <silent> <leader><leader>a :A<CR>
+nnoremap <silent> <leader><leader>t :LeaderfBufTag<CR>
+nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
+nnoremap <silent> <leader><leader>m :LeaderfMarks<CR>
 noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
 noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
 "nmap <silent> <leader><leader>r :AsyncRun ag --nogroup --nocolor <cword><CR>
 "nnoremap \ :AsyncRun ag --nogroup --nocolor<SPACE>
-nmap <silent> <leader><leader>r :AsyncRun rg --vimgrep -w <cword> -t cpp -t c<CR>
+nnoremap <silent> <leader><leader>r :AsyncRun rg --vimgrep -w <cword> -t cpp -t c<CR>
 nnoremap \ :AsyncRun rg --vimgrep -i<SPACE>
 vnoremap // y/\V<C-r>=escape(@",'/\')<CR><CR>
 if has('win32')
-	map <C-i> :pyf d:/Program Files (x86)/LLVM/share/clang/clang-format.py<CR>
-	imap <C-i> <C-o>:pyf d:/Program Files (x86)/LLVM/share/clang/clang-format.py<CR>
-	vmap <leader>tr :Gtrans -o=buffer<CR>
+	noremap <C-i> :pyf d:/Program Files (x86)/LLVM/share/clang/clang-format.py<CR>
+	inoremap <C-i> <C-o>:pyf d:/Program Files (x86)/LLVM/share/clang/clang-format.py<CR>
+	vnoremap <leader>tr :Gtrans -o=buffer<CR>
 elseif has('gui_macvim')
-	map <C-i> :pyf /usr/local/opt/llvm/share/clang/clang-format.py<CR>
-	imap <C-i> <C-o>:pyf /usr/local/opt/llvm/share/clang/clang-format.py<CR>
-	vmap <leader>tr :Trans :zh<CR>
+	noremap <C-i> :pyf /usr/local/opt/llvm/share/clang/clang-format.py<CR>
+	inoremap <C-i> <C-o>:pyf /usr/local/opt/llvm/share/clang/clang-format.py<CR>
+	vnoremap <leader>tr :Trans :zh<CR>
 else
-	vmap <leader>tr :Trans :zh<CR>
+	vnoremap <leader>tr :Trans :zh<CR>
 endif
 
 function! GetBufferList()
@@ -347,13 +347,13 @@ function! ToggleList(bufname, pfx)
   endif
 endfunction
 
-nmap <F3> :Autoformat<CR>
+nnoremap <F3> :Autoformat<CR>
 if has('win32')
-	nmap <F9> :call ToggleList("Location 列表", 'l')<CR>
+	nnoremap <F9> :call ToggleList("Location 列表", 'l')<CR>
 else
-	nmap <F9> :call ToggleList("Location", 'l')<CR>
+	nnoremap <F9> :call ToggleList("Location", 'l')<CR>
 endif
-nmap <F10> :call asyncrun#quickfix_toggle(10)<CR>
+nnoremap <F10> :call asyncrun#quickfix_toggle(10)<CR>
 
 "index:1 index:2
 "index:3 index:4 --> index:4 index:6
@@ -397,10 +397,10 @@ command -range Sum <line1>,<line2>call s:sum_visual(' ', ':')
 function! CalcCurrentLine()
 	return ' = ' . eval(split(getline('.'), '=')[0])
 endfunction
-imap <C-D><C-C> <C-R>=CalcCurrentLine()<CR>
+inoremap <C-D><C-C> <C-R>=CalcCurrentLine()<CR>
 
 "--Ctrl + X map--
-nmap <C-h> <C-w>h
-nmap <C-j> <C-w>j
-nmap <C-k> <C-w>k
-nmap <C-l> <C-w>l
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
