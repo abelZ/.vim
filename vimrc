@@ -207,7 +207,7 @@ let g:gutentags_plus_nomap = 1
 "--leaderF options--
 let g:Lf_WildIgnore = {
 			\ 'dir': ['.svn','.git','.hg'],
-            \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.log','*.user']
+            \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.log','*.user','*.vc*']
 			\}
 let g:Lf_WorkingDirectoryMode = 'Ac'
 let g:Lf_Ctags = "universal-ctags"
