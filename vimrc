@@ -392,12 +392,22 @@ function! s:sum_visual(sep1, sep2) range
 	call setline(a:lastline+1, join(l:tmp2, a:sep1) . getline(a:lastline+1))
 	call setpos('.', [0, a:lastline+1, 1, 0])
 endfunction
-command -range Sum <line1>,<line2>call s:sum_visual(' ', ':')
+command! -range Sum <line1>,<line2>call s:sum_visual(' ', ':')
 
 function! CalcCurrentLine()
 	return ' = ' . eval(split(getline('.'), '=')[0])
 endfunction
 inoremap <C-D><C-C> <C-R>=CalcCurrentLine()<CR>
+
+nnoremap <leader>ev :e $MYVIMRC<CR>
+nnoremap <leader>" viw<ESC>a"<ESC>bi"<ESC>lel
+vnoremap <leader>" <ESC>a"<ESC>`<i"<ESC>`>ll
+nnoremap <leader>' viw<ESC>a'<ESC>bi'<ESC>lel
+vnoremap <leader>' <ESC>a'<ESC>`<i'<ESC>`>ll
+nnoremap H 0
+nnoremap L $
+inoremap jk <ESC>
+inoremap <ESC> <NOP>
 
 "--Ctrl + X map--
 nnoremap <C-h> <C-w>h
