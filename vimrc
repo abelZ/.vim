@@ -1,3 +1,4 @@
+" Vim Installed plugins -----------------------{{{
 if has('win32')
 	call plug#begin('~/vimfiles/bundle')
 else
@@ -65,17 +66,22 @@ if languageclient == 1
 endif
 
 call plug#end()
+" }}}
 
-"detect file type
+" detect file type -------------------------------{{{
 filetype on "file type
 filetype plugin on
 syntax on "syntax highlighting
+" }}}
 
+" Vim color sheme Settings -----------------------{{{
 set background=dark
 let g:solarized_italic = 0
 let g:solarized_termtrans = 1
 colorscheme solarized
+" }}}
 
+" Vim common Settings ----------------------------{{{
 set encoding=utf-8
 set number "display line number
 set tabstop=4
@@ -109,11 +115,23 @@ endif
 let mapleader = ","
 set grepprg=rg\ --vimgrep
 
-"--echodoc options--
+nnoremap <leader>ev :e $MYVIMRC<CR>
+nnoremap <leader>" viw<ESC>a"<ESC>bi"<ESC>lel
+vnoremap <leader>" <ESC>a"<ESC>`<i"<ESC>`>ll
+nnoremap <leader>' viw<ESC>a'<ESC>bi'<ESC>lel
+vnoremap <leader>' <ESC>a'<ESC>`<i'<ESC>`>ll
+nnoremap H 0
+nnoremap L $
+inoremap jk <ESC>
+inoremap <ESC> <NOP>
+" }}}
+
+" echodoc options --------------------------------{{{
 let g:echodoc#enable_at_startup = 1
 set noshowmode
+" }}}
 
-"--languageclient options-- 
+" languageclient options -------------------------{{{
 if languageclient == 1
 	set runtimepath+=~/.vim/bundle/LanguageClient-neovim
 	set hidden
@@ -123,8 +141,9 @@ if languageclient == 1
 				\ }
 	let g:LanguageClient_diagnosticsEnable = 0
 endif
+" }}}
 
-"--ycm options--
+" ycm options ------------------------------------{{{
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif "auto close preview windows when leave insert mode
 let g:ycm_semantic_triggers =  {
 	  \ 'c,cpp': ['re!\w{5}'],
@@ -169,13 +188,15 @@ nnoremap <leader>fx :YcmCompleter FixIt<CR>
 nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
 nnoremap <leader>gt :YcmCompleter GetDoc<CR>
+" }}}
 
-"--ultisnips options--
+" ultisnips options ------------------------------{{{
 let g:UltiSnipsExpandTrigger = "<C-j>"
 let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
+" }}}
 
-"--gtags options--
+" gtags options ----------------------------------{{{
 let $GTAGSLABEL = 'native-pygments'
 if has('win32')
 	let $GTAGSCONF = 'c:\\Users\\Dell\\vimfiles\\gtags.conf'
@@ -203,8 +224,11 @@ let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
 let g:gutentags_auto_add_gtags_cscope = 0
 "let g:gutentags_define_advanced_commands = 1
 let g:gutentags_plus_nomap = 1
+noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
+noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
+" }}}
 
-"--leaderF options--
+" leaderF options --------------------------------{{{
 let g:Lf_WildIgnore = {
 			\ 'dir': ['.svn','.git','.hg'],
             \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.log','*.user','*.vc*']
@@ -213,8 +237,12 @@ let g:Lf_WorkingDirectoryMode = 'Ac'
 let g:Lf_Ctags = "universal-ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
+nnoremap <silent> <leader><leader>t :LeaderfBufTag<CR>
+nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
+nnoremap <silent> <leader><leader>m :LeaderfMarks<CR>
+" }}}
 
-"--preview_vim options--
+" preview_vim options ----------------------------{{{
 autocmd FileType qf nnoremap <silent><buffer> p :PreviewQuickfix<cr>
 autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
 if has('gui_macvim')
@@ -224,26 +252,30 @@ else
 	noremap <m-k> :PreviewScroll -1<cr>
 	noremap <m-j> :PreviewScroll +1<cr>
 endif
+" }}}
 
-"--vim keysound options--
+" vim keysound options ---------------------------{{{
 if s:has_keysound == 1
 	let g:keysound_enable = 1
 	let g:keysound_theme = 'default'
 endif
+" }}}
 
-"--asyncrun options--
+" asyncrun options -------------------------------{{{
 let g:asyncrun_open = 10
 let g:asyncrun_bell = 1
 let g:asyncrun_encs = 'gbk'
+" }}}
 
-"--vim-choosewin options--
+" vim-choosewin options --------------------------{{{
 if has ('gui_macvim')
 	nnoremap <D-e> <Plug>(choosewin)
 else
 	nnoremap <m-e> <Plug>(choosewin)
 endif
+" }}}
 
-"--ale options--
+" ale options ------------------------------------{{{
 let g:ale_echo_delay = 20
 let g:ale_lint_delay = 500
 let g:ale_echo_msg_format = '[%linter%] %code: %%s'
@@ -265,44 +297,51 @@ let g:ale_linters = {
 			\ 'javascript': ['eslint'], 
 			\ }
 let g:ale_cpp_cppcheck_options = '--enable=style --suppress=unusedStructMember:*.h'
+" }}}
 
-"--rainbowparentheses options--
+" rainbowparentheses options ---------------------{{{
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
+" }}}
 
-"--airline options--
+" airline options --------------------------------{{{
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline#extensions#tagbar#flags = 'f'
 let g:airline_section_error = ''
 let g:airline_section_warning = ''
 let g:tagbar_ctags_bin = 'universal-ctags'
+" }}}
 
+" calendar options -------------------------------{{{
 if s:has_calendar == 1
 	"--calendar options--
 	let g:calendar_frame = 'default'
 	let g:calendar_google_calendar = 1
 	let g:calendar_google_task = 1
 endif
+" }}}
 
-"--vim-instant-markdown options--
+" vim-instant-markdown options -------------------{{{
 if s:has_instant_mark == 1
 	let g:instant_markdown_slow = 1
 	let g:instant_markdown_autostart = 0
 	let g:instant_markdown_open_to_the_world = 1
 	let g:instant_markdown_allow_unsafe_content = 1
 endif
+" }}}
 
-"--user defined options--
-nnoremap <silent> dg :diffg<CR>
-nnoremap <silent> dp :diffp<CR>
+" Vim script file Settings -----------------------{{{
+augroup filetype_vim
+    autocmd!
+    autocmd FileType vim setlocal foldmethod=marker
+augroup END
+" }}}
+
+" user defined mappings --------------------------{{{
+nnoremap <F3> :Autoformat<CR>
 nnoremap <silent> <leader><leader>a :A<CR>
-nnoremap <silent> <leader><leader>t :LeaderfBufTag<CR>
-nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
-nnoremap <silent> <leader><leader>m :LeaderfMarks<CR>
-noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
-noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
 "nmap <silent> <leader><leader>r :AsyncRun ag --nogroup --nocolor <cword><CR>
 "nnoremap \ :AsyncRun ag --nogroup --nocolor<SPACE>
 nnoremap <silent> <leader><leader>r :AsyncRun rg --vimgrep -w <cword> -t cpp -t c<CR>
@@ -319,7 +358,9 @@ elseif has('gui_macvim')
 else
 	vnoremap <leader>tr :Trans :zh<CR>
 endif
+" }}}
 
+" quickfix and localtion list Settings ----------{{{
 function! GetBufferList()
   redir =>buflist
   silent! ls!
@@ -347,14 +388,15 @@ function! ToggleList(bufname, pfx)
   endif
 endfunction
 
-nnoremap <F3> :Autoformat<CR>
 if has('win32')
 	nnoremap <F9> :call ToggleList("Location 列表", 'l')<CR>
 else
 	nnoremap <F9> :call ToggleList("Location", 'l')<CR>
 endif
 nnoremap <F10> :call asyncrun#quickfix_toggle(10)<CR>
+" }}}
 
+" table calc function --------------------------{{{
 "index:1 index:2
 "index:3 index:4 --> index:4 index:6
 "
@@ -398,16 +440,7 @@ function! CalcCurrentLine()
 	return ' = ' . eval(split(getline('.'), '=')[0])
 endfunction
 inoremap <C-D><C-C> <C-R>=CalcCurrentLine()<CR>
-
-nnoremap <leader>ev :e $MYVIMRC<CR>
-nnoremap <leader>" viw<ESC>a"<ESC>bi"<ESC>lel
-vnoremap <leader>" <ESC>a"<ESC>`<i"<ESC>`>ll
-nnoremap <leader>' viw<ESC>a'<ESC>bi'<ESC>lel
-vnoremap <leader>' <ESC>a'<ESC>`<i'<ESC>`>ll
-nnoremap H 0
-nnoremap L $
-inoremap jk <ESC>
-inoremap <ESC> <NOP>
+" }}}
 
 "--Ctrl + X map--
 nnoremap <C-h> <C-w>h
