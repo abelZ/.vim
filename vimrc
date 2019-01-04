@@ -342,9 +342,6 @@ augroup END
 " user defined mappings --------------------------{{{
 nnoremap <F3> :Autoformat<CR>
 nnoremap <silent> <leader><leader>a :A<CR>
-"nmap <silent> <leader><leader>r :AsyncRun ag --nogroup --nocolor <cword><CR>
-"nnoremap \ :AsyncRun ag --nogroup --nocolor<SPACE>
-nnoremap <silent> <leader><leader>r :AsyncRun rg --vimgrep -w <cword> -t cpp -t c<CR>
 nnoremap \ :AsyncRun rg --vimgrep -i<SPACE>
 vnoremap // y/\V<C-r>=escape(@",'/\')<CR><CR>
 if has('win32')
