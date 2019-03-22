@@ -120,6 +120,7 @@ nnoremap <leader>" viw<ESC>a"<ESC>bi"<ESC>lel
 vnoremap <leader>" <ESC>a"<ESC>`<i"<ESC>`>ll
 nnoremap <leader>' viw<ESC>a'<ESC>bi'<ESC>lel
 vnoremap <leader>' <ESC>a'<ESC>`<i'<ESC>`>ll
+vnoremap <leader>( <ESC>a)<ESC>`<i(<ESC>`>ll
 nnoremap H 0
 nnoremap L $
 inoremap jk <ESC>
@@ -231,7 +232,7 @@ noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
 " leaderF options --------------------------------{{{
 let g:Lf_WildIgnore = {
 			\ 'dir': ['.svn','.git','.hg'],
-            \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.log','*.user','*.vc*']
+            \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.log','*.user','*.vc*','*.xml','*.bat']
 			\}
 let g:Lf_WorkingDirectoryMode = 'Ac'
 let g:Lf_Ctags = "universal-ctags"
@@ -336,6 +337,7 @@ endif
 augroup filetype_vim
     autocmd!
     autocmd FileType vim setlocal foldmethod=marker
+    autocmd FileType xml setlocal foldmethod=indent
 augroup END
 " }}}
 
