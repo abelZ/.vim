@@ -207,8 +207,9 @@ else
 	let $GTAGSCONF = '/home/abel/.vim/gtags.conf'
 endif
 
-let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+let g:gutentags_project_root = ['.svn', '.git']
 let g:gutentags_ctags_tagfile = '.tags'
+let g:gutentags_ctags_exclude = ['*.log', '*.xml', '*.tlog']
 
 let g:gutentags_ctags_executable = 'universal-ctags'
 let g:gutentags_modules = ['ctags', 'gtags_cscope']
@@ -241,6 +242,7 @@ let g:Lf_DefaultExternalTool = 'rg'
 nnoremap <silent> <leader><leader>t :LeaderfBufTag<CR>
 nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
 nnoremap <silent> <leader><leader>m :LeaderfMarks<CR>
+nnoremap <silent> <leader><leader>r :LeaderfMru<CR>
 " }}}
 
 " preview_vim options ----------------------------{{{
