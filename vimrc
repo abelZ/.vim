@@ -166,6 +166,10 @@ let g:ycm_key_invoke_completion = '<c-z>'
 if has('gui_macvim')
 	let g:ycm_python_binary_path = '/usr/local/bin/python3'
 endif
+if has('win32')
+	let g:ycm_use_clangd = 0
+	let g:ycm_python_binary_path = 'd:\\unix\\Python37\\python.exe'
+endif
 let g:ycm_filetype_whitelist = { 
 			\ "c":1,
 			\ "cpp":1, 
@@ -227,6 +231,7 @@ let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
 let g:gutentags_auto_add_gtags_cscope = 0
 "let g:gutentags_define_advanced_commands = 1
 let g:gutentags_plus_nomap = 1
+let g:gutentags_generate_on_new = 0
 noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
 noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
 " }}}
@@ -234,12 +239,13 @@ noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
 " leaderF options --------------------------------{{{
 let g:Lf_WildIgnore = {
 			\ 'dir': ['.svn','.git','.hg'],
-            \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.log','*.user','*.vc*','*.xml','*.bat']
+            \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.log','*.user','*.vc*','*.xml','*.bat','*.pdb']
 			\}
 let g:Lf_WorkingDirectoryMode = 'Ac'
 let g:Lf_Ctags = "universal-ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
+let g:Lf_DefaultMode = 'NameOnly'
 nnoremap <silent> <leader><leader>t :LeaderfBufTag<CR>
 nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
 nnoremap <silent> <leader><leader>m :LeaderfMarks<CR>
