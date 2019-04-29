@@ -43,6 +43,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'gyim/vim-boxdraw'
 Plug 'ap/vim-css-color', { 'for':['css', 'html'] }
 Plug 'mattn/emmet-vim', { 'for':['css', 'html'] }
+Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 let s:has_calendar = 0
 let s:has_keysound = 0
 let s:has_instant_mark = 0
@@ -303,10 +304,14 @@ let g:ale_cpp_cppcheck_options = '--enable=style --suppress=unusedStructMember:*
 " }}}
 
 " rainbowparentheses options ---------------------{{{
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+augroup rainbow_group
+	autocmd!
+	let rainbow_black_list = ['cmake']
+	au VimEnter * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesToggle
+	au Syntax * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesLoadRound
+	au Syntax * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesLoadSquare
+	au Syntax * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesLoadBraces
+augroup END
 " }}}
 
 " airline options --------------------------------{{{
