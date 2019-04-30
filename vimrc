@@ -163,11 +163,11 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_comments = 0
 let g:ycm_min_num_of_chars_for_completion=2
 let g:ycm_key_invoke_completion = '<c-z>'
+let g:ycm_clangd_args = ['-background-index']
 if has('gui_macvim')
 	let g:ycm_python_binary_path = '/usr/local/bin/python3'
 endif
 if has('win32')
-	let g:ycm_use_clangd = 0
 	let g:ycm_python_binary_path = 'd:\\unix\\Python37\\python.exe'
 endif
 let g:ycm_filetype_whitelist = { 
@@ -212,7 +212,8 @@ else
 	let $GTAGSCONF = '/home/abel/.vim/gtags.conf'
 endif
 
-let g:gutentags_project_root = ['.svn', '.git']
+let gutentags_add_default_project_roots = 0
+let g:gutentags_project_root = ['.tags']
 let g:gutentags_ctags_tagfile = '.tags'
 let g:gutentags_ctags_exclude = ['*.log', '*.xml', '*.tlog']
 
