@@ -276,6 +276,7 @@ endif
 let g:asyncrun_open = 10
 let g:asyncrun_bell = 1
 let g:asyncrun_encs = 'gbk'
+let g:asyncrun_stdin = 0
 " }}}
 
 " vim-choosewin options --------------------------{{{
