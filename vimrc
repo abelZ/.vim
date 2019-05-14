@@ -31,12 +31,12 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus'
 Plug 'skywind3000/vim-preview'
 Plug 'skywind3000/asyncrun.vim'
+Plug 'skywind3000/quickmenu.vim'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-syntax'
 Plug 'kana/vim-textobj-function', { 'for':['c', 'cpp', 'vim', 'java'] }
 Plug 'sgur/vim-textobj-parameter'
-Plug 't9md/vim-choosewin'
 Plug 'w0rp/ale'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'terryma/vim-multiple-cursors'
@@ -128,6 +128,18 @@ inoremap jk <ESC>
 inoremap <ESC> <NOP>
 " }}}
 
+" quickmenu options ------------------------------{{{
+" choose a favorite key to show/hide quickmenu
+noremap <silent><F12> :call quickmenu#toggle(0)<cr>
+
+" enable cursorline (L) and cmdline help (H)
+let g:quickmenu_options = "HL"
+
+" clear all the items
+call g:quickmenu#reset()
+
+" }}}
+
 " echodoc options --------------------------------{{{
 let g:echodoc#enable_at_startup = 1
 set noshowmode
@@ -190,10 +202,14 @@ let g:ycm_filetype_whitelist = {
 			\ "config":1,
 			\ }
 noremap <c-z> <NOP>
+
+call g:quickmenu#append('# YCM', '')
+call g:quickmenu#append('Ycm FixIt', 'YcmCompleter FixIt', 'leader fx', 'c,cpp')
+call g:quickmenu#append('Ycm GoToDef', 'YcmCompleter GoToDefinitionElseDeclaration', 'leader gd')
+call g:quickmenu#append('Ycm GoToRef', 'YcmCompleter GoToReferences', 'leader gr')
 nnoremap <leader>fx :YcmCompleter FixIt<CR>
 nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
-nnoremap <leader>gt :YcmCompleter GetDoc<CR>
 " }}}
 
 " ultisnips options ------------------------------{{{
@@ -233,8 +249,13 @@ let g:gutentags_auto_add_gtags_cscope = 0
 "let g:gutentags_define_advanced_commands = 1
 let g:gutentags_plus_nomap = 1
 let g:gutentags_generate_on_new = 0
+call g:quickmenu#append('# Gtags', '')
+call g:quickmenu#append('find symbol', 'GscopeFind s <C-R><C-W>', 'leader gs')
+call g:quickmenu#append('find calling', 'GscopeFind c <C-R><C-W>', 'leader gc')
+call g:quickmenu#append('find text', 'GscopeFind t <C-R><C-W>', 'leader gt')
 noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
 noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
+noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
 " }}}
 
 " leaderF options --------------------------------{{{
@@ -247,6 +268,11 @@ let g:Lf_Ctags = "universal-ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
 let g:Lf_DefaultMode = 'NameOnly'
+call g:quickmenu#append('# LeaderF', '')
+call g:quickmenu#append('search file', 'LeaderfBufTag', 'leader leader t')
+call g:quickmenu#append('search func', 'LeaderfFunction', 'leader leader n')
+call g:quickmenu#append('search mark', 'LeaderfMarks', 'leader leader m')
+call g:quickmenu#append('search mru', 'LeaderfMru', 'leader leader r')
 nnoremap <silent> <leader><leader>t :LeaderfBufTag<CR>
 nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
 nnoremap <silent> <leader><leader>m :LeaderfMarks<CR>
@@ -254,6 +280,9 @@ nnoremap <silent> <leader><leader>r :LeaderfMru<CR>
 " }}}
 
 " preview_vim options ----------------------------{{{
+call g:quickmenu#append('# Preview_vim', '')
+call g:quickmenu#append('preview quickfix', 'PreviewQuickfix', 'p')
+call g:quickmenu#append('preview close', 'PreviewClose', 'P')
 autocmd FileType qf nnoremap <silent><buffer> p :PreviewQuickfix<cr>
 autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
 if has('gui_macvim')
@@ -279,14 +308,6 @@ let g:asyncrun_encs = 'gbk'
 let g:asyncrun_stdin = 0
 " }}}
 
-" vim-choosewin options --------------------------{{{
-if has ('gui_macvim')
-	nnoremap <D-e> <Plug>(choosewin)
-else
-	nnoremap <m-e> <Plug>(choosewin)
-endif
-" }}}
-
 " ale options ------------------------------------{{{
 let g:ale_echo_delay = 20
 let g:ale_lint_delay = 500
@@ -309,6 +330,8 @@ let g:ale_linters = {
 			\ 'javascript': ['eslint'], 
 			\ }
 let g:ale_cpp_cppcheck_options = '--enable=style --suppress=unusedStructMember:*.h'
+call g:quickmenu#append('# ALE', '')
+call g:quickmenu#append('ale lint', 'ALELint', 'ALELint')
 " }}}
 
 " rainbowparentheses options ---------------------{{{
