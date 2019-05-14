@@ -204,9 +204,9 @@ let g:ycm_filetype_whitelist = {
 noremap <c-z> <NOP>
 
 call g:quickmenu#append('# YCM', '')
-call g:quickmenu#append('Ycm FixIt', 'YcmCompleter FixIt', 'leader fx', 'c,cpp')
-call g:quickmenu#append('Ycm GoToDef', 'YcmCompleter GoToDefinitionElseDeclaration', 'leader gd')
-call g:quickmenu#append('Ycm GoToRef', 'YcmCompleter GoToReferences', 'leader gr')
+call g:quickmenu#append(mapleader.'fx Ycm FixIt', 'YcmCompleter FixIt', 'fix the code error by clang', 'c,cpp')
+call g:quickmenu#append(mapleader.'gd Ycm GoToDef', 'YcmCompleter GoToDefinitionElseDeclaration', 'go to the var or function definition')
+call g:quickmenu#append(mapleader.'gr Ycm GoToRef', 'YcmCompleter GoToReferences', 'find all references of the var or function')
 nnoremap <leader>fx :YcmCompleter FixIt<CR>
 nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
@@ -250,9 +250,9 @@ let g:gutentags_auto_add_gtags_cscope = 0
 let g:gutentags_plus_nomap = 1
 let g:gutentags_generate_on_new = 0
 call g:quickmenu#append('# Gtags', '')
-call g:quickmenu#append('find symbol', 'GscopeFind s <C-R><C-W>', 'leader gs')
-call g:quickmenu#append('find calling', 'GscopeFind c <C-R><C-W>', 'leader gc')
-call g:quickmenu#append('find text', 'GscopeFind t <C-R><C-W>', 'leader gt')
+call g:quickmenu#append(mapleader.'gs find symbol', 'GscopeFind s <C-R><C-W>', 'find all appearence of the symbol in gtags database')
+call g:quickmenu#append(mapleader.'gc find calling', 'GscopeFind c <C-R><C-W>', 'find all function calling this function in gtags database')
+call g:quickmenu#append(mapleader.'gt find text', 'GscopeFind t <C-R><C-W>', 'find the string appearence of the text in gtags database')
 noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
 noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
 noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
@@ -269,10 +269,10 @@ let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
 let g:Lf_DefaultMode = 'NameOnly'
 call g:quickmenu#append('# LeaderF', '')
-call g:quickmenu#append('search file', 'LeaderfBufTag', 'leader leader t')
-call g:quickmenu#append('search func', 'LeaderfFunction', 'leader leader n')
-call g:quickmenu#append('search mark', 'LeaderfMarks', 'leader leader m')
-call g:quickmenu#append('search mru', 'LeaderfMru', 'leader leader r')
+call g:quickmenu#append(mapleader.mapleader.'t search file', 'LeaderfBufTag', 'search file in current path recursive')
+call g:quickmenu#append(mapleader.mapleader.'n search func', 'LeaderfFunction', 'search functions in current file')
+call g:quickmenu#append(mapleader.mapleader.'m search mark', 'LeaderfMarks', 'search marks in current buffer')
+call g:quickmenu#append(mapleader.mapleader.'r search mru', 'LeaderfMru', 'search file in most recently used files')
 nnoremap <silent> <leader><leader>t :LeaderfBufTag<CR>
 nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
 nnoremap <silent> <leader><leader>m :LeaderfMarks<CR>
@@ -281,8 +281,8 @@ nnoremap <silent> <leader><leader>r :LeaderfMru<CR>
 
 " preview_vim options ----------------------------{{{
 call g:quickmenu#append('# Preview_vim', '')
-call g:quickmenu#append('preview quickfix', 'PreviewQuickfix', 'p')
-call g:quickmenu#append('preview close', 'PreviewClose', 'P')
+call g:quickmenu#append('p preview quickfix', 'PreviewQuickfix', 'preview the item in quickfix window')
+call g:quickmenu#append('P preview close', 'PreviewClose', 'close the preview')
 autocmd FileType qf nnoremap <silent><buffer> p :PreviewQuickfix<cr>
 autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
 if has('gui_macvim')
@@ -331,7 +331,7 @@ let g:ale_linters = {
 			\ }
 let g:ale_cpp_cppcheck_options = '--enable=style --suppress=unusedStructMember:*.h'
 call g:quickmenu#append('# ALE', '')
-call g:quickmenu#append('ale lint', 'ALELint', 'ALELint')
+call g:quickmenu#append('ALELint ale lint', 'ALELint', 'mannuly run ALELint')
 " }}}
 
 " rainbowparentheses options ---------------------{{{
