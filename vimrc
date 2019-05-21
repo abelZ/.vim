@@ -41,8 +41,8 @@ Plug 'w0rp/ale'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'gyim/vim-boxdraw'
-Plug 'ap/vim-css-color', { 'for':['css', 'html'] }
-Plug 'mattn/emmet-vim', { 'for':['css', 'html'] }
+Plug 'ap/vim-css-color'
+Plug 'mattn/emmet-vim'
 Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 let s:has_calendar = 0
 let s:has_keysound = 0
@@ -164,6 +164,7 @@ let g:ycm_semantic_triggers =  {
 	  \ 'python,javascript': ['re!\w{5}'],
 	  \   'css': [ 're!^\s{4}', 're!:\s+'],
 	  \ 'html': ['re!\w{1}', 're!\s+', 're!</'],
+	  \ 'htmldjango': ['re!\w{1}', 're!\s+', 're!</'],
 	  \}
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_server_log_level = 'info'
@@ -191,6 +192,7 @@ let g:ycm_filetype_whitelist = {
 			\ "make":1,
 			\ "cmake":1,
 			\ "html":1,
+			\ "htmldjango":1,
 			\ "css":1,
 			\ "less":1,
 			\ "json":1,
