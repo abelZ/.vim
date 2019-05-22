@@ -31,17 +31,18 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus'
 Plug 'skywind3000/vim-preview'
 Plug 'skywind3000/asyncrun.vim'
+Plug 'skywind3000/quickmenu.vim'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-syntax'
 Plug 'kana/vim-textobj-function', { 'for':['c', 'cpp', 'vim', 'java'] }
 Plug 'sgur/vim-textobj-parameter'
-Plug 't9md/vim-choosewin'
 Plug 'w0rp/ale'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'gyim/vim-boxdraw'
-Plug 'ap/vim-css-color', { 'for':['css', 'html'] }
-Plug 'mattn/emmet-vim', { 'for':['css', 'html'] }
+Plug 'ap/vim-css-color'
+Plug 'mattn/emmet-vim'
+Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 let s:has_calendar = 0
 let s:has_keysound = 0
 let s:has_instant_mark = 0
@@ -122,10 +123,23 @@ nnoremap <leader>" viw<ESC>a"<ESC>bi"<ESC>lel
 vnoremap <leader>" <ESC>a"<ESC>`<i"<ESC>`>ll
 nnoremap <leader>' viw<ESC>a'<ESC>bi'<ESC>lel
 vnoremap <leader>' <ESC>a'<ESC>`<i'<ESC>`>ll
+vnoremap <leader>( <ESC>a)<ESC>`<i(<ESC>`>ll
 nnoremap H 0
 nnoremap L $
 inoremap jk <ESC>
 inoremap <ESC> <NOP>
+" }}}
+
+" quickmenu options ------------------------------{{{
+" choose a favorite key to show/hide quickmenu
+noremap <silent><F12> :call quickmenu#toggle(0)<cr>
+
+" enable cursorline (L) and cmdline help (H)
+let g:quickmenu_options = "HL"
+
+" clear all the items
+call g:quickmenu#reset()
+
 " }}}
 
 " echodoc options --------------------------------{{{
@@ -152,6 +166,7 @@ let g:ycm_semantic_triggers =  {
 	  \ 'python,javascript': ['re!\w{5}'],
 	  \   'css': [ 're!^\s{4}', 're!:\s+'],
 	  \ 'html': ['re!\w{1}', 're!\s+', 're!</'],
+	  \ 'htmldjango': ['re!\w{1}', 're!\s+', 're!</'],
 	  \}
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_server_log_level = 'info'
@@ -163,8 +178,12 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_comments = 0
 let g:ycm_min_num_of_chars_for_completion=2
 let g:ycm_key_invoke_completion = '<c-z>'
+let g:ycm_clangd_args = ['-background-index']
 if has('gui_macvim')
 	let g:ycm_python_binary_path = '/usr/local/bin/python3'
+endif
+if has('win32')
+	let g:ycm_python_binary_path = 'd:\\unix\\Python37\\python.exe'
 endif
 let g:ycm_filetype_whitelist = { 
 			\ "c":1,
@@ -175,6 +194,7 @@ let g:ycm_filetype_whitelist = {
 			\ "make":1,
 			\ "cmake":1,
 			\ "html":1,
+			\ "htmldjango":1,
 			\ "css":1,
 			\ "less":1,
 			\ "json":1,
@@ -186,10 +206,14 @@ let g:ycm_filetype_whitelist = {
 			\ "config":1,
 			\ }
 noremap <c-z> <NOP>
+
+call g:quickmenu#append('# YCM', '')
+call g:quickmenu#append(mapleader.'fx Ycm FixIt', 'YcmCompleter FixIt', 'fix the code error by clang', 'c,cpp')
+call g:quickmenu#append(mapleader.'gd Ycm GoToDef', 'YcmCompleter GoToDefinitionElseDeclaration', 'go to the var or function definition')
+call g:quickmenu#append(mapleader.'gr Ycm GoToRef', 'YcmCompleter GoToReferences', 'find all references of the var or function')
 nnoremap <leader>fx :YcmCompleter FixIt<CR>
 nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
-nnoremap <leader>gt :YcmCompleter GetDoc<CR>
 " }}}
 
 " ultisnips options ------------------------------{{{
@@ -208,8 +232,10 @@ else
 	let $GTAGSCONF = '/home/abel/.vim/gtags.conf'
 endif
 
-let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+let gutentags_add_default_project_roots = 0
+let g:gutentags_project_root = ['.tags']
 let g:gutentags_ctags_tagfile = '.tags'
+let g:gutentags_ctags_exclude = ['*.log', '*.xml', '*.tlog']
 
 let g:gutentags_ctags_executable = 'universal-ctags'
 let g:gutentags_modules = ['ctags', 'gtags_cscope']
@@ -226,25 +252,41 @@ let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
 let g:gutentags_auto_add_gtags_cscope = 0
 "let g:gutentags_define_advanced_commands = 1
 let g:gutentags_plus_nomap = 1
+let g:gutentags_generate_on_new = 0
+call g:quickmenu#append('# Gtags', '')
+call g:quickmenu#append(mapleader.'gs find symbol', 'GscopeFind s <C-R><C-W>', 'find all appearence of the symbol in gtags database')
+call g:quickmenu#append(mapleader.'gc find calling', 'GscopeFind c <C-R><C-W>', 'find all function calling this function in gtags database')
+call g:quickmenu#append(mapleader.'gt find text', 'GscopeFind t <C-R><C-W>', 'find the string appearence of the text in gtags database')
 noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
 noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
+noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
 " }}}
 
 " leaderF options --------------------------------{{{
 let g:Lf_WildIgnore = {
 			\ 'dir': ['.svn','.git','.hg'],
-            \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.log','*.user','*.vc*']
+            \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.log','*.user','*.vc*','*.xml','*.bat','*.pdb']
 			\}
 let g:Lf_WorkingDirectoryMode = 'Ac'
 let g:Lf_Ctags = "universal-ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
+let g:Lf_DefaultMode = 'NameOnly'
+call g:quickmenu#append('# LeaderF', '')
+call g:quickmenu#append(mapleader.mapleader.'t search file', 'LeaderfBufTag', 'search file in current path recursive')
+call g:quickmenu#append(mapleader.mapleader.'n search func', 'LeaderfFunction', 'search functions in current file')
+call g:quickmenu#append(mapleader.mapleader.'m search mark', 'LeaderfMarks', 'search marks in current buffer')
+call g:quickmenu#append(mapleader.mapleader.'r search mru', 'LeaderfMru', 'search file in most recently used files')
 nnoremap <silent> <leader><leader>t :LeaderfBufTag<CR>
 nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
 nnoremap <silent> <leader><leader>m :LeaderfMarks<CR>
+nnoremap <silent> <leader><leader>r :LeaderfMru<CR>
 " }}}
 
 " preview_vim options ----------------------------{{{
+call g:quickmenu#append('# Preview_vim', '')
+call g:quickmenu#append('p preview quickfix', 'PreviewQuickfix', 'preview the item in quickfix window')
+call g:quickmenu#append('P preview close', 'PreviewClose', 'close the preview')
 autocmd FileType qf nnoremap <silent><buffer> p :PreviewQuickfix<cr>
 autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
 if has('gui_macvim')
@@ -267,14 +309,7 @@ endif
 let g:asyncrun_open = 10
 let g:asyncrun_bell = 1
 let g:asyncrun_encs = 'gbk'
-" }}}
-
-" vim-choosewin options --------------------------{{{
-if has ('gui_macvim')
-	nnoremap <D-e> <Plug>(choosewin)
-else
-	nnoremap <m-e> <Plug>(choosewin)
-endif
+let g:asyncrun_stdin = 0
 " }}}
 
 " ale options ------------------------------------{{{
@@ -299,14 +334,20 @@ let g:ale_linters = {
 			\ 'javascript': ['eslint'], 
 			\ }
 let g:ale_cpp_cppcheck_options = '--enable=style --suppress=unusedStructMember:*.h'
+call g:quickmenu#append('# ALE', '')
+call g:quickmenu#append('ALELint ale lint', 'ALELint', 'mannuly run ALELint')
 " }}}
 
 " rainbowparentheses options ---------------------{{{
 if s:has_rainbow == 1
-	au VimEnter * RainbowParenthesesToggle
-	au Syntax * RainbowParenthesesLoadRound
-	au Syntax * RainbowParenthesesLoadSquare
-	au Syntax * RainbowParenthesesLoadBraces
+	augroup rainbow_group
+		autocmd!
+		let rainbow_black_list = ['cmake']
+		au VimEnter * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesToggle
+		au Syntax * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesLoadRound
+		au Syntax * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesLoadSquare
+		au Syntax * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesLoadBraces
+	augroup END
 endif
 " }}}
 
@@ -340,6 +381,7 @@ endif
 augroup filetype_vim
     autocmd!
     autocmd FileType vim setlocal foldmethod=marker
+    autocmd FileType xml setlocal foldmethod=indent
 augroup END
 " }}}
 
