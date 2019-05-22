@@ -38,7 +38,6 @@ Plug 'kana/vim-textobj-function', { 'for':['c', 'cpp', 'vim', 'java'] }
 Plug 'sgur/vim-textobj-parameter'
 Plug 't9md/vim-choosewin'
 Plug 'w0rp/ale'
-Plug 'kien/rainbow_parentheses.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'gyim/vim-boxdraw'
 Plug 'ap/vim-css-color', { 'for':['css', 'html'] }
@@ -46,6 +45,7 @@ Plug 'mattn/emmet-vim', { 'for':['css', 'html'] }
 let s:has_calendar = 0
 let s:has_keysound = 0
 let s:has_instant_mark = 0
+let s:has_rainbow = 0
 if has('win32') || has('gui_macvim')
 	let s:has_calendar = 1
 	Plug 'itchyny/calendar.vim'
@@ -53,6 +53,8 @@ if has('win32') || has('gui_macvim')
 	Plug 'skywind3000/vim-keysound'
 	let s:has_instant_mark = 1
 	Plug 'suan/vim-instant-markdown'
+	let s:has_rainbow = 1
+	Plug 'kien/rainbow_parentheses.vim'
 endif
 if has('win32')
 	Plug 'haya14busa/vim-gtrans'
@@ -300,10 +302,12 @@ let g:ale_cpp_cppcheck_options = '--enable=style --suppress=unusedStructMember:*
 " }}}
 
 " rainbowparentheses options ---------------------{{{
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+if s:has_rainbow == 1
+	au VimEnter * RainbowParenthesesToggle
+	au Syntax * RainbowParenthesesLoadRound
+	au Syntax * RainbowParenthesesLoadSquare
+	au Syntax * RainbowParenthesesLoadBraces
+endif
 " }}}
 
 " airline options --------------------------------{{{
