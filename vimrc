@@ -54,6 +54,8 @@ if has('win32') || has('gui_macvim')
 	Plug 'skywind3000/vim-keysound'
 	let s:has_instant_mark = 1
 	Plug 'suan/vim-instant-markdown'
+endif
+if has('gui')
 	let s:has_rainbow = 1
 	Plug 'kien/rainbow_parentheses.vim'
 endif
