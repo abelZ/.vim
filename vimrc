@@ -44,6 +44,7 @@ Plug 'gyim/vim-boxdraw'
 Plug 'ap/vim-css-color', { 'for':['css', 'html'] }
 Plug 'mattn/emmet-vim', { 'for':['css', 'html'] }
 Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
+Plug 'liuchengxu/vim-which-key'
 let s:has_calendar = 0
 let s:has_keysound = 0
 let s:has_instant_mark = 0
@@ -84,6 +85,7 @@ colorscheme solarized
 
 " Vim common Settings ----------------------------{{{
 set encoding=utf-8
+set fileencoding=utf-8
 set number "display line number
 set tabstop=4
 set softtabstop=4
@@ -126,6 +128,11 @@ nnoremap H 0
 nnoremap L $
 inoremap jk <ESC>
 inoremap <ESC> <NOP>
+" }}}
+
+" vim-which-key options --------------------------{{{
+nnoremap <silent> <leader> :WhichKey ','<CR>
+set timeoutlen=1000
 " }}}
 
 " quickmenu options ------------------------------{{{
@@ -180,6 +187,7 @@ if has('gui_macvim')
 	let g:ycm_python_binary_path = '/usr/local/bin/python3'
 endif
 if has('win32')
+	"let g:ycm_use_clangd = 0
 	let g:ycm_python_binary_path = 'd:\\unix\\Python37\\python.exe'
 endif
 let g:ycm_filetype_whitelist = { 
@@ -261,7 +269,7 @@ noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
 " leaderF options --------------------------------{{{
 let g:Lf_WildIgnore = {
 			\ 'dir': ['.svn','.git','.hg'],
-            \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.log','*.user','*.vc*','*.xml','*.bat','*.pdb']
+            \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.user','*.vc*','*.pdb']
 			\}
 let g:Lf_WorkingDirectoryMode = 'Ac'
 let g:Lf_Ctags = "universal-ctags"
@@ -395,6 +403,8 @@ elseif has('gui_macvim')
 else
 	vnoremap <leader>tr :Trans :zh<CR>
 endif
+nnoremap <leader>dg :diffget<CR>
+nnoremap <leader>dp :diffput<CR>
 " }}}
 
 " quickfix and localtion list Settings ----------{{{
