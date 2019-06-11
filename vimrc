@@ -38,16 +38,16 @@ Plug 'kana/vim-textobj-syntax'
 Plug 'kana/vim-textobj-function', { 'for':['c', 'cpp', 'vim', 'java'] }
 Plug 'sgur/vim-textobj-parameter'
 Plug 'w0rp/ale'
-Plug 'kien/rainbow_parentheses.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'gyim/vim-boxdraw'
-Plug 'ap/vim-css-color', { 'for':['css', 'html'] }
-Plug 'mattn/emmet-vim', { 'for':['css', 'html'] }
+Plug 'ap/vim-css-color'
+Plug 'mattn/emmet-vim'
 Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 Plug 'liuchengxu/vim-which-key'
 let s:has_calendar = 0
 let s:has_keysound = 0
 let s:has_instant_mark = 0
+let s:has_rainbow = 0
 if has('win32') || has('gui_macvim')
 	let s:has_calendar = 1
 	Plug 'itchyny/calendar.vim'
@@ -55,6 +55,10 @@ if has('win32') || has('gui_macvim')
 	Plug 'skywind3000/vim-keysound'
 	let s:has_instant_mark = 1
 	Plug 'suan/vim-instant-markdown'
+endif
+if has('gui')
+	let s:has_rainbow = 1
+	Plug 'kien/rainbow_parentheses.vim'
 endif
 if has('win32')
 	Plug 'haya14busa/vim-gtrans'
@@ -171,6 +175,7 @@ let g:ycm_semantic_triggers =  {
 	  \ 'python,javascript': ['re!\w{5}'],
 	  \   'css': [ 're!^\s{4}', 're!:\s+'],
 	  \ 'html': ['re!\w{1}', 're!\s+', 're!</'],
+	  \ 'htmldjango': ['re!\w{1}', 're!\s+', 're!</'],
 	  \}
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_server_log_level = 'info'
@@ -199,6 +204,7 @@ let g:ycm_filetype_whitelist = {
 			\ "make":1,
 			\ "cmake":1,
 			\ "html":1,
+			\ "htmldjango":1,
 			\ "css":1,
 			\ "less":1,
 			\ "json":1,
@@ -343,14 +349,16 @@ call g:quickmenu#append('ALELint ale lint', 'ALELint', 'mannuly run ALELint')
 " }}}
 
 " rainbowparentheses options ---------------------{{{
-augroup rainbow_group
-	autocmd!
-	let rainbow_black_list = ['cmake']
-	au VimEnter * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesToggle
-	au Syntax * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesLoadRound
-	au Syntax * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesLoadSquare
-	au Syntax * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesLoadBraces
-augroup END
+if s:has_rainbow == 1
+	augroup rainbow_group
+		autocmd!
+		let rainbow_black_list = ['cmake']
+		au VimEnter * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesToggle
+		au Syntax * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesLoadRound
+		au Syntax * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesLoadSquare
+		au Syntax * if index(rainbow_black_list, &ft) < 0 | RainbowParenthesesLoadBraces
+	augroup END
+endif
 " }}}
 
 " airline options --------------------------------{{{
