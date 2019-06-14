@@ -188,11 +188,11 @@ let g:ycm_complete_in_comments = 0
 let g:ycm_min_num_of_chars_for_completion=2
 let g:ycm_key_invoke_completion = '<c-z>'
 let g:ycm_clangd_args = ['-background-index']
+let g:ycm_use_clangd = 0
 if has('gui_macvim')
 	let g:ycm_python_binary_path = '/usr/local/bin/python3'
 endif
 if has('win32')
-	"let g:ycm_use_clangd = 0
 	let g:ycm_python_binary_path = 'd:\\unix\\Python37\\python.exe'
 endif
 let g:ycm_filetype_whitelist = { 
