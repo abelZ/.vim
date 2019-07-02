@@ -1,0 +1,36 @@
+{
+	"suggest.floatEnable": true,
+	"suggest.enablePreview": false,
+	"suggest.maxCompleteItemCount": 10,
+	"suggest.echodocSupport": true,
+	"diagnostic.errorSign": "E",
+	"signature.enable": true,
+	"signature.triggerSignatureWait": 100,
+    "languageserver": {
+        "ccls": {
+            "command": "ccls",
+			"trace.server": "verbose",
+            "filetypes": [
+                "c",
+                "cpp",
+                "objc",
+                "objcpp"
+            ],
+            "rootPatterns": [
+                ".ccls",
+                "compile_commands.json",
+                ".vim/",
+                ".git/",
+                ".svn/"
+            ],
+            "initializationOptions": {
+                "cache": {
+                    "directory": ".cclscache"
+                }
+            }
+        }
+    },
+    "python.linting.pylintArgs": [
+        "--unsafe-load-any-extension=y"
+    ]
+}

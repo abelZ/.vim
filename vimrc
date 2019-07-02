@@ -5,22 +5,47 @@ else
 	call plug#begin('~/.vim/bundle')
 endif
 
-Plug 'fholgado/minibufexpl.vim'
-Plug 'Chiel92/vim-autoformat'
+let s:has_calendar = 0
+let s:has_keysound = 0
+let s:has_instant_mark = 0
+let s:has_rainbow = 0
+let s:has_ycm = 0
+let s:has_coc = 1
+let s:has_echodoc = 1
+let s:has_vimgtrans = 0
+let s:has_transshell = 0
+let s:has_solarized = 1
+let s:has_dracula = 1
+let s:has_gruvbox = 1
+let s:has_signify = 1
+
+if has('win32')
+	let s:has_vimgtrans = 1
+else
+	let s:has_transshell = 1
+endif
+
+if has('win32') || has('gui_macvim')
+	let s:has_calendar = 1
+	let s:has_keysound = 1
+	let s:has_instant_mark = 1
+endif
+
+if has('gui')
+	let s:has_rainbow = 1
+endif
+
 Plug 'kshenoy/vim-signature'
-Plug 'altercation/vim-colors-solarized'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'majutsushi/tagbar'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'easymotion/vim-easymotion'
 Plug 'scrooloose/nerdcommenter'
-Plug 'Valloric/YouCompleteMe'
-Plug 'Shougo/echodoc.vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
 Plug 'chrisbra/vim-diff-enhanced'
-Plug 'vim-scripts/a.vim'
 Plug 'vim-scripts/Align'
 Plug 'will133/vim-dirdiff'
 Plug 'tpope/vim-unimpaired'
@@ -44,31 +69,59 @@ Plug 'ap/vim-css-color'
 Plug 'mattn/emmet-vim'
 Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 Plug 'liuchengxu/vim-which-key'
-let s:has_calendar = 0
-let s:has_keysound = 0
-let s:has_instant_mark = 0
-let s:has_rainbow = 0
-if has('win32') || has('gui_macvim')
-	let s:has_calendar = 1
-	Plug 'itchyny/calendar.vim'
-	let s:has_keysound = 1
-	Plug 'skywind3000/vim-keysound'
-	let s:has_instant_mark = 1
-	Plug 'suan/vim-instant-markdown'
+Plug 'tpope/vim-fugitive'
+
+if s:has_solarized == 1
+	Plug 'altercation/vim-colors-solarized'
 endif
-if has('gui')
-	let s:has_rainbow = 1
-	Plug 'kien/rainbow_parentheses.vim'
+
+if s:has_dracula == 1
+	Plug 'dracula/vim'
 endif
-if has('win32')
-	Plug 'haya14busa/vim-gtrans'
-else
-	Plug 'echuraev/translate-shell.vim'
+
+if s:has_gruvbox == 1
+	Plug 'morhetz/gruvbox'
+endif
+
+if s:has_ycm == 1
+	Plug 'Valloric/YouCompleteMe'
 	Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 endif
-let languageclient = 0
-if languageclient == 1
-	Plug 'autozimu/LanguageClient-neovim'
+
+if s:has_coc == 1
+	Plug 'neoclide/coc.nvim', {'branch': 'release'}
+endif
+
+if s:has_echodoc == 1
+	Plug 'Shougo/echodoc.vim'
+endif
+
+if s:has_calendar == 1
+	Plug 'itchyny/calendar.vim'
+endif
+
+if s:has_keysound == 1
+	Plug 'skywind3000/vim-keysound'
+endif
+
+if s:has_instant_mark == 1
+	Plug 'suan/vim-instant-markdown'
+endif
+
+if s:has_rainbow == 1
+	Plug 'kien/rainbow_parentheses.vim'
+endif
+
+if s:has_vimgtrans == 1
+	Plug 'haya14busa/vim-gtrans'
+endif
+
+if s:has_transshell == 1
+	Plug 'echuraev/translate-shell.vim'
+endif
+
+if s:has_signify == 1
+	Plug 'mhinz/vim-signify'
 endif
 
 call plug#end()
@@ -80,11 +133,56 @@ filetype plugin on
 syntax on "syntax highlighting
 " }}}
 
-" Vim color sheme Settings -----------------------{{{
-set background=dark
-let g:solarized_italic = 0
-let g:solarized_termtrans = 1
-colorscheme solarized
+" quickmenu options ------------------------------{{{
+" choose a favorite key to show/hide quickmenu
+noremap <silent><F12> :call quickmenu#toggle(0)<cr>
+
+" enable cursorline (L) and cmdline help (H)
+let g:quickmenu_options = "HL"
+
+" clear all the items
+call g:quickmenu#reset()
+
+" }}}
+
+" color scheme helper ----------------------------{{{
+function! MyHighlights() abort
+	if s:has_coc == 1
+		highlight CocHighlightText term=underline gui=underline
+	endif
+endfunction
+
+augroup MyColors
+    autocmd!
+    autocmd ColorScheme * call MyHighlights()
+	autocmd Syntax * call MyHighlights()
+augroup END
+
+call g:quickmenu#append('# ColorScheme', '')
+"}}}
+
+" Vim color sheme solarized -----------------------{{{
+if s:has_solarized == 1
+	set background=dark
+	let g:solarized_italic = 0
+	let g:solarized_termtrans = 1
+	"color solarized
+	call g:quickmenu#append('Solarized', 'color solarized', '')
+endif
+" }}}
+
+" Vim color scheme dracula -----------------------{{{
+if s:has_dracula == 1
+	let g:dracula_italic = 0
+	color dracula
+	call g:quickmenu#append('Dracula', 'color dracula', '')
+endif
+" }}}
+
+" Vim color scheme gruvbox -----------------------{{{
+if s:has_gruvbox == 1
+	call g:quickmenu#append('Gruvbox', 'color gruvbox', '')
+endif
 " }}}
 
 " Vim common Settings ----------------------------{{{
@@ -118,6 +216,9 @@ if has('win32')
 	"set guioptions-=T
 	source $VIMRUNTIME/delmenu.vim
 	source $VIMRUNTIME/menu.vim
+	if has('win32')
+		set guifont=Consolas:h12
+	endif
 endif
 let mapleader = ","
 set grepprg=rg\ --vimgrep
@@ -139,36 +240,15 @@ nnoremap <silent> <leader> :WhichKey ','<CR>
 set timeoutlen=1000
 " }}}
 
-" quickmenu options ------------------------------{{{
-" choose a favorite key to show/hide quickmenu
-noremap <silent><F12> :call quickmenu#toggle(0)<cr>
-
-" enable cursorline (L) and cmdline help (H)
-let g:quickmenu_options = "HL"
-
-" clear all the items
-call g:quickmenu#reset()
-
-" }}}
-
 " echodoc options --------------------------------{{{
+if s:has_echodoc == 1
 let g:echodoc#enable_at_startup = 1
 set noshowmode
-" }}}
-
-" languageclient options -------------------------{{{
-if languageclient == 1
-	set runtimepath+=~/.vim/bundle/LanguageClient-neovim
-	set hidden
-	let g:LanguageClient_serverCommands = {
-				\ 'c': ['cquery', '--log-file=~\\vimfiles\\cq.log'],
-				\ 'cpp': ['cquery', '--log-file=~\\vimfiles\\cq.log'],
-				\ }
-	let g:LanguageClient_diagnosticsEnable = 0
 endif
 " }}}
 
 " ycm options ------------------------------------{{{
+if s:has_ycm == 1
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif "auto close preview windows when leave insert mode
 let g:ycm_semantic_triggers =  {
 	  \ 'c,cpp': ['re!\w{5}'],
@@ -224,6 +304,7 @@ call g:quickmenu#append(mapleader.'gr Ycm GoToRef', 'YcmCompleter GoToReferences
 nnoremap <leader>fx :YcmCompleter FixIt<CR>
 nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
+endif
 " }}}
 
 " ultisnips options ------------------------------{{{
@@ -231,6 +312,136 @@ let g:UltiSnipsExpandTrigger = "<C-j>"
 let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 " }}}
+
+" coc.nvim options--------------------------------{{{
+" if hidden is not set, TextEdit might fail.
+if s:has_coc == 1
+set hidden
+
+" Some servers have issues with backup files, see #649
+set nobackup
+set nowritebackup
+
+" Better display for messages
+set cmdheight=1
+
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=500
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[c` and `]c` to navigate diagnostics
+"nmap <silent> [c <Plug>(coc-diagnostic-prev)
+"nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> <leader>gd <Plug>(coc-definition)
+nmap <silent> <leader>gy <Plug>(coc-type-definition)
+nmap <silent> <leader>gi <Plug>(coc-implementation)
+nmap <silent> <leader>gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+highlight CocHighlightText term=underline gui=underline
+"autocmd CursorHold * silent call CocActionAsync('highlight')
+nmap <silent> J :call CocActionAsync('highlight')<CR>
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+  autocmd FileType * call coc#config('suggest', {'minTriggerInputLength': 3 })
+  autocmd FileType css,html,htmldjango call coc#config('suggest', {'minTriggerInputLength': 2 })
+augroup end
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" use `:OR` for organize import of current buffer
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+"let g:coc_node_args = ['--nolazy', '--inspect-brk=6045']
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+let g:markdown_fenced_languages = [
+      \ 'vim',
+      \ 'help'
+      \]
+
+endif
+"}}}
 
 " gtags options ----------------------------------{{{
 let $GTAGSLABEL = 'native-pygments'
@@ -243,7 +454,7 @@ else
 endif
 
 let gutentags_add_default_project_roots = 0
-let g:gutentags_project_root = ['.tags']
+let g:gutentags_project_root = ['.tagroot']
 let g:gutentags_ctags_tagfile = '.tags'
 let g:gutentags_ctags_exclude = ['*.log', '*.xml', '*.tlog']
 
@@ -260,7 +471,7 @@ let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
 
 " 禁用 gutentags 自动加载 gtags 数据库的行为
 let g:gutentags_auto_add_gtags_cscope = 0
-"let g:gutentags_define_advanced_commands = 1
+let g:gutentags_define_advanced_commands = 1
 let g:gutentags_plus_nomap = 1
 let g:gutentags_generate_on_new = 0
 call g:quickmenu#append('# Gtags', '')
@@ -364,6 +575,8 @@ endif
 " airline options --------------------------------{{{
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline#extensions#tagbar#flags = 'f'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_section_error = ''
 let g:airline_section_warning = ''
 let g:tagbar_ctags_bin = 'universal-ctags'
@@ -387,6 +600,13 @@ if s:has_instant_mark == 1
 endif
 " }}}
 
+" signify options --------------------------------{{{
+if s:has_signify == 1
+    let g:signify_vcs_list = [ 'git', 'svn' ]
+	"♕ ♛ 🐒 🐍 🐢 🐓 	   
+endif
+" }}}
+
 " Vim script file Settings -----------------------{{{
 augroup filetype_vim
     autocmd!
@@ -396,19 +616,12 @@ augroup END
 " }}}
 
 " user defined mappings --------------------------{{{
-nnoremap <F3> :Autoformat<CR>
-nnoremap <silent> <leader><leader>a :A<CR>
 nnoremap \ :AsyncRun rg --vimgrep -i<SPACE>
 vnoremap // y/\V<C-r>=escape(@",'/\')<CR><CR>
-if has('win32')
-	noremap <C-i> :pyf d:/Program Files (x86)/LLVM/share/clang/clang-format.py<CR>
-	inoremap <C-i> <C-o>:pyf d:/Program Files (x86)/LLVM/share/clang/clang-format.py<CR>
+if s:has_vimgtrans == 1
 	vnoremap <leader>tr :Gtrans -o=buffer<CR>
-elseif has('gui_macvim')
-	noremap <C-i> :pyf /usr/local/opt/llvm/share/clang/clang-format.py<CR>
-	inoremap <C-i> <C-o>:pyf /usr/local/opt/llvm/share/clang/clang-format.py<CR>
-	vnoremap <leader>tr :Trans :zh<CR>
-else
+endif
+if s:has_transshell == 1
 	vnoremap <leader>tr :Trans :zh<CR>
 endif
 nnoremap <leader>dg :diffget<CR>
