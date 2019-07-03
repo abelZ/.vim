@@ -334,6 +334,8 @@ set shortmess+=c
 " always show signcolumns
 set signcolumn=yes
 
+let g:coc_global_extensions = ['coc-python', 'coc-json', 'coc-vimlsp', 'coc-highlight', 'coc-snippets', 'coc-ultisnips'] 
+
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
