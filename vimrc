@@ -232,7 +232,6 @@ vnoremap <leader>( <ESC>a)<ESC>`<i(<ESC>`>ll
 nnoremap H 0
 nnoremap L $
 inoremap jk <ESC>
-inoremap <ESC> <NOP>
 " }}}
 
 " vim-which-key options --------------------------{{{
