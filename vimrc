@@ -503,6 +503,8 @@ nnoremap <silent> <leader><leader>t :LeaderfBufTag<CR>
 nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
 nnoremap <silent> <leader><leader>m :LeaderfMarks<CR>
 nnoremap <silent> <leader><leader>r :LeaderfMru<CR>
+" search visually selected text literally, don't quit LeaderF after accepting an entry
+xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F --stayOpen -e %s ", leaderf#Rg#visual())<CR><CR>
 " }}}
 
 " preview_vim options ----------------------------{{{
@@ -541,6 +543,8 @@ let g:ale_echo_msg_format = '[%linter%] %code: %%s'
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_save = 0
 let g:ale_lint_on_enter = 0
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_filetype_changed = 0
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
 let g:ale_linters_explicit = 1
