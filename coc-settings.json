@@ -4,7 +4,7 @@
 	"suggest.maxCompleteItemCount": 10,
 	"suggest.echodocSupport": true,
 	"diagnostic.errorSign": "E",
-	"signature.enable": true,
+	"signature.enable": false,
 	"signature.triggerSignatureWait": 100,
     "languageserver": {
         "ccls": {

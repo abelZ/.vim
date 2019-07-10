@@ -585,6 +585,17 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_section_error = ''
 let g:airline_section_warning = ''
 let g:tagbar_ctags_bin = 'universal-ctags'
+let g:airline#extensions#branch#custom_head = 'GetScmBranch'
+function! GetScmBranch()
+    if !exists('b:perforce_client')
+		let b:perforce_client = trim(system('svn info | grep "Relative URL:" | sed "s@.*/@@"'))
+		exec 'augroup perforce_client-'. bufnr("%")
+			au!
+			autocmd BufWinLeave <buffer> silent! unlet! b:perforce_client
+		augroup END
+    endif
+    return b:perforce_client
+endfunction
 " }}}
 
 " calendar options -------------------------------{{{
