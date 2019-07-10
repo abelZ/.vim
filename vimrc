@@ -588,7 +588,12 @@ let g:tagbar_ctags_bin = 'universal-ctags'
 let g:airline#extensions#branch#custom_head = 'GetScmBranch'
 function! GetScmBranch()
     if !exists('b:perforce_client')
-		let b:perforce_client = trim(system('svn info | grep "Relative URL:" | sed "s@.*/@@"'))
+		silent! exec system('svn info')
+		if v:shell_error != 0
+			let b:perforce_client = ''
+		else
+			let b:perforce_client = trim(system('svn info | grep "Relative URL:" | sed "s@.*/@@"'))
+		endif
 		exec 'augroup perforce_client-'. bufnr("%")
 			au!
 			autocmd BufWinLeave <buffer> silent! unlet! b:perforce_client
