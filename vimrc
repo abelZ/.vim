@@ -69,7 +69,6 @@ Plug 'ap/vim-css-color'
 Plug 'mattn/emmet-vim'
 Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 Plug 'liuchengxu/vim-which-key'
-Plug 'tpope/vim-fugitive'
 
 if s:has_solarized == 1
 	Plug 'altercation/vim-colors-solarized'
