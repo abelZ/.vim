@@ -18,6 +18,7 @@ let s:has_solarized = 1
 let s:has_dracula = 1
 let s:has_gruvbox = 1
 let s:has_signify = 1
+let s:has_tagbar = 0
 
 if has('win32')
 	let s:has_vimgtrans = 1
@@ -38,7 +39,6 @@ endif
 Plug 'kshenoy/vim-signature'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'majutsushi/tagbar'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'easymotion/vim-easymotion'
 Plug 'scrooloose/nerdcommenter'
@@ -60,7 +60,7 @@ Plug 'skywind3000/quickmenu.vim'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-syntax'
-Plug 'kana/vim-textobj-function', { 'for':['c', 'cpp', 'vim', 'java'] }
+Plug 'kana/vim-textobj-function'
 Plug 'sgur/vim-textobj-parameter'
 Plug 'w0rp/ale'
 Plug 'terryma/vim-multiple-cursors'
@@ -69,6 +69,10 @@ Plug 'ap/vim-css-color'
 Plug 'mattn/emmet-vim'
 Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 Plug 'liuchengxu/vim-which-key'
+
+if s:has_tagbar == 1
+	Plug 'majutsushi/tagbar'
+endif
 
 if s:has_solarized == 1
 	Plug 'altercation/vim-colors-solarized'
@@ -577,29 +581,31 @@ endif
 " }}}
 
 " airline options --------------------------------{{{
-let g:airline#extensions#tagbar#enabled = 1
-let g:airline#extensions#tagbar#flags = 'f'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_section_error = ''
 let g:airline_section_warning = ''
-let g:tagbar_ctags_bin = 'universal-ctags'
-let g:airline#extensions#branch#custom_head = 'GetScmBranch'
-function! GetScmBranch()
-    if !exists('b:perforce_client')
-		silent! exec system('svn info')
-		if v:shell_error != 0
-			let b:perforce_client = ''
-		else
-			let b:perforce_client = trim(system('svn info | grep "Relative URL:" | sed "s@.*/@@"'))
+if s:has_tagbar == 1
+	let g:airline#extensions#tagbar#enabled = 1
+	let g:airline#extensions#tagbar#flags = 'f'
+	let g:tagbar_ctags_bin = 'universal-ctags'
+	let g:airline#extensions#branch#custom_head = 'GetScmBranch'
+	function! GetScmBranch()
+		if !exists('b:perforce_client')
+			silent! exec system('svn info')
+			if v:shell_error != 0
+				let b:perforce_client = ''
+			else
+				let b:perforce_client = trim(system('svn info | grep "Relative URL:" | sed "s@.*/@@"'))
+			endif
+			exec 'augroup perforce_client-'. bufnr("%")
+				au!
+				autocmd BufWinLeave <buffer> silent! unlet! b:perforce_client
+			augroup END
 		endif
-		exec 'augroup perforce_client-'. bufnr("%")
-			au!
-			autocmd BufWinLeave <buffer> silent! unlet! b:perforce_client
-		augroup END
-    endif
-    return b:perforce_client
-endfunction
+		return b:perforce_client
+	endfunction
+endif
 " }}}
 
 " calendar options -------------------------------{{{
@@ -622,7 +628,7 @@ endif
 
 " signify options --------------------------------{{{
 if s:has_signify == 1
-    let g:signify_vcs_list = [ 'git', 'svn' ]
+    let g:signify_vcs_list = [ 'git' ]
 	"♕ ♛ 🐒 🐍 🐢 🐓 	   
 endif
 " }}}
