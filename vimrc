@@ -270,7 +270,7 @@ let g:ycm_max_diagnostics_to_display = 300
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_comments = 0
 let g:ycm_min_num_of_chars_for_completion=2
-let g:ycm_key_invoke_completion = '<c-i>'
+let g:ycm_key_invoke_completion = '<c-l>'
 let g:ycm_use_clangd = 0
 if has('gui_macvim')
 	let g:ycm_python_binary_path = '/usr/local/bin/python3'
@@ -298,7 +298,7 @@ let g:ycm_filetype_whitelist = {
 			\ "conf":1,
 			\ "config":1,
 			\ }
-noremap <c-i> <NOP>
+noremap <c-l> <NOP>
 
 call g:quickmenu#append('# YCM', '')
 call g:quickmenu#append(mapleader.'fx Ycm FixIt', 'YcmCompleter FixIt', 'fix the code error by clang', 'c,cpp')
