@@ -3,13 +3,12 @@
 	"suggest.enablePreview": false,
 	"suggest.maxCompleteItemCount": 10,
 	"suggest.echodocSupport": true,
-	"diagnostic.errorSign": "E",
+	"diagnostic.errorSign": "⛔",
 	"signature.enable": false,
 	"signature.triggerSignatureWait": 100,
     "languageserver": {
         "ccls": {
             "command": "ccls",
-			"trace.server": "verbose",
             "filetypes": [
                 "c",
                 "cpp",

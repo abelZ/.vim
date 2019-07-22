@@ -10,7 +10,7 @@ let s:has_keysound = 0
 let s:has_instant_mark = 0
 let s:has_rainbow = 0
 let s:has_ycm = 0
-let s:has_coc = 1
+let s:has_coc = 0
 let s:has_echodoc = 1
 let s:has_vimgtrans = 0
 let s:has_transshell = 0
@@ -22,8 +22,10 @@ let s:has_tagbar = 0
 
 if has('win32')
 	let s:has_vimgtrans = 1
+	let s:has_ycm = 1
 else
 	let s:has_transshell = 1
+	let s:has_coc = 1
 endif
 
 if has('win32') || has('gui_macvim')
@@ -253,8 +255,8 @@ endif
 if s:has_ycm == 1
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif "auto close preview windows when leave insert mode
 let g:ycm_semantic_triggers =  {
-	  \ 'c,cpp': ['re!\w{5}'],
-	  \ 'python,javascript': ['re!\w{5}'],
+	  "\ 'c,cpp': ['re!\w{5}'],
+	  "\ 'python,javascript': ['re!\w{5}'],
 	  \   'css': [ 're!^\s{4}', 're!:\s+'],
 	  \ 'html': ['re!\w{1}', 're!\s+', 're!</'],
 	  \ 'htmldjango': ['re!\w{1}', 're!\s+', 're!</'],
@@ -262,14 +264,13 @@ let g:ycm_semantic_triggers =  {
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_server_log_level = 'info'
 let g:ycm_always_populate_location_list = 1
-let g:ycm_error_symbol = 'E'
-let g:ycm_warning_symbol = 'W'
+let g:ycm_error_symbol = '⛔'
+let g:ycm_warning_symbol = '⚠'
 let g:ycm_max_diagnostics_to_display = 300
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_comments = 0
 let g:ycm_min_num_of_chars_for_completion=2
-let g:ycm_key_invoke_completion = '<c-z>'
-let g:ycm_clangd_args = ['-background-index']
+let g:ycm_key_invoke_completion = '<c-i>'
 let g:ycm_use_clangd = 0
 if has('gui_macvim')
 	let g:ycm_python_binary_path = '/usr/local/bin/python3'
@@ -297,7 +298,7 @@ let g:ycm_filetype_whitelist = {
 			\ "conf":1,
 			\ "config":1,
 			\ }
-noremap <c-z> <NOP>
+noremap <c-i> <NOP>
 
 call g:quickmenu#append('# YCM', '')
 call g:quickmenu#append(mapleader.'fx Ycm FixIt', 'YcmCompleter FixIt', 'fix the code error by clang', 'c,cpp')
@@ -397,8 +398,8 @@ augroup mygroup
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
   " Update signature help on jump placeholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-  autocmd FileType * call coc#config('suggest', {'minTriggerInputLength': 3 })
-  autocmd FileType css,html,htmldjango call coc#config('suggest', {'minTriggerInputLength': 2 })
+  "autocmd FileType * call coc#config('suggest', {'minTriggerInputLength': 3 })
+  "autocmd FileType css,html,htmldjango call coc#config('suggest', {'minTriggerInputLength': 2 })
 augroup end
 
 " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
@@ -585,7 +586,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_section_error = ''
 let g:airline_section_warning = ''
-if s:has_tagbar == 1
+"if s:has_tagbar == 1
+if 1
 	let g:airline#extensions#tagbar#enabled = 1
 	let g:airline#extensions#tagbar#flags = 'f'
 	let g:tagbar_ctags_bin = 'universal-ctags'
@@ -628,7 +630,7 @@ endif
 
 " signify options --------------------------------{{{
 if s:has_signify == 1
-    let g:signify_vcs_list = [ 'git' ]
+    let g:signify_vcs_list = [ 'git', 'svn']
 	"♕ ♛ 🐒 🐍 🐢 🐓 	   
 endif
 " }}}
