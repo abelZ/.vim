@@ -22,7 +22,7 @@ let s:has_tagbar = 0
 
 if has('win32')
 	let s:has_vimgtrans = 1
-	let s:has_ycm = 1
+	let s:has_coc = 1
 else
 	let s:has_transshell = 1
 	let s:has_coc = 1
@@ -255,14 +255,12 @@ endif
 if s:has_ycm == 1
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif "auto close preview windows when leave insert mode
 let g:ycm_semantic_triggers =  {
-	  "\ 'c,cpp': ['re!\w{5}'],
-	  "\ 'python,javascript': ['re!\w{5}'],
 	  \   'css': [ 're!^\s{4}', 're!:\s+'],
 	  \ 'html': ['re!\w{1}', 're!\s+', 're!</'],
 	  \ 'htmldjango': ['re!\w{1}', 're!\s+', 're!</'],
 	  \}
 let g:ycm_confirm_extra_conf = 0
-let g:ycm_server_log_level = 'info'
+let g:ycm_log_level = 'debug'
 let g:ycm_always_populate_location_list = 1
 let g:ycm_error_symbol = '⛔'
 let g:ycm_warning_symbol = '⚠'
