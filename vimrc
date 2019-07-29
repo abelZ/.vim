@@ -19,6 +19,8 @@ let s:has_dracula = 1
 let s:has_gruvbox = 1
 let s:has_signify = 1
 let s:has_tagbar = 0
+let s:has_gtags = 0
+let s:has_ale = 0
 
 if has('win32')
 	let s:has_vimgtrans = 1
@@ -52,10 +54,7 @@ Plug 'vim-scripts/Align'
 Plug 'will133/vim-dirdiff'
 Plug 'tpope/vim-unimpaired'
 Plug 'Yggdroot/LeaderF'
-Plug 'Yggdroot/LeaderF-marks'
 Plug 'Raimondi/delimitMate'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'skywind3000/gutentags_plus'
 Plug 'skywind3000/vim-preview'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'skywind3000/quickmenu.vim'
@@ -64,13 +63,20 @@ Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-syntax'
 Plug 'kana/vim-textobj-function'
 Plug 'sgur/vim-textobj-parameter'
-Plug 'w0rp/ale'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'gyim/vim-boxdraw'
 Plug 'ap/vim-css-color'
 Plug 'mattn/emmet-vim'
 Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 Plug 'liuchengxu/vim-which-key'
+
+if s:has_ale == 1
+	Plug 'w0rp/ale'
+endif
+
+if s:has_gtags == 1
+	Plug 'ludovicchabant/vim-gutentags'
+	Plug 'skywind3000/gutentags_plus'
+endif
 
 if s:has_tagbar == 1
 	Plug 'majutsushi/tagbar'
@@ -127,6 +133,7 @@ endif
 
 if s:has_signify == 1
 	Plug 'mhinz/vim-signify'
+	Plug 'paul-nechifor/vim-svn-blame'
 endif
 
 call plug#end()
@@ -447,43 +454,45 @@ endif
 "}}}
 
 " gtags options ----------------------------------{{{
-let $GTAGSLABEL = 'native-pygments'
-if has('win32')
-	let $GTAGSCONF = 'c:\\Users\\Dell\\vimfiles\\gtags.conf'
-elseif has('gui_macvim')
-	let $GTAGSCONF = '/usr/local/share/gtags/gtags.conf'
-else
-	let $GTAGSCONF = '/home/abel/.vim/gtags.conf'
+if s:has_gtags == 1
+	let $GTAGSLABEL = 'native-pygments'
+	if has('win32')
+		let $GTAGSCONF = 'c:\\Users\\Dell\\vimfiles\\gtags.conf'
+	elseif has('gui_macvim')
+		let $GTAGSCONF = '/usr/local/share/gtags/gtags.conf'
+	else
+		let $GTAGSCONF = '/home/abel/.vim/gtags.conf'
+	endif
+
+	let gutentags_add_default_project_roots = 0
+	let g:gutentags_project_root = ['.tagroot']
+	let g:gutentags_ctags_tagfile = '.tags'
+	let g:gutentags_ctags_exclude = ['*.log', '*.xml', '*.tlog']
+
+	let g:gutentags_ctags_executable = 'universal-ctags'
+	let g:gutentags_modules = ['ctags', 'gtags_cscope']
+	let g:gutentags_cache_dir = expand('~/.cache/tags')
+
+	let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+	let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+	let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+	" 如果使用 universal ctags 需要增加下面一行
+	let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
+
+	" 禁用 gutentags 自动加载 gtags 数据库的行为
+	let g:gutentags_auto_add_gtags_cscope = 0
+	let g:gutentags_define_advanced_commands = 1
+	let g:gutentags_plus_nomap = 1
+	let g:gutentags_generate_on_new = 0
+	call g:quickmenu#append('# Gtags', '')
+	call g:quickmenu#append(mapleader.'gs find symbol', 'GscopeFind s <C-R><C-W>', 'find all appearence of the symbol in gtags database')
+	call g:quickmenu#append(mapleader.'gc find calling', 'GscopeFind c <C-R><C-W>', 'find all function calling this function in gtags database')
+	call g:quickmenu#append(mapleader.'gt find text', 'GscopeFind t <C-R><C-W>', 'find the string appearence of the text in gtags database')
+	noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
+	noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
+	noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
 endif
-
-let gutentags_add_default_project_roots = 0
-let g:gutentags_project_root = ['.tagroot']
-let g:gutentags_ctags_tagfile = '.tags'
-let g:gutentags_ctags_exclude = ['*.log', '*.xml', '*.tlog']
-
-let g:gutentags_ctags_executable = 'universal-ctags'
-let g:gutentags_modules = ['ctags', 'gtags_cscope']
-let g:gutentags_cache_dir = expand('~/.cache/tags')
-
-let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
-let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
-let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
-
-" 如果使用 universal ctags 需要增加下面一行
-let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
-
-" 禁用 gutentags 自动加载 gtags 数据库的行为
-let g:gutentags_auto_add_gtags_cscope = 0
-let g:gutentags_define_advanced_commands = 1
-let g:gutentags_plus_nomap = 1
-let g:gutentags_generate_on_new = 0
-call g:quickmenu#append('# Gtags', '')
-call g:quickmenu#append(mapleader.'gs find symbol', 'GscopeFind s <C-R><C-W>', 'find all appearence of the symbol in gtags database')
-call g:quickmenu#append(mapleader.'gc find calling', 'GscopeFind c <C-R><C-W>', 'find all function calling this function in gtags database')
-call g:quickmenu#append(mapleader.'gt find text', 'GscopeFind t <C-R><C-W>', 'find the string appearence of the text in gtags database')
-noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
-noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
-noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
 " }}}
 
 " leaderF options --------------------------------{{{
@@ -539,31 +548,33 @@ let g:asyncrun_stdin = 0
 " }}}
 
 " ale options ------------------------------------{{{
-let g:ale_echo_delay = 20
-let g:ale_lint_delay = 500
-let g:ale_echo_msg_format = '[%linter%] %code: %%s'
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_save = 0
-let g:ale_lint_on_enter = 0
-let g:ale_lint_on_insert_leave = 0
-let g:ale_lint_on_filetype_changed = 0
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
-let g:ale_linters_explicit = 1
-if has('win32') == 0 && has('win64') == 0 && has('win32unix') == 0
-	let g:ale_command_wrapper = 'nice -n5'
+if s:has_ale == 1
+	let g:ale_echo_delay = 20
+	let g:ale_lint_delay = 500
+	let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+	let g:ale_lint_on_text_changed = 'never'
+	let g:ale_lint_on_save = 0
+	let g:ale_lint_on_enter = 0
+	let g:ale_lint_on_insert_leave = 0
+	let g:ale_lint_on_filetype_changed = 0
+	let g:ale_set_loclist = 0
+	let g:ale_set_quickfix = 1
+	let g:ale_linters_explicit = 1
+	if has('win32') == 0 && has('win64') == 0 && has('win32unix') == 0
+		let g:ale_command_wrapper = 'nice -n5'
+	endif
+	let g:airline#extensions#ale#enabled = 1
+	let g:ale_linters = {
+				\ 'c' : [],
+				\ 'cpp' : ['cppcheck'],
+				\ 'python': ['flake8', 'pylint'], 
+				\ 'java': ['javac'],
+				\ 'javascript': ['eslint'], 
+				\ }
+	let g:ale_cpp_cppcheck_options = '--enable=style --suppress=unusedStructMember:*.h'
+	call g:quickmenu#append('# ALE', '')
+	call g:quickmenu#append('ALELint ale lint', 'ALELint', 'mannuly run ALELint')
 endif
-let g:airline#extensions#ale#enabled = 1
-let g:ale_linters = {
-			\ 'c' : [],
-			\ 'cpp' : ['cppcheck'],
-			\ 'python': ['flake8', 'pylint'], 
-			\ 'java': ['javac'],
-			\ 'javascript': ['eslint'], 
-			\ }
-let g:ale_cpp_cppcheck_options = '--enable=style --suppress=unusedStructMember:*.h'
-call g:quickmenu#append('# ALE', '')
-call g:quickmenu#append('ALELint ale lint', 'ALELint', 'mannuly run ALELint')
 " }}}
 
 " rainbowparentheses options ---------------------{{{
