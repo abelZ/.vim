@@ -595,11 +595,12 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_section_error = ''
 let g:airline_section_warning = ''
-"if s:has_tagbar == 1
-if 1
+if s:has_tagbar == 1
 	let g:airline#extensions#tagbar#enabled = 1
 	let g:airline#extensions#tagbar#flags = 'f'
 	let g:tagbar_ctags_bin = 'universal-ctags'
+endif
+if 1
 	let g:airline#extensions#branch#custom_head = 'GetScmBranch'
 	function! GetScmBranch()
 		if !exists('b:perforce_client')
@@ -616,6 +617,13 @@ if 1
 		endif
 		return b:perforce_client
 	endfunction
+endif
+if s:has_coc == 1
+	function! GetCursorFuncForAirline()
+		return get(b:,'coc_current_function','')
+	endfunction
+	"call airline#parts#define_function('coc', 'GetCursorFuncForAirline')
+	"let g:airline_section_x = airline#section#create_right(['bookmark', 'coc', 'tagbar', 'vista', 'gutentags', 'grepper', 'filetype'])
 endif
 " }}}
 
