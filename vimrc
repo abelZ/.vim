@@ -20,11 +20,12 @@ let s:has_gruvbox = 1
 let s:has_signify = 1
 let s:has_tagbar = 0
 let s:has_gtags = 0
-let s:has_ale = 0
+let s:has_ale = 1
 
 if has('win32')
 	let s:has_vimgtrans = 1
-	let s:has_coc = 1
+	let s:has_ycm = 1
+	let s:has_tagbar = 1
 else
 	let s:has_transshell = 1
 	let s:has_coc = 1
@@ -276,7 +277,7 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_comments = 0
 let g:ycm_min_num_of_chars_for_completion=2
 let g:ycm_key_invoke_completion = '<c-l>'
-let g:ycm_use_clangd = 0
+let g:ycm_use_clangd = 1
 if has('gui_macvim')
 	let g:ycm_python_binary_path = '/usr/local/bin/python3'
 endif
@@ -557,9 +558,10 @@ if s:has_ale == 1
 	let g:ale_lint_on_enter = 0
 	let g:ale_lint_on_insert_leave = 0
 	let g:ale_lint_on_filetype_changed = 0
-	let g:ale_set_loclist = 0
-	let g:ale_set_quickfix = 1
+	let g:ale_set_loclist = 1
+	let g:ale_set_quickfix = 0
 	let g:ale_linters_explicit = 1
+	let g:ale_disable_lsp = 1
 	if has('win32') == 0 && has('win64') == 0 && has('win32unix') == 0
 		let g:ale_command_wrapper = 'nice -n5'
 	endif
@@ -571,7 +573,7 @@ if s:has_ale == 1
 				\ 'java': ['javac'],
 				\ 'javascript': ['eslint'], 
 				\ }
-	let g:ale_cpp_cppcheck_options = '--enable=style --suppress=unusedStructMember:*.h'
+	let g:ale_cpp_cppcheck_options = '--enable=all --suppress=unusedStructMember:*.h'
 	call g:quickmenu#append('# ALE', '')
 	call g:quickmenu#append('ALELint ale lint', 'ALELint', 'mannuly run ALELint')
 endif
@@ -661,7 +663,7 @@ augroup END
 " }}}
 
 " user defined mappings --------------------------{{{
-nnoremap \ :AsyncRun rg --vimgrep -i<SPACE>
+nnoremap \ :Leaderf! rg -F --stayOpen -e<SPACE>
 vnoremap // y/\V<C-r>=escape(@",'/\')<CR><CR>
 if s:has_vimgtrans == 1
 	vnoremap <leader>tr :Gtrans -o=buffer<CR>
@@ -697,16 +699,17 @@ function! ToggleList(bufname, pfx)
   let winnr = winnr()
   exec(a:pfx.'open')
   if winnr() != winnr
-    wincmd p
+	wincmd p
   endif
 endfunction
 
 if has('win32')
 	nnoremap <F9> :call ToggleList("Location 列表", 'l')<CR>
+	nnoremap <F10> :call ToggleList("QuickFix 列表", 'c')<CR>
 else
 	nnoremap <F9> :call ToggleList("Location", 'l')<CR>
+	nnoremap <F10> :call ToggleList("QuickFix", 'c')<CR>
 endif
-nnoremap <F10> :call asyncrun#quickfix_toggle(10)<CR>
 " }}}
 
 " table calc function --------------------------{{{
