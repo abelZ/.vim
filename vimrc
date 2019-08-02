@@ -20,7 +20,7 @@ let s:has_gruvbox = 1
 let s:has_signify = 1
 let s:has_tagbar = 0
 let s:has_gtags = 0
-let s:has_ale = 1
+let s:has_ale = 0
 
 if has('win32')
 	let s:has_vimgtrans = 1
