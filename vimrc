@@ -229,9 +229,10 @@ if has('win32')
 	"set guioptions-=T
 	source $VIMRUNTIME/delmenu.vim
 	source $VIMRUNTIME/menu.vim
-	if has('win32')
-		set guifont=Consolas:h12
-	endif
+	set guifont=Consolas:h12
+endif
+if has('gui_macvim')
+	set guifont=Menlo:h14
 endif
 let mapleader = ","
 set grepprg=rg\ --vimgrep
