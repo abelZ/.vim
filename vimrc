@@ -54,7 +54,11 @@ Plug 'chrisbra/vim-diff-enhanced'
 Plug 'vim-scripts/Align'
 Plug 'will133/vim-dirdiff'
 Plug 'tpope/vim-unimpaired'
-Plug 'Yggdroot/LeaderF'
+if has('win32')
+	Plug 'Yggdroot/LeaderF', { 'do': 'install.bat'}
+else
+	Plug 'Yggdroot/LeaderF', { 'do': './install.sh'}
+endif
 Plug 'Raimondi/delimitMate'
 Plug 'skywind3000/vim-preview'
 Plug 'skywind3000/asyncrun.vim'
