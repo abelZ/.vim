@@ -4,8 +4,9 @@
 	"suggest.maxCompleteItemCount": 10,
 	"suggest.echodocSupport": true,
 	"diagnostic.errorSign": "⛔",
-	"signature.enable": false,
+	"signature.enable": true,
 	"signature.triggerSignatureWait": 100,
+	"python.jediEnabled": true,
     "languageserver": {
         "ccls": {
             "command": "ccls",
