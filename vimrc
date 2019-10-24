@@ -100,7 +100,7 @@ if s:has_gruvbox == 1
 endif
 
 if s:has_ycm == 1
-	Plug 'Valloric/YouCompleteMe'
+	Plug 'ycm-core/YouCompleteMe'
 	Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 endif
 
@@ -283,6 +283,7 @@ let g:ycm_complete_in_comments = 0
 let g:ycm_min_num_of_chars_for_completion=2
 let g:ycm_key_invoke_completion = '<c-l>'
 let g:ycm_use_clangd = 1
+let g:ycm_clangd_args = ["--background-index=false"]
 if has('gui_macvim')
 	let g:ycm_python_binary_path = '/usr/local/bin/python3'
 endif
