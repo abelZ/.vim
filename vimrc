@@ -73,6 +73,9 @@ Plug 'ap/vim-css-color'
 Plug 'mattn/emmet-vim'
 Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 Plug 'liuchengxu/vim-which-key'
+Plug 'junegunn/limelight.vim'
+Plug 'junegunn/goyo.vim'
+Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
 
 if s:has_ale == 1
 	Plug 'w0rp/ale'
@@ -121,7 +124,7 @@ if s:has_keysound == 1
 endif
 
 if s:has_instant_mark == 1
-	Plug 'suan/vim-instant-markdown'
+	Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 endif
 
 if s:has_rainbow == 1
@@ -282,7 +285,7 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_comments = 0
 let g:ycm_min_num_of_chars_for_completion=2
 let g:ycm_key_invoke_completion = '<c-l>'
-let g:ycm_use_clangd = 1
+let g:ycm_use_clangd = 0
 let g:ycm_clangd_args = ["--background-index=false"]
 if has('gui_macvim')
 	let g:ycm_python_binary_path = '/usr/local/bin/python3'
@@ -646,11 +649,25 @@ endif
 
 " vim-instant-markdown options -------------------{{{
 if s:has_instant_mark == 1
-	let g:instant_markdown_slow = 1
-	let g:instant_markdown_autostart = 0
-	let g:instant_markdown_open_to_the_world = 1
-	let g:instant_markdown_allow_unsafe_content = 1
+	let g:mkdp_refresh_slow=1
 endif
+" }}}
+
+" vim-markdwon options ---------------------------{{{
+autocmd FileType markdown let b:sleuth_automatic=0
+autocmd FileType markdown set conceallevel=0
+
+let g:vim_markdown_frontmatter=1
+" }}}
+
+" vim-limelight options --------------------------{{{
+call g:quickmenu#append('# Limelight', '')
+call g:quickmenu#append('Limelight', 'Limelight', 'toggle limelight')
+" }}}
+
+" vim-Goyo options -------------------------------{{{
+call g:quickmenu#append('# Goyo', '')
+call g:quickmenu#append('Goyo', 'Goyo', 'toggle Goyo')
 " }}}
 
 " signify options --------------------------------{{{
