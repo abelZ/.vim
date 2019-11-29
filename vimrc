@@ -104,6 +104,7 @@ endif
 
 if s:has_ycm == 1
 	Plug 'ycm-core/YouCompleteMe'
+	Plug 'ycm-core/lsp-examples', { 'do': './viml/install.py'}
 	Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 endif
 
@@ -315,6 +316,12 @@ let g:ycm_filetype_whitelist = {
 			\ }
 noremap <c-l> <NOP>
 
+let g:ycm_language_server = [
+  \   { 'name': 'vim',
+  \     'filetypes': [ 'vim' ],
+  \     'cmdline': [ expand( '$HOME/.vim/bundle/lsp-examples/viml/node_modules/.bin/vim-language-server' ), '--stdio' ]
+  \   }
+  \ ]
 call g:quickmenu#append('# YCM', '')
 call g:quickmenu#append(mapleader.'fx Ycm FixIt', 'YcmCompleter FixIt', 'fix the code error by clang', 'c,cpp')
 call g:quickmenu#append(mapleader.'gd Ycm GoToDef', 'YcmCompleter GoToDefinitionElseDeclaration', 'go to the var or function definition')
