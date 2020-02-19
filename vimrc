@@ -69,7 +69,7 @@ Plug 'kana/vim-textobj-syntax'
 Plug 'kana/vim-textobj-function'
 Plug 'sgur/vim-textobj-parameter'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'ap/vim-css-color'
+Plug 'abelZ/vim-coloresque'
 Plug 'mattn/emmet-vim'
 Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 Plug 'liuchengxu/vim-which-key'
@@ -291,9 +291,9 @@ let g:ycm_clangd_args = ["--background-index=false"]
 if has('gui_macvim')
 	let g:ycm_python_binary_path = '/usr/local/bin/python3'
 endif
-if has('win32')
-	let g:ycm_python_binary_path = 'd:\\unix\\Python37\\python.exe'
-endif
+"if has('win32')
+	"let g:ycm_python_binary_path = 'd:\\unix\\Python37\\python.exe'
+"endif
 let g:ycm_filetype_whitelist = { 
 			\ "c":1,
 			\ "cpp":1, 
