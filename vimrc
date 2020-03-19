@@ -223,7 +223,6 @@ set ignorecase
 set showcmd
 set autoread
 set backspace=2
-set completeopt=menuone,longest
 set gcr=a:block-blinkon0
 set cursorline
 set cursorcolumn
@@ -291,9 +290,6 @@ let g:ycm_clangd_args = ["--background-index=false"]
 if has('gui_macvim')
 	let g:ycm_python_binary_path = '/usr/local/bin/python3'
 endif
-"if has('win32')
-	"let g:ycm_python_binary_path = 'd:\\unix\\Python37\\python.exe'
-"endif
 let g:ycm_filetype_whitelist = { 
 			\ "c":1,
 			\ "cpp":1, 
@@ -522,6 +518,7 @@ let g:Lf_Ctags = "universal-ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
 let g:Lf_DefaultMode = 'NameOnly'
+let g:Lf_WindowPosition = 'popup'
 call g:quickmenu#append('# LeaderF', '')
 call g:quickmenu#append(mapleader.mapleader.'t search file', 'LeaderfBufTag', 'search file in current path recursive')
 call g:quickmenu#append(mapleader.mapleader.'n search func', 'LeaderfFunction', 'search functions in current file')
@@ -682,6 +679,17 @@ if s:has_signify == 1
     let g:signify_vcs_list = [ 'git', 'svn']
 	"♕ ♛ 🐒 🐍 🐢 🐓 	   
 endif
+" }}}
+
+" kite options -----------------------------------{{{
+	"inoremap <silent><expr> <TAB>
+		  "\ pumvisible() ? "\<C-n>" : "\<TAB>"
+	set completeopt-=menu
+	set completeopt+=menuone   " Show the completions UI even with only 1 item
+	set completeopt-=longest   " Don't insert the longest common text
+	set completeopt-=preview   " Hide the documentation preview window
+	set completeopt+=noinsert  " Don't insert text automatically
+	set completeopt-=noselect  " Highlight the first completion automatically
 " }}}
 
 " Vim script file Settings -----------------------{{{
