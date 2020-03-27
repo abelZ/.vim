@@ -224,6 +224,7 @@ set showcmd
 set autoread
 set backspace=2
 set gcr=a:block-blinkon0
+set completeopt=menuone
 set cursorline
 set cursorcolumn
 set noswapfile
