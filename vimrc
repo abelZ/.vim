@@ -522,7 +522,9 @@ let g:Lf_Ctags = "universal-ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
 let g:Lf_DefaultMode = 'NameOnly'
-let g:Lf_WindowPosition = 'popup'
+if v:version >=801 && has('patch1615')
+	let g:Lf_WindowPosition = 'popup'
+endif
 call g:quickmenu#append('# LeaderF', '')
 call g:quickmenu#append(mapleader.mapleader.'t search file', 'LeaderfBufTag', 'search file in current path recursive')
 call g:quickmenu#append(mapleader.mapleader.'n search func', 'LeaderfFunction', 'search functions in current file')
