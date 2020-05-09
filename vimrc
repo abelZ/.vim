@@ -9,8 +9,13 @@ let s:has_calendar = 0
 let s:has_keysound = 0
 let s:has_instant_mark = 0
 let s:has_rainbow = 0
-let s:has_ycm = 0
-let s:has_coc = 1
+if filereadable(getcwd() . '/compile_commands.json')
+	let s:has_ycm = 1
+	let s:has_coc = 0
+else
+	let s:has_ycm = 0
+	let s:has_coc = 1
+endif
 let s:has_echodoc = 1
 let s:has_vimgtrans = 0
 let s:has_transshell = 0
