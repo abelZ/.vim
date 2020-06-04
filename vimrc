@@ -23,13 +23,12 @@ let s:has_solarized = 1
 let s:has_dracula = 1
 let s:has_gruvbox = 1
 let s:has_signify = 1
-let s:has_tagbar = 0
+let s:has_tagbar = 1
 let s:has_gtags = 0
 let s:has_ale = 0
 
 if has('win32')
 	let s:has_vimgtrans = 1
-	let s:has_tagbar = 1
 else
 	let s:has_transshell = 1
 endif
@@ -620,6 +619,7 @@ if s:has_tagbar == 1
 	let g:airline#extensions#tagbar#enabled = 1
 	let g:airline#extensions#tagbar#flags = 'f'
 	let g:tagbar_ctags_bin = 'universal-ctags'
+	nnoremap <F2> :Tagbar<CR>
 endif
 if 1
 	let g:airline#extensions#branch#custom_head = 'GetScmBranch'
@@ -737,6 +737,8 @@ function! ToggleList(bufname, pfx)
 endfunction
 
 if has('win32')
+	"visual studio 2019 error format
+	set errorformat+=\\\ %#%.%#>%f(%l\\\,%c):\ %m
 	nnoremap <F9> :call ToggleList("Location 列表", 'l')<CR>
 	nnoremap <F10> :call ToggleList("QuickFix 列表", 'c')<CR>
 else
