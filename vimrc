@@ -466,6 +466,9 @@ let g:markdown_fenced_languages = [
       \ 'help'
       \]
 
+autocmd BufNew,BufEnter *.log execute "silent! CocDisable"
+autocmd BufLeave *.log execute "silent! CocEnable"
+
 endif
 "}}}
 

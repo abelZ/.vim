@@ -6,7 +6,8 @@
 	"diagnostic.errorSign": "⛔",
 	"signature.enable": true,
 	"signature.triggerSignatureWait": 100,
-	"python.jediEnabled": false,
+	"python.jediEnabled": true,
+	"python.linting.enabled": true,
     "languageserver": {
         "ccls": {
             "command": "ccls",
