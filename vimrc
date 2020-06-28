@@ -9,7 +9,7 @@ let s:has_calendar = 0
 let s:has_keysound = 0
 let s:has_instant_mark = 0
 let s:has_rainbow = 0
-if filereadable(getcwd() . '/compile_commands.json')
+if filereadable(getcwd() . '/compile_commands.json') || filereadable(getcwd() . '/.ycm_extra_conf.py')
 	let s:has_ycm = 1
 	let s:has_coc = 0
 else
@@ -17,7 +17,6 @@ else
 	let s:has_coc = 1
 endif
 let s:has_echodoc = 1
-let s:has_vimgtrans = 0
 let s:has_transshell = 0
 let s:has_solarized = 1
 let s:has_dracula = 1
@@ -27,9 +26,7 @@ let s:has_tagbar = 1
 let s:has_gtags = 0
 let s:has_ale = 0
 
-if has('win32')
-	let s:has_vimgtrans = 1
-else
+if !has('win32')
 	let s:has_transshell = 1
 endif
 
@@ -132,10 +129,6 @@ endif
 
 if s:has_rainbow == 1
 	Plug 'kien/rainbow_parentheses.vim'
-endif
-
-if s:has_vimgtrans == 1
-	Plug 'haya14busa/vim-gtrans'
 endif
 
 if s:has_transshell == 1
@@ -297,6 +290,7 @@ let g:ycm_filetype_whitelist = {
 			\ "c":1,
 			\ "cpp":1, 
 			\ "python":1,
+			\ "java":1,
 			\ "javascript":1,
 			\ "vim":1, 
 			\ "make":1,
@@ -358,7 +352,7 @@ set shortmess+=c
 " always show signcolumns
 set signcolumn=yes
 
-let g:coc_global_extensions = ['coc-python', 'coc-json', 'coc-vimlsp', 'coc-highlight', 'coc-snippets', 'coc-ultisnips', 'coc-cmake'] 
+let g:coc_global_extensions = ['coc-python', 'coc-java', 'coc-json', 'coc-vimlsp', 'coc-highlight', 'coc-snippets', 'coc-ultisnips', 'coc-cmake'] 
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -653,7 +647,6 @@ endif
 
 " calendar options -------------------------------{{{
 if s:has_calendar == 1
-	"--calendar options--
 	let g:calendar_frame = 'default'
 	let g:calendar_google_calendar = 1
 	let g:calendar_google_task = 1
@@ -701,9 +694,6 @@ augroup END
 " user defined mappings --------------------------{{{
 nnoremap \ :Leaderf! rg -F --stayOpen -e<SPACE>
 vnoremap // y/\V<C-r>=escape(@",'/\')<CR><CR>
-if s:has_vimgtrans == 1
-	vnoremap <leader>tr :Gtrans -o=buffer<CR>
-endif
 if s:has_transshell == 1
 	vnoremap <leader>tr :Trans :zh<CR>
 endif
@@ -748,52 +738,6 @@ else
 	nnoremap <F9> :call ToggleList("Location", 'l')<CR>
 	nnoremap <F10> :call ToggleList("QuickFix", 'c')<CR>
 endif
-" }}}
-
-" table calc function --------------------------{{{
-"index:1 index:2
-"index:3 index:4 --> index:4 index:6
-"
-"100
-"200 --> 300
-function! s:sum_visual(sep1, sep2) range
-	let l:lines = []
-    let [line_start, column_start] = getpos("'<")[1:2]
-    let [line_end, column_end] = getpos("'>")[1:2]
-	for i in range(line_start, line_end)
-		call add(l:lines, getline(i)[column_start - 1: column_end - (&selection == 'inclusive' ? 1 : 2)])
-	endfor
-	let l:sum_value = []
-	for l:linestr in lines
-		let l:idx = 0
-		for j in split(l:linestr, a:sep1)
-			let l:attr = split(j, a:sep2)
-			if len(l:attr) == 1
-				call insert(l:attr, '')
-			endif
-			if len(l:attr) == 2
-				if len(l:sum_value) > l:idx
-					let l:sum_value[l:idx][1] += l:attr[1]
-				else
-					call add(l:sum_value, l:attr)
-				endif
-				let l:idx += 1
-			endif
-		endfor
-	endfor
-	let l:tmp2 = []
-	for i in range(len(l:sum_value))
-		call add(l:tmp2, join(l:sum_value[i], a:sep2))
-	endfor
-	call setline(a:lastline+1, join(l:tmp2, a:sep1) . getline(a:lastline+1))
-	call setpos('.', [0, a:lastline+1, 1, 0])
-endfunction
-command! -range Sum <line1>,<line2>call s:sum_visual(' ', ':')
-
-function! CalcCurrentLine()
-	return ' = ' . eval(split(getline('.'), '=')[0])
-endfunction
-inoremap <C-D><C-C> <C-R>=CalcCurrentLine()<CR>
 " }}}
 
 "--Ctrl + X map--
