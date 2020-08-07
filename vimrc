@@ -237,6 +237,9 @@ endif
 if has('gui_macvim')
 	set guifont=Menlo:h14
 endif
+if has('unix')
+	set ambw=double
+endif
 let mapleader = ","
 set grepprg=rg\ --vimgrep
 
