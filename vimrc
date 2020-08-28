@@ -719,6 +719,7 @@ if s:has_transshell == 1
 endif
 nnoremap <leader>dg :diffget<CR>
 nnoremap <leader>dp :diffput<CR>
+au BufRead *.log set ft=
 " }}}
 
 " quickfix and localtion list Settings ----------{{{
