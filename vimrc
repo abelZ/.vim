@@ -25,6 +25,7 @@ let s:has_signify = 1
 let s:has_tagbar = 1
 let s:has_gtags = 0
 let s:has_ale = 0
+let s:has_vimspector = 1
 
 if !has('win32')
 	let s:has_transshell = 1
@@ -53,6 +54,7 @@ Plug 'chrisbra/vim-diff-enhanced'
 Plug 'vim-scripts/Align'
 Plug 'will133/vim-dirdiff'
 Plug 'tpope/vim-unimpaired'
+Plug 'puremourning/vimspector'
 if has('win32')
 	Plug 'Yggdroot/LeaderF', { 'do': 'install.bat'}
 else
@@ -538,6 +540,20 @@ nnoremap <silent> <leader><leader>r :LeaderfMru<CR>
 xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F --stayOpen -e %s ", leaderf#Rg#visual())<CR><CR>
 " }}}
 
+" vimspector options -----------------------------{{{
+if s:has_vimspector == 1
+	nmap <F5> <Plug>VimspectorContinue
+	nmap <S-F5> <Plug>VimspectorStop
+	nmap <F6> <Plug>VimspectorPause
+	nmap <F9> <Plug>VimspectorToggleBreakpoint
+	nmap <S-F9> <Plug>VimspectorToggleConditionalBreakpoint
+	nmap <A-F9> <Plug>VimspectorAddFunctionBreakpoint
+	nmap <F10> <Plug>VimspectorStepOver
+	nmap <F11> <Plug>VimspectorStepInto
+	nmap <S-F11> <Plug>VimspectorStepOut
+endif
+" }}}
+
 " preview_vim options ----------------------------{{{
 call g:quickmenu#append('# Preview_vim', '')
 call g:quickmenu#append('p preview quickfix', 'PreviewQuickfix', 'preview the item in quickfix window')
@@ -736,11 +752,11 @@ endfunction
 if has('win32')
 	"visual studio 2019 error format
 	set errorformat+=\\\ %#%.%#>%f(%l\\\,%c):\ %m
-	nnoremap <F9> :call ToggleList("Location 列表", 'l')<CR>
-	nnoremap <F10> :call ToggleList("QuickFix 列表", 'c')<CR>
+	nnoremap <F3> :call ToggleList("Location 列表", 'l')<CR>
+	nnoremap <F4> :call ToggleList("QuickFix 列表", 'c')<CR>
 else
-	nnoremap <F9> :call ToggleList("Location", 'l')<CR>
-	nnoremap <F10> :call ToggleList("QuickFix", 'c')<CR>
+	nnoremap <F3> :call ToggleList("Location", 'l')<CR>
+	nnoremap <F4> :call ToggleList("QuickFix", 'c')<CR>
 endif
 " }}}
 
