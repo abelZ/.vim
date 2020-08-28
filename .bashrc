@@ -27,3 +27,7 @@ fi
 if [ -d "/home/cmake/bin" ] ; then
 	PATH="/home/cmake/bin:$PATH"
 fi
+
+if [ -d "/home/.local/bin" ] ; then
+	PATH="/home/.local/bin:$PATH"
+fi
