@@ -50,6 +50,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
+Plug 'juneedahamed/vc.vim'
 Plug 'chrisbra/vim-diff-enhanced'
 Plug 'vim-scripts/Align'
 Plug 'will133/vim-dirdiff'
@@ -139,7 +140,6 @@ endif
 
 if s:has_signify == 1
 	Plug 'mhinz/vim-signify'
-	Plug 'paul-nechifor/vim-svn-blame'
 endif
 
 call plug#end()
