@@ -720,6 +720,7 @@ endif
 nnoremap <leader>dg :diffget<CR>
 nnoremap <leader>dp :diffput<CR>
 au BufRead *.log set ft=
+command! -nargs=1 Make :AsyncRun compile.bat
 " }}}
 
 " quickfix and localtion list Settings ----------{{{
