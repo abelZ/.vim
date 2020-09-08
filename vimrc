@@ -720,7 +720,7 @@ endif
 nnoremap <leader>dg :diffget<CR>
 nnoremap <leader>dp :diffput<CR>
 au BufRead *.log set ft=
-command! -complete=custom,CompileOptions -nargs=* Make :AsyncRun compile.bat <args>
+command! -complete=custom,CompileOptions -nargs=* Cmake :AsyncRun compile.bat <args>
 function CompileOptions(A,L,P)
 	return "Debug\nRelease"
 endfunction
