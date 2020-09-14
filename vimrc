@@ -756,7 +756,8 @@ endfunction
 
 if has('win32')
 	"visual studio 2019 error format
-	set errorformat+=\\\ %#%.%#>%f(%l\\\,%c):\ %m
+	set errorformat=%.%#>%f(%l\\\,%c):\ %m
+	set errorformat+=%.%#>%f(%l%.%#):\ %m
 	nnoremap <F3> :call ToggleList("Location 列表", 'l')<CR>
 	nnoremap <F4> :call ToggleList("QuickFix 列表", 'c')<CR>
 else
