@@ -357,7 +357,7 @@ set shortmess+=c
 " always show signcolumns
 set signcolumn=yes
 
-let g:coc_start_at_startup = 0
+let g:coc_start_at_startup = 1
 let g:coc_global_extensions = ['coc-python', 'coc-java', 'coc-json', 'coc-vimlsp', 'coc-highlight', 'coc-snippets', 'coc-ultisnips', 'coc-cmake'] 
 
 " Use tab for trigger completion with characters ahead and navigate.
