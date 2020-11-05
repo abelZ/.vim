@@ -11,10 +11,10 @@ let s:has_instant_mark = 0
 let s:has_rainbow = 0
 if filereadable(getcwd() . '/compile_commands.json') || filereadable(getcwd() . '/.ycm_extra_conf.py')
 	let s:has_ycm = 1
-	let s:has_coc = 0
+	let g:has_coc = 0
 else
 	let s:has_ycm = 0
-	let s:has_coc = 1
+	let g:has_coc = 1
 endif
 let s:has_echodoc = 1
 let s:has_transshell = 0
@@ -110,7 +110,7 @@ if s:has_ycm == 1
 	Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 endif
 
-if s:has_coc == 1
+if g:has_coc == 1
 	Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
 
@@ -165,7 +165,7 @@ call g:quickmenu#reset()
 
 " color scheme helper ----------------------------{{{
 function! MyHighlights() abort
-	if s:has_coc == 1
+	if g:has_coc == 1
 		highlight CocHighlightText term=underline gui=underline
 	endif
 endfunction
@@ -337,140 +337,8 @@ let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 " }}}
 
 " coc.nvim options--------------------------------{{{
-" if hidden is not set, TextEdit might fail.
-if s:has_coc == 1
-set hidden
-
-" Some servers have issues with backup files, see #649
-set nobackup
-set nowritebackup
-
-" Better display for messages
-set cmdheight=1
-
-" You will have bad experience for diagnostic messages when it's default 4000.
-set updatetime=500
-
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-
-" always show signcolumns
-set signcolumn=yes
-
-let g:coc_start_at_startup = 1
-let g:coc_global_extensions = ['coc-python', 'coc-java', 'coc-json', 'coc-vimlsp', 'coc-highlight', 'coc-snippets', 'coc-ultisnips', 'coc-cmake'] 
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" Use `[c` and `]c` to navigate diagnostics
-"nmap <silent> [c <Plug>(coc-diagnostic-prev)
-"nmap <silent> ]c <Plug>(coc-diagnostic-next)
-
-" Remap keys for gotos
-nmap <silent> <leader>gd <Plug>(coc-definition)
-nmap <silent> <leader>gy <Plug>(coc-type-definition)
-nmap <silent> <leader>gi <Plug>(coc-implementation)
-nmap <silent> <leader>gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight symbol under cursor on CursorHold
-highlight CocHighlightText term=underline gui=underline
-"autocmd CursorHold * silent call CocActionAsync('highlight')
-nmap <silent> J :call CocActionAsync('highlight')<CR>
-
-" Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
-
-" Remap for format selected region
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-  "autocmd FileType * call coc#config('suggest', {'minTriggerInputLength': 3 })
-  "autocmd FileType css,html,htmldjango call coc#config('suggest', {'minTriggerInputLength': 2 })
-augroup end
-
-" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap for do codeAction of current line
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Fix autofix problem of current line
-nmap <leader>qf  <Plug>(coc-fix-current)
-
-" Use `:Format` to format current buffer
-command! -nargs=0 Format :call CocAction('format')
-
-" Use `:Fold` to fold current buffer
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" use `:OR` for organize import of current buffer
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-"let g:coc_node_args = ['--nolazy', '--inspect-brk=6045']
-
-" Using CocList
-" Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-" Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-
-let g:markdown_fenced_languages = [
-      \ 'vim',
-      \ 'help'
-      \]
-
-autocmd BufNew,BufEnter *.log execute "silent! CocDisable"
-autocmd BufLeave *.log execute "silent! CocEnable"
-
-endif
-"}}}
+source ~/.vim/coc_config.vim
+" }}}
 
 " gtags options ----------------------------------{{{
 if s:has_gtags == 1
@@ -656,12 +524,12 @@ if 1
 		return b:perforce_client
 	endfunction
 endif
-if s:has_coc == 1
+if g:has_coc == 1
 	function! GetCursorFuncForAirline()
 		return get(b:,'coc_current_function','')
 	endfunction
-	"call airline#parts#define_function('coc', 'GetCursorFuncForAirline')
-	"let g:airline_section_x = airline#section#create_right(['bookmark', 'coc', 'tagbar', 'vista', 'gutentags', 'grepper', 'filetype'])
+	call airline#parts#define_function('coc', 'GetCursorFuncForAirline')
+	let g:airline_section_x = airline#section#create_right(['bookmark', 'coc', 'tagbar', 'vista', 'gutentags', 'grepper', 'filetype'])
 endif
 " }}}
 
