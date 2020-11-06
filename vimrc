@@ -24,7 +24,7 @@ let s:has_gruvbox = 1
 let s:has_signify = 1
 let s:has_tagbar = 1
 let s:has_gtags = 0
-let s:has_ale = 0
+let s:has_ale = 1
 let s:has_vimspector = 1
 
 if !has('win32')
@@ -457,13 +457,13 @@ if s:has_ale == 1
 	let g:ale_lint_delay = 500
 	let g:ale_echo_msg_format = '[%linter%] %code: %%s'
 	let g:ale_lint_on_text_changed = 'never'
-	let g:ale_lint_on_save = 0
-	let g:ale_lint_on_enter = 0
-	let g:ale_lint_on_insert_leave = 0
+	let g:ale_lint_on_save = 1
+	let g:ale_lint_on_enter = 1
+	let g:ale_lint_on_insert_leave = 1
 	let g:ale_lint_on_filetype_changed = 0
 	let g:ale_set_loclist = 1
 	let g:ale_set_quickfix = 0
-	let g:ale_linters_explicit = 1
+	let g:ale_linters_explicit = 0
 	let g:ale_disable_lsp = 1
 	if has('win32') == 0 && has('win64') == 0 && has('win32unix') == 0
 		let g:ale_command_wrapper = 'nice -n5'
