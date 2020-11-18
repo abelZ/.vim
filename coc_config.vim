@@ -1,4 +1,5 @@
 if g:has_coc == 1
+	let g:coc_start_at_startup = 0
 	autocmd BufNew,BufEnter *.log execute "silent! CocDisable"
 	autocmd BufLeave *.log execute "silent! CocEnable"
 
