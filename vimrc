@@ -13,8 +13,8 @@ if filereadable(getcwd() . '/compile_commands.json') || filereadable(getcwd() . 
 	let s:has_ycm = 1
 	let g:has_coc = 0
 else
-	let s:has_ycm = 0
-	let g:has_coc = 1
+	let s:has_ycm = 1
+	let g:has_coc = 0
 endif
 let s:has_echodoc = 1
 let s:has_transshell = 0
@@ -459,7 +459,7 @@ if s:has_ale == 1
 	let g:ale_lint_on_text_changed = 'never'
 	let g:ale_lint_on_save = 1
 	let g:ale_lint_on_enter = 1
-	let g:ale_lint_on_insert_leave = 1
+	let g:ale_lint_on_insert_leave = 0
 	let g:ale_lint_on_filetype_changed = 0
 	let g:ale_set_loclist = 1
 	let g:ale_set_quickfix = 0
@@ -477,6 +477,8 @@ if s:has_ale == 1
 				\ 'javascript': ['eslint'], 
 				\ }
 	let g:ale_cpp_cppcheck_options = '--enable=all --suppress=unusedStructMember:*.h'
+	nmap [g <Plug>(ale_previous)
+	nmap ]g <Plug>(ale_next)
 	call g:quickmenu#append('# ALE', '')
 	call g:quickmenu#append('ALELint ale lint', 'ALELint', 'mannuly run ALELint')
 endif
