@@ -13,8 +13,8 @@ if filereadable(getcwd() . '/compile_commands.json') || filereadable(getcwd() . 
 	let s:has_ycm = 1
 	let g:has_coc = 0
 else
-	let s:has_ycm = 1
-	let g:has_coc = 0
+	let s:has_ycm = 0
+	let g:has_coc = 1
 endif
 let s:has_echodoc = 1
 let s:has_transshell = 0
@@ -590,6 +590,7 @@ endif
 nnoremap <leader>dg :diffget<CR>
 nnoremap <leader>dp :diffput<CR>
 au BufRead *.log set ft=
+au BufRead *.hla set ft=hla
 command! -complete=custom,CompileOptions -nargs=* Cmake :AsyncRun compile.bat <args>
 function CompileOptions(A,L,P)
 	return "Debug\nRelease"
