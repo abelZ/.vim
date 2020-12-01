@@ -589,6 +589,7 @@ if s:has_transshell == 1
 endif
 nnoremap <leader>dg :diffget<CR>
 nnoremap <leader>dp :diffput<CR>
+tnoremap <Esc> <C-\><C-n>
 au BufRead *.log set ft=
 au BufRead *.hla set ft=hla
 command! -complete=custom,CompileOptions -nargs=* Cmake :AsyncRun compile.bat <args>
