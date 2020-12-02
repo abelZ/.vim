@@ -234,7 +234,7 @@ if has('win32')
 	"set guioptions-=T
 	source $VIMRUNTIME/delmenu.vim
 	source $VIMRUNTIME/menu.vim
-	set guifont=Consolas:h12
+	set guifont=DejaVu_Sans_Mono:h12
 endif
 if has('gui_macvim')
 	set guifont=Menlo:h14
@@ -275,6 +275,7 @@ let g:ycm_semantic_triggers =  {
 	  \   'css': [ 're!^\s{4}', 're!:\s+'],
 	  \ 'html': ['re!\w{1}', 're!\s+', 're!</'],
 	  \ 'htmldjango': ['re!\w{1}', 're!\s+', 're!</'],
+	  \ 'VimspectorPrompt': [ '.', '->', ':', '<' ],
 	  \}
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_log_level = 'debug'
