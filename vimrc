@@ -64,6 +64,7 @@ endif
 Plug 'Raimondi/delimitMate'
 Plug 'skywind3000/vim-preview'
 Plug 'skywind3000/asyncrun.vim'
+Plug 'skywind3000/asynctasks.vim'
 Plug 'skywind3000/quickmenu.vim'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-indent'
@@ -591,6 +592,7 @@ endif
 nnoremap <leader>dg :diffget<CR>
 nnoremap <leader>dp :diffput<CR>
 tnoremap <Esc> <C-\><C-n>
+set termwinkey=<C-L>
 au BufRead *.log set ft=
 au BufRead *.hla set ft=hla
 command! -complete=custom,CompileOptions -nargs=* Cmake :AsyncRun compile.bat <args>
