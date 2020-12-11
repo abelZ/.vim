@@ -167,7 +167,7 @@ call g:quickmenu#reset()
 " color scheme helper ----------------------------{{{
 function! MyHighlights() abort
 	if g:has_coc == 1
-		highlight CocHighlightText term=underline gui=underline
+		highlight CocHighlightText term=reverse guifg=Black guibg = Yellow
 	endif
 endfunction
 
