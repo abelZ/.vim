@@ -226,6 +226,7 @@ set completeopt=menuone
 set cursorline
 set cursorcolumn
 set noswapfile
+set belloff=all
 if has('win32')
 	set guioptions-=l
 	set guioptions-=L
