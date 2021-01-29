@@ -340,7 +340,7 @@ let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 " }}}
 
 " coc.nvim options--------------------------------{{{
-source ~/.vim/coc_config.vim
+source ~/.vim/configs/coc_config.vim
 " }}}
 
 " gtags options ----------------------------------{{{
