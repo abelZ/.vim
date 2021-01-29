@@ -614,7 +614,8 @@ nnoremap <leader>dp :diffput<CR>
 tnoremap <Esc> <C-\><C-n>
 set termwinkey=<C-L>
 au BufRead *.log set ft=
-au BufRead *.hla set ft=hla
+au BufRead,BufNewFile *.hla set ft=hla
+au BufRead,BufNewFile *.tasks set ft=dosini
 command! -complete=custom,CompileOptions -nargs=* Cmake :AsyncRun compile.bat <args>
 function CompileOptions(A,L,P)
 	return "Debug\nRelease"
