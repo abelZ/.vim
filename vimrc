@@ -454,6 +454,25 @@ let g:asyncrun_encs = 'gbk'
 let g:asyncrun_stdin = 0
 " }}}
 
+" asynctasks options -----------------------------{{{
+if has('win32')
+	let g:asynctasks_system = 'win32'
+	let g:asynctasks_term_pos = 'quickfix'
+elseif has('macunix')
+	let g:asynctasks_system = 'macos'
+	let g:asynctasks_term_pos = 'quickfix'
+elseif has('linux')
+	let lines = readfile('/proc/version')
+	if lines[0] =~ "Microsoft"
+		let g:asynctasks_system = 'wsl'
+		let g:asynctasks_term_pos = 'bottom'
+	else
+		let g:asynctasks_system = 'linux'
+		let g:asynctasks_term_pos = 'quickfix'
+	endif
+endif
+" }}}
+
 " ale options ------------------------------------{{{
 if s:has_ale == 1
 	let g:ale_echo_delay = 20
