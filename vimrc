@@ -616,10 +616,6 @@ set termwinkey=<C-L>
 au BufRead *.log set ft=
 au BufRead,BufNewFile *.hla set ft=hla
 au BufRead,BufNewFile *.tasks set ft=dosini
-command! -complete=custom,CompileOptions -nargs=* Cmake :AsyncRun compile.bat <args>
-function CompileOptions(A,L,P)
-	return "Debug\nRelease"
-endfunction
 
 if has('linux')
 	let lines = readfile('/proc/version')
