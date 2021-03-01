@@ -79,6 +79,7 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
+Plug 'psf/black', { 'branch': 'stable' }
 
 if s:has_ale == 1
 	Plug 'w0rp/ale'
