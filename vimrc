@@ -455,6 +455,25 @@ let g:asyncrun_encs = 'gbk'
 let g:asyncrun_stdin = 0
 " }}}
 
+" asynctasks options -----------------------------{{{
+if has('win32')
+	let g:asynctasks_system = 'win32'
+	let g:asynctasks_term_pos = 'quickfix'
+elseif has('macunix')
+	let g:asynctasks_system = 'macos'
+	let g:asynctasks_term_pos = 'quickfix'
+elseif has('linux')
+	let lines = readfile('/proc/version')
+	if lines[0] =~ "Microsoft"
+		let g:asynctasks_system = 'wsl'
+		let g:asynctasks_term_pos = 'bottom'
+	else
+		let g:asynctasks_system = 'linux'
+		let g:asynctasks_term_pos = 'quickfix'
+	endif
+endif
+" }}}
+
 " ale options ------------------------------------{{{
 if s:has_ale == 1
 	let g:ale_echo_delay = 20
@@ -596,11 +615,38 @@ nnoremap <leader>dp :diffput<CR>
 tnoremap <Esc> <C-\><C-n>
 set termwinkey=<C-L>
 au BufRead *.log set ft=
-au BufRead *.hla set ft=hla
-command! -complete=custom,CompileOptions -nargs=* Cmake :AsyncRun compile.bat <args>
-function CompileOptions(A,L,P)
-	return "Debug\nRelease"
-endfunction
+au BufRead,BufNewFile *.hla set ft=hla
+au BufRead,BufNewFile *.tasks set ft=dosini
+
+if has('linux')
+	let lines = readfile('/proc/version')
+	if lines[0] =~ "Microsoft"
+		set clipboard=unnamed
+		autocmd TextYankPost * call YankDebounced() 
+
+		function! Yank(timer)
+			call system('win32yank.exe -i --crlf', @")
+			redraw!
+		endfunction
+
+		let g:yank_debounce_time_ms = 500
+		let g:yank_debounce_timer_id = -1
+
+		function! YankDebounced()
+			let l:now = localtime()
+			call timer_stop(g:yank_debounce_timer_id)
+			let g:yank_debounce_timer_id = timer_start(g:yank_debounce_time_ms, 'Yank')
+		endfunction
+
+		function! Paste(mode)
+			let @" = system('win32yank.exe -o --lf')
+			return a:mode
+		endfunction
+
+		map <expr> p Paste('p')
+		map <expr> P Paste('P')
+	endif
+endif
 " }}}
 
 " quickfix and localtion list Settings ----------{{{
