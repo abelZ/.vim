@@ -41,6 +41,8 @@ if has('gui')
 	let s:has_rainbow = 1
 endif
 
+Plug 'preservim/nerdtree'
+Plug 'ryanoasis/vim-devicons'
 Plug 'kshenoy/vim-signature'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -181,6 +183,11 @@ augroup END
 call g:quickmenu#append('# ColorScheme', '')
 "}}}
 
+" nerdtree ----------------------------------------{{{
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+" }}}
+
 " Vim color sheme solarized -----------------------{{{
 if s:has_solarized == 1
 	set background=dark
@@ -237,7 +244,8 @@ if has('win32')
 	"set guioptions-=T
 	source $VIMRUNTIME/delmenu.vim
 	source $VIMRUNTIME/menu.vim
-	set guifont=DejaVu_Sans_Mono:h12
+	"set guifont=DejaVu_Sans_Mono:h12
+	set guifont=DejaVuSansMono_NF:h12
 endif
 if has('gui_macvim')
 	set guifont=Menlo:h14
@@ -601,6 +609,7 @@ augroup filetype_vim
     autocmd!
     autocmd FileType vim setlocal foldmethod=marker
     autocmd FileType xml setlocal foldmethod=indent
+	autocmd FileType python setlocal tabstop=4
 augroup END
 " }}}
 
