@@ -1,5 +1,9 @@
 if g:has_coc == 1
+
+if has('gui')
 	let g:coc_start_at_startup = 0
+endif
+
 	autocmd BufNew,BufEnter *.log execute "silent! CocDisable"
 	autocmd BufLeave *.log execute "silent! CocEnable"
 

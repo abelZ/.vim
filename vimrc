@@ -489,27 +489,32 @@ if s:has_ale == 1
 	let g:ale_echo_delay = 20
 	let g:ale_lint_delay = 500
 	let g:ale_echo_msg_format = '[%linter%] %code: %%s'
-	let g:ale_lint_on_text_changed = 'never'
+if has('gui')
 	let g:ale_lint_on_save = 0
 	let g:ale_lint_on_enter = 0
+endif
+	let g:ale_lint_on_text_changed = 'never'
 	let g:ale_lint_on_insert_leave = 0
 	let g:ale_lint_on_filetype_changed = 0
 	let g:ale_set_loclist = 1
 	let g:ale_set_quickfix = 0
-	let g:ale_linters_explicit = 1
 	let g:ale_disable_lsp = 1
 	if has('win32') == 0 && has('win64') == 0 && has('win32unix') == 0
 		let g:ale_command_wrapper = 'nice -n5'
 	endif
 	let g:airline#extensions#ale#enabled = 1
+
+	let g:ale_linters_explicit = 1
 	let g:ale_linters = {
 				\ 'c' : [],
-				\ 'cpp' : ['cppcheck'],
+				\ 'cpp' : ['cpplint'],
 				\ 'python': ['flake8', 'pylint'], 
 				\ 'java': ['javac'],
 				\ 'javascript': ['eslint'], 
 				\ }
 	let g:ale_cpp_cppcheck_options = '--enable=all --suppress=unusedStructMember:*.h'
+	let g:ale_cpp_cpplint_executable = 'cpplint.py'
+
 	nmap [g <Plug>(ale_previous)
 	nmap ]g <Plug>(ale_next)
 	call g:quickmenu#append('# ALE', '')
