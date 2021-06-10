@@ -426,7 +426,8 @@ xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F --stayOpen -e %s ", leaderf#Rg#vi
 if s:has_vimspector == 1
 	nmap <F5> <Plug>VimspectorContinue
 	nmap <S-F5> <Plug>VimspectorStop
-	nmap <F6> <Plug>VimspectorPause
+	nmap <F6> <Plug>VimspectorStop
+	nmap <F7> <Plug>VimspectorReset
 	nmap <F9> <Plug>VimspectorToggleBreakpoint
 	nmap <S-F9> <Plug>VimspectorToggleConditionalBreakpoint
 	nmap <A-F9> <Plug>VimspectorAddFunctionBreakpoint
