@@ -58,11 +58,7 @@ Plug 'vim-scripts/Align'
 Plug 'will133/vim-dirdiff'
 Plug 'tpope/vim-unimpaired'
 Plug 'puremourning/vimspector'
-if has('win32')
-	Plug 'Yggdroot/LeaderF', { 'do': 'install.bat'}
-else
-	Plug 'Yggdroot/LeaderF', { 'do': './install.sh'}
-endif
+Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 Plug 'Raimondi/delimitMate'
 Plug 'skywind3000/vim-preview'
 Plug 'skywind3000/asyncrun.vim'
@@ -405,6 +401,7 @@ let g:Lf_WorkingDirectoryMode = 'c'
 let g:Lf_Ctags = "universal-ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
+let g:Lf_UseVersionControlTool = 0
 let g:Lf_DefaultMode = 'NameOnly'
 if v:version >=801 && has('patch1615')
 	let g:Lf_WindowPosition = 'popup'
@@ -635,35 +632,6 @@ au BufRead *.log set ft=
 au BufRead,BufNewFile *.hla set ft=hla
 au BufRead,BufNewFile *.tasks set ft=dosini
 
-if has('linux')
-	let lines = readfile('/proc/version')
-	if lines[0] =~ "Microsoft"
-		set clipboard=unnamed
-		autocmd TextYankPost * call YankDebounced() 
-
-		function! Yank(timer)
-			call system('win32yank.exe -i --crlf', @")
-			redraw!
-		endfunction
-
-		let g:yank_debounce_time_ms = 500
-		let g:yank_debounce_timer_id = -1
-
-		function! YankDebounced()
-			let l:now = localtime()
-			call timer_stop(g:yank_debounce_timer_id)
-			let g:yank_debounce_timer_id = timer_start(g:yank_debounce_time_ms, 'Yank')
-		endfunction
-
-		function! Paste(mode)
-			let @" = system('win32yank.exe -o --lf')
-			return a:mode
-		endfunction
-
-		map <expr> p Paste('p')
-		map <expr> P Paste('P')
-	endif
-endif
 " }}}
 
 " quickfix and localtion list Settings ----------{{{
