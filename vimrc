@@ -78,6 +78,7 @@ Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
 Plug 'psf/black', { 'branch': 'stable' }
+Plug 'gyim/vim-boxdraw'
 
 if s:has_ale == 1
 	Plug 'w0rp/ale'
@@ -231,6 +232,7 @@ set cursorline
 set cursorcolumn
 set noswapfile
 set belloff=all
+set virtualedit=block
 if has('win32')
 	set guioptions-=l
 	set guioptions-=L
