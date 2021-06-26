@@ -50,7 +50,7 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'easymotion/vim-easymotion'
 Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Plug 'abelZ/vim-snippets'
 Plug 'tpope/vim-fugitive'
 Plug 'juneedahamed/vc.vim'
 Plug 'chrisbra/vim-diff-enhanced'
@@ -79,6 +79,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
 Plug 'psf/black', { 'branch': 'stable' }
 Plug 'gyim/vim-boxdraw'
+Plug 'vim-scripts/timestamp.vim'
 
 if s:has_ale == 1
 	Plug 'w0rp/ale'
@@ -293,8 +294,8 @@ let g:ycm_error_symbol = '⛔'
 let g:ycm_warning_symbol = '⚠'
 let g:ycm_max_diagnostics_to_display = 300
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_complete_in_comments = 0
-let g:ycm_min_num_of_chars_for_completion=2
+let g:ycm_complete_in_comments = 1
+let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_key_invoke_completion = '<c-l>'
 let g:ycm_use_clangd = 0
 let g:ycm_clangd_args = ["--background-index=false"]
@@ -611,12 +612,18 @@ if s:has_signify == 1
 endif
 " }}}
 
+" nerdcommenter options --------------------------------{{{
+let NERDSpaceDelims=1
+" }}}
+
 " Vim script file Settings -----------------------{{{
 augroup filetype_vim
     autocmd!
     autocmd FileType vim setlocal foldmethod=marker
     autocmd FileType xml setlocal foldmethod=indent
 	autocmd FileType python setlocal tabstop=4
+    autocmd FileType cpp setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+	autocmd FileType cpp setlocal expandtab
 augroup END
 " }}}
 
