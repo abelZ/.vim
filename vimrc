@@ -297,8 +297,13 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_comments = 1
 let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_key_invoke_completion = '<c-l>'
-let g:ycm_use_clangd = 0
-let g:ycm_clangd_args = ["--background-index=false"]
+if has('gui')
+	let g:ycm_use_clangd = 0
+	let g:ycm_clangd_args = ["--background-index=false"]
+else
+	let g:ycm_use_clangd = 1
+	let g:ycm_clangd_binary_path = '~/tool-src/llvm-project/build/bin/clangd'
+endif
 let g:ycm_auto_hover = ''
 nmap <leader>D <plug>(YCMHover)
 if has('gui_macvim')
@@ -427,7 +432,7 @@ if s:has_vimspector == 1
 	nmap <F5> <Plug>VimspectorContinue
 	nmap <S-F5> <Plug>VimspectorStop
 	nmap <F6> <Plug>VimspectorStop
-	nmap <F7> <Plug>VimspectorReset
+	nmap <F7> :VimspectorReset<CR>
 	nmap <F9> <Plug>VimspectorToggleBreakpoint
 	nmap <S-F9> <Plug>VimspectorToggleConditionalBreakpoint
 	nmap <A-F9> <Plug>VimspectorAddFunctionBreakpoint
@@ -490,10 +495,8 @@ if s:has_ale == 1
 	let g:ale_echo_delay = 20
 	let g:ale_lint_delay = 500
 	let g:ale_echo_msg_format = '[%linter%] %code: %%s'
-if has('gui')
 	let g:ale_lint_on_save = 0
 	let g:ale_lint_on_enter = 0
-endif
 	let g:ale_lint_on_text_changed = 'never'
 	let g:ale_lint_on_insert_leave = 0
 	let g:ale_lint_on_filetype_changed = 0
