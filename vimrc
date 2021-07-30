@@ -5,7 +5,7 @@ else
 	call plug#begin('~/.vim/bundle')
 endif
 
-let s:has_calendar = 0
+let s:has_calendar = 1
 let s:has_keysound = 0
 let s:has_instant_mark = 0
 let s:has_rainbow = 0
@@ -80,6 +80,8 @@ Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
 Plug 'psf/black', { 'branch': 'stable' }
 Plug 'gyim/vim-boxdraw'
 Plug 'vim-scripts/timestamp.vim'
+Plug 'rhysd/vim-clang-format'
+Plug 'skanehira/preview-markdown.vim'
 
 if s:has_ale == 1
 	Plug 'w0rp/ale'
@@ -301,7 +303,7 @@ if has('gui')
 	let g:ycm_use_clangd = 0
 	let g:ycm_clangd_args = ["--background-index=false"]
 else
-	let g:ycm_use_clangd = 1
+	let g:ycm_use_clangd = 0
 	let g:ycm_clangd_binary_path = '~/tool-src/llvm-project/build/bin/clangd'
 endif
 let g:ycm_auto_hover = ''
@@ -474,10 +476,10 @@ let g:asyncrun_stdin = 0
 " asynctasks options -----------------------------{{{
 if has('win32')
 	let g:asynctasks_system = 'win32'
-	let g:asynctasks_term_pos = 'quickfix'
+	let g:asynctasks_term_pos = 'bottom'
 elseif has('macunix')
 	let g:asynctasks_system = 'macos'
-	let g:asynctasks_term_pos = 'quickfix'
+	let g:asynctasks_term_pos = 'bottom'
 elseif has('linux')
 	let lines = readfile('/proc/version')
 	if lines[0] =~ "Microsoft"
@@ -485,7 +487,7 @@ elseif has('linux')
 		let g:asynctasks_term_pos = 'bottom'
 	else
 		let g:asynctasks_system = 'linux'
-		let g:asynctasks_term_pos = 'quickfix'
+		let g:asynctasks_term_pos = 'bottom'
 	endif
 endif
 " }}}
@@ -544,6 +546,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_section_error = ''
 let g:airline_section_warning = ''
+let g:airline_powerline_fonts = 1
 if s:has_tagbar == 1
 	let g:airline#extensions#tagbar#enabled = 1
 	let g:airline#extensions#tagbar#flags = 'f'
@@ -617,6 +620,10 @@ endif
 
 " nerdcommenter options --------------------------------{{{
 let NERDSpaceDelims=1
+" }}}
+
+" preview-markdown options -----------------------------{{{
+let g:preview_markdown_auto_update = 1
 " }}}
 
 " Vim script file Settings -----------------------{{{
