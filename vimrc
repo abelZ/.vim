@@ -80,8 +80,11 @@ Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
 Plug 'psf/black', { 'branch': 'stable' }
 Plug 'gyim/vim-boxdraw'
 Plug 'vim-scripts/timestamp.vim'
-Plug 'rhysd/vim-clang-format'
 Plug 'skanehira/preview-markdown.vim'
+Plug 'drmikehenry/vim-fixkey'
+Plug 'google/vim-maktaba'
+Plug 'antmusco/vim-codefmt', { 'branch': 'feature/cmake-format-support' }
+Plug 'google/vim-glaive'
 
 if s:has_ale == 1
 	Plug 'w0rp/ale'
@@ -148,6 +151,8 @@ endif
 
 call plug#end()
 " }}}
+
+call glaive#Install()
 
 " detect file type -------------------------------{{{
 filetype on "file type
@@ -288,6 +293,7 @@ let g:ycm_semantic_triggers =  {
 	  \ 'html': ['re!\w{1}', 're!\s+', 're!</'],
 	  \ 'htmldjango': ['re!\w{1}', 're!\s+', 're!</'],
 	  \ 'VimspectorPrompt': [ '.', '->', ':', '<' ],
+	  \ 'bash,cmake,sh': ['re!\w{5}'],
 	  \}
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_log_level = 'debug'
@@ -299,51 +305,27 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_comments = 1
 let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_key_invoke_completion = '<c-l>'
+noremap <c-l> <NOP>
 if has('gui')
 	let g:ycm_use_clangd = 0
 	let g:ycm_clangd_args = ["--background-index=false"]
+	if has('gui_macvim')
+		let g:ycm_python_binary_path = '/usr/local/bin/python3'
+	endif
 else
 	let g:ycm_use_clangd = 0
 	let g:ycm_clangd_binary_path = '~/tool-src/llvm-project/build/bin/clangd'
 endif
-let g:ycm_auto_hover = ''
-nmap <leader>D <plug>(YCMHover)
-if has('gui_macvim')
-	let g:ycm_python_binary_path = '/usr/local/bin/python3'
-endif
-let g:ycm_filetype_whitelist = { 
-			\ "c":1,
-			\ "cpp":1, 
-			\ "python":1,
-			\ "java":1,
-			\ "javascript":1,
-			\ "vim":1, 
-			\ "make":1,
-			\ "cmake":1,
-			\ "html":1,
-			\ "htmldjango":1,
-			\ "css":1,
-			\ "less":1,
-			\ "json":1,
-			\ "typedscript":1,
-			\ "sh":1,
-			\ "zsh":1,
-			\ "bash":1,
-			\ "conf":1,
-			\ "config":1,
-			\ }
-noremap <c-l> <NOP>
 
-let g:ycm_language_server = [
-  \   { 'name': 'vim',
-  \     'filetypes': [ 'vim' ],
-  \     'cmdline': [ expand( '$HOME/.vim/bundle/lsp-examples/viml/node_modules/.bin/vim-language-server' ), '--stdio' ]
-  \   }
-  \ ]
+let g:ycm_auto_hover = ''
+nmap <leader>H <plug>(YCMHover)
+
+source ~/.vim/bundle/lsp-examples/vimrc.generated
 call g:quickmenu#append('# YCM', '')
 call g:quickmenu#append(mapleader.'fx Ycm FixIt', 'YcmCompleter FixIt', 'fix the code error by clang', 'c,cpp')
 call g:quickmenu#append(mapleader.'gd Ycm GoToDef', 'YcmCompleter GoToDefinitionElseDeclaration', 'go to the var or function definition')
 call g:quickmenu#append(mapleader.'gr Ycm GoToRef', 'YcmCompleter GoToReferences', 'find all references of the var or function')
+call g:quickmenu#append(mapleader.'H', '_', 'get hover info')
 nnoremap <leader>fx :YcmCompleter FixIt<CR>
 nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
@@ -426,21 +408,29 @@ nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
 nnoremap <silent> <leader><leader>m :LeaderfMarks<CR>
 nnoremap <silent> <leader><leader>r :LeaderfMru<CR>
 " search visually selected text literally, don't quit LeaderF after accepting an entry
-xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F --stayOpen -e %s ", leaderf#Rg#visual())<CR><CR>
+xnoremap gf :<C-U><C-R>=printf("Leaderf! rg --no-ignore-vcs -F --stayOpen -e %s ", leaderf#Rg#visual())<CR><CR>
 " }}}
 
 " vimspector options -----------------------------{{{
 if s:has_vimspector == 1
 	nmap <F5> <Plug>VimspectorContinue
 	nmap <S-F5> <Plug>VimspectorStop
-	nmap <F6> <Plug>VimspectorStop
-	nmap <F7> :VimspectorReset<CR>
+	nmap <C-F5> :VimspectorReset<CR>
+	nmap <C-S-F5> <Plug>VimspectorRestart
 	nmap <F9> <Plug>VimspectorToggleBreakpoint
-	nmap <S-F9> <Plug>VimspectorToggleConditionalBreakpoint
-	nmap <A-F9> <Plug>VimspectorAddFunctionBreakpoint
+	nmap <A-F9> <Plug>VimspectorToggleConditionalBreakpoint
+	nmap <S-F9> <Plug>VimspectorAddFunctionBreakpoint
 	nmap <F10> <Plug>VimspectorStepOver
+	nmap <C-F10> <Plug>VimspectorRunToCursor
 	nmap <F11> <Plug>VimspectorStepInto
 	nmap <S-F11> <Plug>VimspectorStepOut
+	call g:quickmenu#append('# Vimspector', '')
+	call g:quickmenu#append('C-F5 reset', 'VimspectorReset', 'reset')
+	call g:quickmenu#append('S-F5 stop', 'echo', 'stop')
+	call g:quickmenu#append('C-S-F5 restart', 'echo', 'restart')
+	call g:quickmenu#append('A-F9 condition break', 'echo', 'condition break')
+	call g:quickmenu#append('S-F9 function break', 'echo', 'function break')
+	call g:quickmenu#append('C-F10 run_to_cursor', 'echo', 'run to cursor')
 endif
 " }}}
 
@@ -517,9 +507,12 @@ if s:has_ale == 1
 				\ 'python': ['flake8', 'pylint'], 
 				\ 'java': ['javac'],
 				\ 'javascript': ['eslint'], 
+				\ 'sh': ['shellcheck'], 
+				\ 'cmake': ['cmakelint'], 
 				\ }
 	let g:ale_cpp_cppcheck_options = '--enable=all --suppress=unusedStructMember:*.h'
 	let g:ale_cpp_cpplint_executable = 'cpplint.py'
+	let g:ale_cmake_cmakelint_executable = 'cmake-lint'
 
 	nmap [g <Plug>(ale_previous)
 	nmap ]g <Plug>(ale_next)
@@ -633,7 +626,7 @@ augroup filetype_vim
     autocmd FileType xml setlocal foldmethod=indent
 	autocmd FileType python setlocal tabstop=4
     autocmd FileType cpp setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-	autocmd FileType cpp setlocal expandtab
+	autocmd FileType cpp,cmake setlocal expandtab
 augroup END
 " }}}
 
