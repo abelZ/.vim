@@ -521,6 +521,11 @@ if s:has_ale == 1
 endif
 " }}}
 
+
+" codefmt options --------------------------------{{{
+" manully install clang-format,shfmt,cmake-format
+" }}}
+
 " rainbowparentheses options ---------------------{{{
 if s:has_rainbow == 1
 	augroup rainbow_group
@@ -644,6 +649,27 @@ au BufRead *.log set ft=
 au BufRead,BufNewFile *.hla set ft=hla
 au BufRead,BufNewFile *.tasks set ft=dosini
 
+" copy to buffer
+vmap <C-c> :w! ~/.vimbuffer<CR>
+nmap <C-c> :.w! ~/.vimbuffer<CR>
+" paste from buffer
+map <C-p> :r ~/.vimbuffer<CR>
+
+function! RemoveTrailingSpace()
+	if $VIM_HATE_SPACE_ERRORS != '0'
+		normal m`
+		silent! :%s/\s\+$//e
+		normal ``
+	endif
+endfunction
+autocmd BufWritePre * nested call RemoveTrailingSpace()
+
+function! FixInconsistFileFormat()
+	if &fileformat == 'unix'
+		silent! :%s/\r$//e
+	endif
+endfunction
+autocmd BufWritePre * nested call FixInconsistFileFormat()
 " }}}
 
 " quickfix and localtion list Settings ----------{{{
