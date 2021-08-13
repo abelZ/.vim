@@ -504,11 +504,11 @@ if s:has_ale == 1
 	let g:ale_linters = {
 				\ 'c' : [],
 				\ 'cpp' : ['cpplint'],
-				\ 'python': ['flake8', 'pylint'], 
+				\ 'python': ['flake8', 'pylint'],
 				\ 'java': ['javac'],
-				\ 'javascript': ['eslint'], 
-				\ 'sh': ['shellcheck'], 
-				\ 'cmake': ['cmakelint'], 
+				\ 'javascript': ['eslint'],
+				\ 'sh': ['shellcheck'],
+				\ 'cmake': ['cmakelint'],
 				\ }
 	let g:ale_cpp_cppcheck_options = '--enable=all --suppress=unusedStructMember:*.h'
 	let g:ale_cpp_cpplint_executable = 'cpplint.py'
@@ -612,7 +612,7 @@ call g:quickmenu#append('Goyo', 'Goyo', 'toggle Goyo')
 " signify options --------------------------------{{{
 if s:has_signify == 1
     let g:signify_vcs_list = [ 'git', 'svn']
-	"♕ ♛ 🐒 🐍 🐢 🐓 	   
+	"♕ ♛ 🐒 🐍 🐢 🐓
 endif
 " }}}
 
@@ -670,6 +670,8 @@ function! FixInconsistFileFormat()
 	endif
 endfunction
 autocmd BufWritePre * nested call FixInconsistFileFormat()
+autocmd BufWritePre *.cpp :FormatCode
+autocmd BufWritePre *.h :FormatCode
 " }}}
 
 " quickfix and localtion list Settings ----------{{{
