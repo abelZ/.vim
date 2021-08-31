@@ -85,6 +85,7 @@ Plug 'drmikehenry/vim-fixkey'
 Plug 'google/vim-maktaba'
 Plug 'antmusco/vim-codefmt', { 'branch': 'feature/cmake-format-support' }
 Plug 'google/vim-glaive'
+Plug 'vimwiki/vimwiki'
 
 if s:has_ale == 1
 	Plug 'w0rp/ale'
@@ -313,7 +314,7 @@ if has('gui')
 		let g:ycm_python_binary_path = '/usr/local/bin/python3'
 	endif
 else
-	let g:ycm_use_clangd = 0
+	let g:ycm_use_clangd = 1
 	let g:ycm_clangd_binary_path = '~/tool-src/llvm-project/build/bin/clangd'
 endif
 
@@ -487,7 +488,7 @@ if s:has_ale == 1
 	let g:ale_echo_delay = 20
 	let g:ale_lint_delay = 500
 	let g:ale_echo_msg_format = '[%linter%] %code: %%s'
-	let g:ale_lint_on_save = 0
+	let g:ale_lint_on_save = 1
 	let g:ale_lint_on_enter = 0
 	let g:ale_lint_on_text_changed = 'never'
 	let g:ale_lint_on_insert_leave = 0
@@ -549,6 +550,7 @@ if s:has_tagbar == 1
 	let g:airline#extensions#tagbar#enabled = 1
 	let g:airline#extensions#tagbar#flags = 'f'
 	let g:tagbar_ctags_bin = 'universal-ctags'
+	let g:tagbar_width = 20
 	nnoremap <F2> :Tagbar<CR>
 endif
 if 1
@@ -624,13 +626,20 @@ let NERDSpaceDelims=1
 let g:preview_markdown_auto_update = 1
 " }}}
 
+" vimwiki options --------------------------------------{{{
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+                      \ 'syntax': 'markdown', 'ext': '.md'}]
+
+let g:vimwiki_listsyms = '✗○◐●✓'
+" }}}
+
 " Vim script file Settings -----------------------{{{
 augroup filetype_vim
     autocmd!
     autocmd FileType vim setlocal foldmethod=marker
     autocmd FileType xml setlocal foldmethod=indent
 	autocmd FileType python setlocal tabstop=4
-    autocmd FileType cpp setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+    autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 	autocmd FileType cpp,cmake setlocal expandtab
 augroup END
 " }}}
