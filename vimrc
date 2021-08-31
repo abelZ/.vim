@@ -681,6 +681,10 @@ endfunction
 autocmd BufWritePre * nested call FixInconsistFileFormat()
 autocmd BufWritePre *.cpp :FormatCode
 autocmd BufWritePre *.h :FormatCode
+
+if g:asynctasks_system == 'wsl'
+	autocmd TextYankPost * call system('echo '.shellescape(join(v:event.regcontents, "\<CR>")).' |  clip.exe')
+endif
 " }}}
 
 " quickfix and localtion list Settings ----------{{{
