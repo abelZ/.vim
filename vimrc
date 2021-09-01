@@ -7,7 +7,6 @@ endif
 
 let s:has_calendar = 1
 let s:has_keysound = 0
-let s:has_instant_mark = 0
 let s:has_rainbow = 0
 if filereadable(getcwd() . '/compile_commands.json') || filereadable(getcwd() . '/.ycm_extra_conf.py')
 	let s:has_ycm = 1
@@ -23,7 +22,7 @@ let s:has_dracula = 1
 let s:has_gruvbox = 1
 let s:has_signify = 1
 let s:has_tagbar = 1
-let s:has_gtags = 0
+let s:has_gtags = 1
 let s:has_ale = 1
 let s:has_vimspector = 1
 
@@ -34,7 +33,6 @@ endif
 if has('win32') || has('gui_macvim')
 	let s:has_calendar = 1
 	let s:has_keysound = 1
-	let s:has_instant_mark = 1
 endif
 
 if has('gui')
@@ -76,11 +74,10 @@ Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 Plug 'liuchengxu/vim-which-key'
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
-Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
+" Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
 Plug 'psf/black', { 'branch': 'stable' }
 Plug 'gyim/vim-boxdraw'
 Plug 'vim-scripts/timestamp.vim'
-Plug 'skanehira/preview-markdown.vim'
 Plug 'drmikehenry/vim-fixkey'
 Plug 'google/vim-maktaba'
 Plug 'antmusco/vim-codefmt', { 'branch': 'feature/cmake-format-support' }
@@ -132,10 +129,6 @@ endif
 
 if s:has_keysound == 1
 	Plug 'skywind3000/vim-keysound'
-endif
-
-if s:has_instant_mark == 1
-	Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 endif
 
 if s:has_rainbow == 1
@@ -347,11 +340,9 @@ source ~/.vim/configs/coc_config.vim
 if s:has_gtags == 1
 	let $GTAGSLABEL = 'native-pygments'
 	if has('win32')
-		let $GTAGSCONF = 'c:\\Users\\Dell\\vimfiles\\gtags.conf'
-	elseif has('gui_macvim')
-		let $GTAGSCONF = '/usr/local/share/gtags/gtags.conf'
+		let $GTAGSCONF = 'c:\\Users\\gtags.conf'
 	else
-		let $GTAGSCONF = '/home/abel/.vim/gtags.conf'
+		let $GTAGSCONF = '/home/gtags.conf'
 	endif
 
 	let gutentags_add_default_project_roots = 0
@@ -588,17 +579,11 @@ if s:has_calendar == 1
 endif
 " }}}
 
-" vim-instant-markdown options -------------------{{{
-if s:has_instant_mark == 1
-	let g:mkdp_refresh_slow=1
-endif
-" }}}
-
 " vim-markdwon options ---------------------------{{{
-autocmd FileType markdown let b:sleuth_automatic=0
-autocmd FileType markdown set conceallevel=0
+" autocmd FileType markdown let b:sleuth_automatic=0
+" autocmd FileType markdown set conceallevel=0
 
-let g:vim_markdown_frontmatter=1
+" let g:vim_markdown_frontmatter=1
 " }}}
 
 " vim-limelight options --------------------------{{{
@@ -622,10 +607,6 @@ endif
 let NERDSpaceDelims=1
 " }}}
 
-" preview-markdown options -----------------------------{{{
-let g:preview_markdown_auto_update = 1
-" }}}
-
 " vimwiki options --------------------------------------{{{
 let g:vimwiki_list = [{'path': '~/vimwiki/',
                       \ 'syntax': 'markdown', 'ext': '.md'}]
@@ -639,7 +620,7 @@ augroup filetype_vim
     autocmd FileType vim setlocal foldmethod=marker
     autocmd FileType xml setlocal foldmethod=indent
 	autocmd FileType python setlocal tabstop=4
-    autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+    autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o iskeyword-=.
 	autocmd FileType cpp,cmake setlocal expandtab
 augroup END
 " }}}
