@@ -5,9 +5,8 @@ else
 	call plug#begin('~/.vim/bundle')
 endif
 
-let s:has_calendar = 0
+let s:has_calendar = 1
 let s:has_keysound = 0
-let s:has_instant_mark = 0
 let s:has_rainbow = 0
 if filereadable(getcwd() . '/compile_commands.json') || filereadable(getcwd() . '/.ycm_extra_conf.py')
 	let s:has_ycm = 1
@@ -23,7 +22,7 @@ let s:has_dracula = 1
 let s:has_gruvbox = 1
 let s:has_signify = 1
 let s:has_tagbar = 1
-let s:has_gtags = 0
+let s:has_gtags = 1
 let s:has_ale = 1
 let s:has_vimspector = 1
 
@@ -34,7 +33,6 @@ endif
 if has('win32') || has('gui_macvim')
 	let s:has_calendar = 1
 	let s:has_keysound = 1
-	let s:has_instant_mark = 1
 endif
 
 if has('gui')
@@ -50,7 +48,7 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'easymotion/vim-easymotion'
 Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Plug 'abelZ/vim-snippets'
 Plug 'tpope/vim-fugitive'
 Plug 'juneedahamed/vc.vim'
 Plug 'chrisbra/vim-diff-enhanced'
@@ -58,11 +56,7 @@ Plug 'vim-scripts/Align'
 Plug 'will133/vim-dirdiff'
 Plug 'tpope/vim-unimpaired'
 Plug 'puremourning/vimspector'
-if has('win32')
-	Plug 'Yggdroot/LeaderF', { 'do': 'install.bat'}
-else
-	Plug 'Yggdroot/LeaderF', { 'do': './install.sh'}
-endif
+Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 Plug 'Raimondi/delimitMate'
 Plug 'skywind3000/vim-preview'
 Plug 'skywind3000/asyncrun.vim'
@@ -80,8 +74,15 @@ Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 Plug 'liuchengxu/vim-which-key'
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
-Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
+" Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
 Plug 'psf/black', { 'branch': 'stable' }
+Plug 'gyim/vim-boxdraw'
+Plug 'vim-scripts/timestamp.vim'
+Plug 'drmikehenry/vim-fixkey'
+Plug 'google/vim-maktaba'
+Plug 'antmusco/vim-codefmt', { 'branch': 'feature/cmake-format-support' }
+Plug 'google/vim-glaive'
+Plug 'vimwiki/vimwiki'
 
 if s:has_ale == 1
 	Plug 'w0rp/ale'
@@ -130,10 +131,6 @@ if s:has_keysound == 1
 	Plug 'skywind3000/vim-keysound'
 endif
 
-if s:has_instant_mark == 1
-	Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-endif
-
 if s:has_rainbow == 1
 	Plug 'kien/rainbow_parentheses.vim'
 endif
@@ -148,6 +145,8 @@ endif
 
 call plug#end()
 " }}}
+
+call glaive#Install()
 
 " detect file type -------------------------------{{{
 filetype on "file type
@@ -235,6 +234,7 @@ set cursorline
 set cursorcolumn
 set noswapfile
 set belloff=all
+set virtualedit=block
 if has('win32')
 	set guioptions-=l
 	set guioptions-=L
@@ -287,6 +287,7 @@ let g:ycm_semantic_triggers =  {
 	  \ 'html': ['re!\w{1}', 're!\s+', 're!</'],
 	  \ 'htmldjango': ['re!\w{1}', 're!\s+', 're!</'],
 	  \ 'VimspectorPrompt': [ '.', '->', ':', '<' ],
+	  \ 'bash,cmake,sh': ['re!\w{5}'],
 	  \}
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_log_level = 'debug'
@@ -295,47 +296,30 @@ let g:ycm_error_symbol = '⛔'
 let g:ycm_warning_symbol = '⚠'
 let g:ycm_max_diagnostics_to_display = 300
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_complete_in_comments = 0
-let g:ycm_min_num_of_chars_for_completion=2
+let g:ycm_complete_in_comments = 1
+let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_key_invoke_completion = '<c-l>'
-let g:ycm_use_clangd = 0
-let g:ycm_clangd_args = ["--background-index=false"]
-if has('gui_macvim')
-	let g:ycm_python_binary_path = '/usr/local/bin/python3'
-endif
-let g:ycm_filetype_whitelist = { 
-			\ "c":1,
-			\ "cpp":1, 
-			\ "python":1,
-			\ "java":1,
-			\ "javascript":1,
-			\ "vim":1, 
-			\ "make":1,
-			\ "cmake":1,
-			\ "html":1,
-			\ "htmldjango":1,
-			\ "css":1,
-			\ "less":1,
-			\ "json":1,
-			\ "typedscript":1,
-			\ "sh":1,
-			\ "zsh":1,
-			\ "bash":1,
-			\ "conf":1,
-			\ "config":1,
-			\ }
 noremap <c-l> <NOP>
+if has('gui')
+	let g:ycm_use_clangd = 0
+	let g:ycm_clangd_args = ["--background-index=false"]
+	if has('gui_macvim')
+		let g:ycm_python_binary_path = '/usr/local/bin/python3'
+	endif
+else
+	let g:ycm_use_clangd = 1
+	let g:ycm_clangd_binary_path = '~/tool-src/llvm-project/build/bin/clangd'
+endif
 
-let g:ycm_language_server = [
-  \   { 'name': 'vim',
-  \     'filetypes': [ 'vim' ],
-  \     'cmdline': [ expand( '$HOME/.vim/bundle/lsp-examples/viml/node_modules/.bin/vim-language-server' ), '--stdio' ]
-  \   }
-  \ ]
+let g:ycm_auto_hover = ''
+nmap <leader>H <plug>(YCMHover)
+
+source ~/.vim/bundle/lsp-examples/vimrc.generated
 call g:quickmenu#append('# YCM', '')
 call g:quickmenu#append(mapleader.'fx Ycm FixIt', 'YcmCompleter FixIt', 'fix the code error by clang', 'c,cpp')
 call g:quickmenu#append(mapleader.'gd Ycm GoToDef', 'YcmCompleter GoToDefinitionElseDeclaration', 'go to the var or function definition')
 call g:quickmenu#append(mapleader.'gr Ycm GoToRef', 'YcmCompleter GoToReferences', 'find all references of the var or function')
+call g:quickmenu#append(mapleader.'H', '_', 'get hover info')
 nnoremap <leader>fx :YcmCompleter FixIt<CR>
 nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
@@ -356,11 +340,9 @@ source ~/.vim/configs/coc_config.vim
 if s:has_gtags == 1
 	let $GTAGSLABEL = 'native-pygments'
 	if has('win32')
-		let $GTAGSCONF = 'c:\\Users\\Dell\\vimfiles\\gtags.conf'
-	elseif has('gui_macvim')
-		let $GTAGSCONF = '/usr/local/share/gtags/gtags.conf'
+		let $GTAGSCONF = 'c:\\Users\\gtags.conf'
 	else
-		let $GTAGSCONF = '/home/abel/.vim/gtags.conf'
+		let $GTAGSCONF = '/home/gtags.conf'
 	endif
 
 	let gutentags_add_default_project_roots = 0
@@ -403,6 +385,7 @@ let g:Lf_WorkingDirectoryMode = 'c'
 let g:Lf_Ctags = "universal-ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
+let g:Lf_UseVersionControlTool = 0
 let g:Lf_DefaultMode = 'NameOnly'
 if v:version >=801 && has('patch1615')
 	let g:Lf_WindowPosition = 'popup'
@@ -417,20 +400,29 @@ nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
 nnoremap <silent> <leader><leader>m :LeaderfMarks<CR>
 nnoremap <silent> <leader><leader>r :LeaderfMru<CR>
 " search visually selected text literally, don't quit LeaderF after accepting an entry
-xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F --stayOpen -e %s ", leaderf#Rg#visual())<CR><CR>
+xnoremap gf :<C-U><C-R>=printf("Leaderf! rg --no-ignore-vcs -F --stayOpen -e %s ", leaderf#Rg#visual())<CR><CR>
 " }}}
 
 " vimspector options -----------------------------{{{
 if s:has_vimspector == 1
 	nmap <F5> <Plug>VimspectorContinue
 	nmap <S-F5> <Plug>VimspectorStop
-	nmap <F6> <Plug>VimspectorPause
+	nmap <C-F5> :VimspectorReset<CR>
+	nmap <C-S-F5> <Plug>VimspectorRestart
 	nmap <F9> <Plug>VimspectorToggleBreakpoint
-	nmap <S-F9> <Plug>VimspectorToggleConditionalBreakpoint
-	nmap <A-F9> <Plug>VimspectorAddFunctionBreakpoint
+	nmap <A-F9> <Plug>VimspectorToggleConditionalBreakpoint
+	nmap <S-F9> <Plug>VimspectorAddFunctionBreakpoint
 	nmap <F10> <Plug>VimspectorStepOver
+	nmap <C-F10> <Plug>VimspectorRunToCursor
 	nmap <F11> <Plug>VimspectorStepInto
 	nmap <S-F11> <Plug>VimspectorStepOut
+	call g:quickmenu#append('# Vimspector', '')
+	call g:quickmenu#append('C-F5 reset', 'VimspectorReset', 'reset')
+	call g:quickmenu#append('S-F5 stop', 'echo', 'stop')
+	call g:quickmenu#append('C-S-F5 restart', 'echo', 'restart')
+	call g:quickmenu#append('A-F9 condition break', 'echo', 'condition break')
+	call g:quickmenu#append('S-F9 function break', 'echo', 'function break')
+	call g:quickmenu#append('C-F10 run_to_cursor', 'echo', 'run to cursor')
 endif
 " }}}
 
@@ -466,10 +458,10 @@ let g:asyncrun_stdin = 0
 " asynctasks options -----------------------------{{{
 if has('win32')
 	let g:asynctasks_system = 'win32'
-	let g:asynctasks_term_pos = 'quickfix'
+	let g:asynctasks_term_pos = 'bottom'
 elseif has('macunix')
 	let g:asynctasks_system = 'macos'
-	let g:asynctasks_term_pos = 'quickfix'
+	let g:asynctasks_term_pos = 'bottom'
 elseif has('linux')
 	let lines = readfile('/proc/version')
 	if lines[0] =~ "Microsoft"
@@ -477,7 +469,7 @@ elseif has('linux')
 		let g:asynctasks_term_pos = 'bottom'
 	else
 		let g:asynctasks_system = 'linux'
-		let g:asynctasks_term_pos = 'quickfix'
+		let g:asynctasks_term_pos = 'bottom'
 	endif
 endif
 " }}}
@@ -487,32 +479,43 @@ if s:has_ale == 1
 	let g:ale_echo_delay = 20
 	let g:ale_lint_delay = 500
 	let g:ale_echo_msg_format = '[%linter%] %code: %%s'
-	let g:ale_lint_on_text_changed = 'never'
-	let g:ale_lint_on_save = 0
+	let g:ale_lint_on_save = 1
 	let g:ale_lint_on_enter = 0
+	let g:ale_lint_on_text_changed = 'never'
 	let g:ale_lint_on_insert_leave = 0
 	let g:ale_lint_on_filetype_changed = 0
 	let g:ale_set_loclist = 1
 	let g:ale_set_quickfix = 0
-	let g:ale_linters_explicit = 1
 	let g:ale_disable_lsp = 1
 	if has('win32') == 0 && has('win64') == 0 && has('win32unix') == 0
 		let g:ale_command_wrapper = 'nice -n5'
 	endif
 	let g:airline#extensions#ale#enabled = 1
+
+	let g:ale_linters_explicit = 1
 	let g:ale_linters = {
 				\ 'c' : [],
-				\ 'cpp' : ['cppcheck'],
-				\ 'python': ['flake8', 'pylint'], 
+				\ 'cpp' : ['cpplint'],
+				\ 'python': ['flake8', 'pylint'],
 				\ 'java': ['javac'],
-				\ 'javascript': ['eslint'], 
+				\ 'javascript': ['eslint'],
+				\ 'sh': ['shellcheck'],
+				\ 'cmake': ['cmakelint'],
 				\ }
 	let g:ale_cpp_cppcheck_options = '--enable=all --suppress=unusedStructMember:*.h'
+	let g:ale_cpp_cpplint_executable = 'cpplint.py'
+	let g:ale_cmake_cmakelint_executable = 'cmake-lint'
+
 	nmap [g <Plug>(ale_previous)
 	nmap ]g <Plug>(ale_next)
 	call g:quickmenu#append('# ALE', '')
 	call g:quickmenu#append('ALELint ale lint', 'ALELint', 'mannuly run ALELint')
 endif
+" }}}
+
+
+" codefmt options --------------------------------{{{
+" manully install clang-format,shfmt,cmake-format
 " }}}
 
 " rainbowparentheses options ---------------------{{{
@@ -533,10 +536,12 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_section_error = ''
 let g:airline_section_warning = ''
+let g:airline_powerline_fonts = 1
 if s:has_tagbar == 1
 	let g:airline#extensions#tagbar#enabled = 1
 	let g:airline#extensions#tagbar#flags = 'f'
 	let g:tagbar_ctags_bin = 'universal-ctags'
+	let g:tagbar_width = 20
 	nnoremap <F2> :Tagbar<CR>
 endif
 if 1
@@ -574,17 +579,11 @@ if s:has_calendar == 1
 endif
 " }}}
 
-" vim-instant-markdown options -------------------{{{
-if s:has_instant_mark == 1
-	let g:mkdp_refresh_slow=1
-endif
-" }}}
-
 " vim-markdwon options ---------------------------{{{
-autocmd FileType markdown let b:sleuth_automatic=0
-autocmd FileType markdown set conceallevel=0
+" autocmd FileType markdown let b:sleuth_automatic=0
+" autocmd FileType markdown set conceallevel=0
 
-let g:vim_markdown_frontmatter=1
+" let g:vim_markdown_frontmatter=1
 " }}}
 
 " vim-limelight options --------------------------{{{
@@ -600,8 +599,19 @@ call g:quickmenu#append('Goyo', 'Goyo', 'toggle Goyo')
 " signify options --------------------------------{{{
 if s:has_signify == 1
     let g:signify_vcs_list = [ 'git', 'svn']
-	"♕ ♛ 🐒 🐍 🐢 🐓 	   
+	"♕ ♛ 🐒 🐍 🐢 🐓
 endif
+" }}}
+
+" nerdcommenter options --------------------------------{{{
+let NERDSpaceDelims=1
+" }}}
+
+" vimwiki options --------------------------------------{{{
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+                      \ 'syntax': 'markdown', 'ext': '.md'}]
+
+let g:vimwiki_listsyms = '✗○◐●✓'
 " }}}
 
 " Vim script file Settings -----------------------{{{
@@ -610,6 +620,8 @@ augroup filetype_vim
     autocmd FileType vim setlocal foldmethod=marker
     autocmd FileType xml setlocal foldmethod=indent
 	autocmd FileType python setlocal tabstop=4
+    autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o iskeyword-=.
+	autocmd FileType cpp,cmake setlocal expandtab
 augroup END
 " }}}
 
@@ -627,34 +639,32 @@ au BufRead *.log set ft=
 au BufRead,BufNewFile *.hla set ft=hla
 au BufRead,BufNewFile *.tasks set ft=dosini
 
-if has('linux')
-	let lines = readfile('/proc/version')
-	if lines[0] =~ "Microsoft"
-		set clipboard=unnamed
-		autocmd TextYankPost * call YankDebounced() 
+" copy to buffer
+vmap <C-c> :w! ~/.vimbuffer<CR>
+nmap <C-c> :.w! ~/.vimbuffer<CR>
+" paste from buffer
+map <C-p> :r ~/.vimbuffer<CR>
 
-		function! Yank(timer)
-			call system('win32yank.exe -i --crlf', @")
-			redraw!
-		endfunction
-
-		let g:yank_debounce_time_ms = 500
-		let g:yank_debounce_timer_id = -1
-
-		function! YankDebounced()
-			let l:now = localtime()
-			call timer_stop(g:yank_debounce_timer_id)
-			let g:yank_debounce_timer_id = timer_start(g:yank_debounce_time_ms, 'Yank')
-		endfunction
-
-		function! Paste(mode)
-			let @" = system('win32yank.exe -o --lf')
-			return a:mode
-		endfunction
-
-		map <expr> p Paste('p')
-		map <expr> P Paste('P')
+function! RemoveTrailingSpace()
+	if $VIM_HATE_SPACE_ERRORS != '0'
+		normal m`
+		silent! :%s/\s\+$//e
+		normal ``
 	endif
+endfunction
+autocmd BufWritePre * nested call RemoveTrailingSpace()
+
+function! FixInconsistFileFormat()
+	if &fileformat == 'unix'
+		silent! :%s/\r$//e
+	endif
+endfunction
+autocmd BufWritePre * nested call FixInconsistFileFormat()
+autocmd BufWritePre *.cpp :FormatCode
+autocmd BufWritePre *.h :FormatCode
+
+if g:asynctasks_system == 'wsl'
+	autocmd TextYankPost * call system('echo '.shellescape(join(v:event.regcontents, "\<CR>")).' |  clip.exe')
 endif
 " }}}
 

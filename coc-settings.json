@@ -5,9 +5,10 @@
 	"suggest.echodocSupport": true,
 	"diagnostic.errorSign": "⛔",
 	"signature.enable": true,
-	"signature.triggerSignatureWait": 100,
+	"signature.triggerSignatureWait": 200,
 	"python.jediEnabled": true,
 	"python.linting.enabled": true,
+	"python.formatting.provider": "black",
     "languageserver": {
         "ccls": {
             "command": "ccls",
