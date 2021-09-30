@@ -5,9 +5,6 @@ else
 	call plug#begin('~/.vim/bundle')
 endif
 
-let s:has_calendar = 1
-let s:has_keysound = 0
-let s:has_rainbow = 0
 if filereadable(getcwd() . '/compile_commands.json') || filereadable(getcwd() . '/.ycm_extra_conf.py')
 	let s:has_ycm = 1
 	let g:has_coc = 0
@@ -15,133 +12,106 @@ else
 	let s:has_ycm = 0
 	let g:has_coc = 1
 endif
-let s:has_echodoc = 1
-let s:has_transshell = 0
-let s:has_solarized = 1
-let s:has_dracula = 1
-let s:has_gruvbox = 1
-let s:has_signify = 1
-let s:has_tagbar = 1
 let s:has_gtags = 1
-let s:has_ale = 1
-let s:has_vimspector = 1
-
-if !has('win32')
-	let s:has_transshell = 1
-endif
-
-if has('win32') || has('gui_macvim')
-	let s:has_calendar = 1
-	let s:has_keysound = 1
-endif
 
 if has('gui')
+	let s:has_keysound = 1
 	let s:has_rainbow = 1
+else
+	let s:has_keysound = 0
+	let s:has_rainbow = 0
 endif
 
+" vim folder tree and font support
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
-Plug 'kshenoy/vim-signature'
+
+" color scheme
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'altercation/vim-colors-solarized'
+Plug 'dracula/vim'
+Plug 'morhetz/gruvbox'
 Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
+Plug 'junegunn/limelight.vim'
+Plug 'junegunn/goyo.vim'
+if s:has_rainbow == 1
+	Plug 'kien/rainbow_parentheses.vim'
+endif
+
+" cursor move and edit
 Plug 'easymotion/vim-easymotion'
-Plug 'scrooloose/nerdcommenter'
-Plug 'SirVer/ultisnips'
-Plug 'abelZ/vim-snippets'
+Plug 'terryma/vim-multiple-cursors'
+
+" version control tools
 Plug 'tpope/vim-fugitive'
 Plug 'juneedahamed/vc.vim'
+Plug 'mhinz/vim-signify'
+
+" tool plug
+Plug 'drmikehenry/vim-fixkey'
 Plug 'chrisbra/vim-diff-enhanced'
-Plug 'vim-scripts/Align'
 Plug 'will133/vim-dirdiff'
-Plug 'tpope/vim-unimpaired'
-Plug 'puremourning/vimspector'
+Plug 'liuchengxu/vim-which-key'
+Plug 'gyim/vim-boxdraw'
+
+" file search tool
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+" vim plugin for better marks usage
+Plug 'kshenoy/vim-signature'
+" auto close [ ( {
 Plug 'Raimondi/delimitMate'
+" wiki
+Plug 'vimwiki/vimwiki'
+
+" skywind toolbox
 Plug 'skywind3000/vim-preview'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'skywind3000/asynctasks.vim'
 Plug 'skywind3000/quickmenu.vim'
+if s:has_keysound == 1
+	Plug 'skywind3000/vim-keysound'
+endif
+
+" more text object
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-syntax'
 Plug 'kana/vim-textobj-function'
 Plug 'sgur/vim-textobj-parameter'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'abelZ/vim-coloresque'
-Plug 'mattn/emmet-vim'
-Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
-Plug 'liuchengxu/vim-which-key'
-Plug 'junegunn/limelight.vim'
-Plug 'junegunn/goyo.vim'
-" Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
-Plug 'psf/black', { 'branch': 'stable' }
-Plug 'gyim/vim-boxdraw'
-Plug 'vim-scripts/timestamp.vim'
-Plug 'drmikehenry/vim-fixkey'
+
+" formating
+Plug 'google/vim-glaive'
 Plug 'google/vim-maktaba'
 Plug 'antmusco/vim-codefmt', { 'branch': 'feature/cmake-format-support' }
-Plug 'google/vim-glaive'
-Plug 'vimwiki/vimwiki'
+Plug 'psf/black', { 'branch': 'stable' }
+Plug 'vim-scripts/timestamp.vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'vim-scripts/Align'
 
-if s:has_ale == 1
-	Plug 'w0rp/ale'
-endif
-
+" coding
+Plug 'mattn/emmet-vim'
+Plug 'w0rp/ale'
+Plug 'majutsushi/tagbar'
+Plug 'Shougo/echodoc.vim'
+Plug 'SirVer/ultisnips'
+Plug 'abelZ/vim-snippets'
 if s:has_gtags == 1
 	Plug 'ludovicchabant/vim-gutentags'
 	Plug 'skywind3000/gutentags_plus'
 endif
-
-if s:has_tagbar == 1
-	Plug 'majutsushi/tagbar'
-endif
-
-if s:has_solarized == 1
-	Plug 'altercation/vim-colors-solarized'
-endif
-
-if s:has_dracula == 1
-	Plug 'dracula/vim'
-endif
-
-if s:has_gruvbox == 1
-	Plug 'morhetz/gruvbox'
-endif
-
 if s:has_ycm == 1
 	Plug 'ycm-core/YouCompleteMe'
 	Plug 'ycm-core/lsp-examples', { 'do': './viml/install.py'}
 	Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 endif
-
 if g:has_coc == 1
 	Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
 
-if s:has_echodoc == 1
-	Plug 'Shougo/echodoc.vim'
-endif
-
-if s:has_calendar == 1
-	Plug 'itchyny/calendar.vim'
-endif
-
-if s:has_keysound == 1
-	Plug 'skywind3000/vim-keysound'
-endif
-
-if s:has_rainbow == 1
-	Plug 'kien/rainbow_parentheses.vim'
-endif
-
-if s:has_transshell == 1
-	Plug 'echuraev/translate-shell.vim'
-endif
-
-if s:has_signify == 1
-	Plug 'mhinz/vim-signify'
-endif
+" debuging
+Plug 'puremourning/vimspector'
 
 call plug#end()
 " }}}
@@ -188,27 +158,21 @@ autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 " }}}
 
 " Vim color sheme solarized -----------------------{{{
-if s:has_solarized == 1
-	set background=dark
-	let g:solarized_italic = 0
-	let g:solarized_termtrans = 1
-	"color solarized
-	call g:quickmenu#append('Solarized', 'color solarized', '')
-endif
+set background=dark
+let g:solarized_italic = 0
+let g:solarized_termtrans = 1
+"color solarized
+call g:quickmenu#append('Solarized', 'color solarized', '')
 " }}}
 
 " Vim color scheme dracula -----------------------{{{
-if s:has_dracula == 1
-	let g:dracula_italic = 0
-	color dracula
-	call g:quickmenu#append('Dracula', 'color dracula', '')
-endif
+let g:dracula_italic = 0
+color dracula
+call g:quickmenu#append('Dracula', 'color dracula', '')
 " }}}
 
 " Vim color scheme gruvbox -----------------------{{{
-if s:has_gruvbox == 1
-	call g:quickmenu#append('Gruvbox', 'color gruvbox', '')
-endif
+call g:quickmenu#append('Gruvbox', 'color gruvbox', '')
 " }}}
 
 " Vim common Settings ----------------------------{{{
@@ -273,10 +237,8 @@ set timeoutlen=1000
 " }}}
 
 " echodoc options --------------------------------{{{
-if s:has_echodoc == 1
 let g:echodoc#enable_at_startup = 1
 set noshowmode
-endif
 " }}}
 
 " ycm options ------------------------------------{{{
@@ -304,11 +266,11 @@ if has('gui')
 	let g:ycm_use_clangd = 0
 	let g:ycm_clangd_args = ["--background-index=false"]
 	if has('gui_macvim')
-		let g:ycm_python_binary_path = '/usr/local/bin/python3'
+		let g:ycm_python_binary_path = 'python3'
 	endif
 else
 	let g:ycm_use_clangd = 1
-	let g:ycm_clangd_binary_path = '~/tool-src/llvm-project/build/bin/clangd'
+	let g:ycm_clangd_binary_path = '~/.vim/third-party/llvm-project/build/bin/clangd'
 endif
 
 let g:ycm_auto_hover = ''
@@ -339,11 +301,8 @@ source ~/.vim/configs/coc_config.vim
 " gtags options ----------------------------------{{{
 if s:has_gtags == 1
 	let $GTAGSLABEL = 'native-pygments'
-	if has('win32')
-		let $GTAGSCONF = 'c:\\Users\\gtags.conf'
-	else
-		let $GTAGSCONF = '/home/gtags.conf'
-	endif
+	let $VIMHOME=expand('<sfile>:p:h:h')
+	let $GTAGSCONF = $VIMHOME."/third-party/global-6.6/gtags.conf"
 
 	let gutentags_add_default_project_roots = 0
 	let g:gutentags_project_root = ['.tagroot']
@@ -352,7 +311,7 @@ if s:has_gtags == 1
 
 	let g:gutentags_ctags_executable = 'universal-ctags'
 	let g:gutentags_modules = ['ctags', 'gtags_cscope']
-	let g:gutentags_cache_dir = expand('~/.cache/tags')
+	let g:gutentags_cache_dir = expand('/data/.cache/tags')
 
 	let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
 	let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
@@ -404,26 +363,24 @@ xnoremap gf :<C-U><C-R>=printf("Leaderf! rg --no-ignore-vcs -F --stayOpen -e %s 
 " }}}
 
 " vimspector options -----------------------------{{{
-if s:has_vimspector == 1
-	nmap <F5> <Plug>VimspectorContinue
-	nmap <S-F5> <Plug>VimspectorStop
-	nmap <C-F5> :VimspectorReset<CR>
-	nmap <C-S-F5> <Plug>VimspectorRestart
-	nmap <F9> <Plug>VimspectorToggleBreakpoint
-	nmap <A-F9> <Plug>VimspectorToggleConditionalBreakpoint
-	nmap <S-F9> <Plug>VimspectorAddFunctionBreakpoint
-	nmap <F10> <Plug>VimspectorStepOver
-	nmap <C-F10> <Plug>VimspectorRunToCursor
-	nmap <F11> <Plug>VimspectorStepInto
-	nmap <S-F11> <Plug>VimspectorStepOut
-	call g:quickmenu#append('# Vimspector', '')
-	call g:quickmenu#append('C-F5 reset', 'VimspectorReset', 'reset')
-	call g:quickmenu#append('S-F5 stop', 'echo', 'stop')
-	call g:quickmenu#append('C-S-F5 restart', 'echo', 'restart')
-	call g:quickmenu#append('A-F9 condition break', 'echo', 'condition break')
-	call g:quickmenu#append('S-F9 function break', 'echo', 'function break')
-	call g:quickmenu#append('C-F10 run_to_cursor', 'echo', 'run to cursor')
-endif
+nmap <F5> <Plug>VimspectorContinue
+nmap <S-F5> <Plug>VimspectorStop
+nmap <C-F5> :VimspectorReset<CR>
+nmap <C-S-F5> <Plug>VimspectorRestart
+nmap <F9> <Plug>VimspectorToggleBreakpoint
+nmap <A-F9> <Plug>VimspectorToggleConditionalBreakpoint
+nmap <S-F9> <Plug>VimspectorAddFunctionBreakpoint
+nmap <F10> <Plug>VimspectorStepOver
+nmap <C-F10> <Plug>VimspectorRunToCursor
+nmap <F11> <Plug>VimspectorStepInto
+nmap <S-F11> <Plug>VimspectorStepOut
+call g:quickmenu#append('# Vimspector', '')
+call g:quickmenu#append('C-F5 reset', 'VimspectorReset', 'reset')
+call g:quickmenu#append('S-F5 stop', 'echo', 'stop')
+call g:quickmenu#append('C-S-F5 restart', 'echo', 'restart')
+call g:quickmenu#append('A-F9 condition break', 'echo', 'condition break')
+call g:quickmenu#append('S-F9 function break', 'echo', 'function break')
+call g:quickmenu#append('C-F10 run_to_cursor', 'echo', 'run to cursor')
 " }}}
 
 " preview_vim options ----------------------------{{{
@@ -475,44 +432,41 @@ endif
 " }}}
 
 " ale options ------------------------------------{{{
-if s:has_ale == 1
-	let g:ale_echo_delay = 20
-	let g:ale_lint_delay = 500
-	let g:ale_echo_msg_format = '[%linter%] %code: %%s'
-	let g:ale_lint_on_save = 1
-	let g:ale_lint_on_enter = 0
-	let g:ale_lint_on_text_changed = 'never'
-	let g:ale_lint_on_insert_leave = 0
-	let g:ale_lint_on_filetype_changed = 0
-	let g:ale_set_loclist = 1
-	let g:ale_set_quickfix = 0
-	let g:ale_disable_lsp = 1
-	if has('win32') == 0 && has('win64') == 0 && has('win32unix') == 0
-		let g:ale_command_wrapper = 'nice -n5'
-	endif
-	let g:airline#extensions#ale#enabled = 1
-
-	let g:ale_linters_explicit = 1
-	let g:ale_linters = {
-				\ 'c' : [],
-				\ 'cpp' : ['cpplint'],
-				\ 'python': ['flake8', 'pylint'],
-				\ 'java': ['javac'],
-				\ 'javascript': ['eslint'],
-				\ 'sh': ['shellcheck'],
-				\ 'cmake': ['cmakelint'],
-				\ }
-	let g:ale_cpp_cppcheck_options = '--enable=all --suppress=unusedStructMember:*.h'
-	let g:ale_cpp_cpplint_executable = 'cpplint.py'
-	let g:ale_cmake_cmakelint_executable = 'cmake-lint'
-
-	nmap [g <Plug>(ale_previous)
-	nmap ]g <Plug>(ale_next)
-	call g:quickmenu#append('# ALE', '')
-	call g:quickmenu#append('ALELint ale lint', 'ALELint', 'mannuly run ALELint')
+let g:ale_echo_delay = 20
+let g:ale_lint_delay = 500
+let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_filetype_changed = 0
+let g:ale_set_loclist = 1
+let g:ale_set_quickfix = 0
+let g:ale_disable_lsp = 1
+if has('win32') == 0 && has('win64') == 0 && has('win32unix') == 0
+	let g:ale_command_wrapper = 'nice -n5'
 endif
-" }}}
+let g:airline#extensions#ale#enabled = 1
 
+let g:ale_linters_explicit = 1
+let g:ale_linters = {
+			\ 'c' : [],
+			\ 'cpp' : ['cpplint'],
+			\ 'python': ['flake8', 'pylint'],
+			\ 'java': ['javac'],
+			\ 'javascript': ['eslint'],
+			\ 'sh': ['shellcheck'],
+			\ 'cmake': ['cmakelint'],
+			\ }
+let g:ale_cpp_cppcheck_options = '--enable=all --suppress=unusedStructMember:*.h'
+let g:ale_cpp_cpplint_executable = 'cpplint.py'
+let g:ale_cmake_cmakelint_executable = 'cmake-lint'
+
+nmap [g <Plug>(ale_previous)
+nmap ]g <Plug>(ale_next)
+call g:quickmenu#append('# ALE', '')
+call g:quickmenu#append('ALELint ale lint', 'ALELint', 'mannuly run ALELint')
+" }}}
 
 " codefmt options --------------------------------{{{
 " manully install clang-format,shfmt,cmake-format
@@ -537,13 +491,11 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_section_error = ''
 let g:airline_section_warning = ''
 let g:airline_powerline_fonts = 1
-if s:has_tagbar == 1
-	let g:airline#extensions#tagbar#enabled = 1
-	let g:airline#extensions#tagbar#flags = 'f'
-	let g:tagbar_ctags_bin = 'universal-ctags'
-	let g:tagbar_width = 20
-	nnoremap <F2> :Tagbar<CR>
-endif
+let g:airline#extensions#tagbar#enabled = 1
+let g:airline#extensions#tagbar#flags = 'f'
+let g:tagbar_ctags_bin = 'universal-ctags'
+let g:tagbar_width = 20
+nnoremap <F2> :Tagbar<CR>
 if 1
 	let g:airline#extensions#branch#custom_head = 'GetScmBranch'
 	function! GetScmBranch()
@@ -571,21 +523,6 @@ if g:has_coc == 1
 endif
 " }}}
 
-" calendar options -------------------------------{{{
-if s:has_calendar == 1
-	let g:calendar_frame = 'default'
-	let g:calendar_google_calendar = 1
-	let g:calendar_google_task = 1
-endif
-" }}}
-
-" vim-markdwon options ---------------------------{{{
-" autocmd FileType markdown let b:sleuth_automatic=0
-" autocmd FileType markdown set conceallevel=0
-
-" let g:vim_markdown_frontmatter=1
-" }}}
-
 " vim-limelight options --------------------------{{{
 call g:quickmenu#append('# Limelight', '')
 call g:quickmenu#append('Limelight', 'Limelight', 'toggle limelight')
@@ -597,10 +534,8 @@ call g:quickmenu#append('Goyo', 'Goyo', 'toggle Goyo')
 " }}}
 
 " signify options --------------------------------{{{
-if s:has_signify == 1
-    let g:signify_vcs_list = [ 'git', 'svn']
-	"♕ ♛ 🐒 🐍 🐢 🐓
-endif
+let g:signify_vcs_list = [ 'git', 'svn']
+"♕ ♛ 🐒 🐍 🐢 🐓
 " }}}
 
 " nerdcommenter options --------------------------------{{{
@@ -628,9 +563,6 @@ augroup END
 " user defined mappings --------------------------{{{
 nnoremap \ :Leaderf! rg -F --stayOpen -e<SPACE>
 vnoremap // y/\V<C-r>=escape(@",'/\')<CR><CR>
-if s:has_transshell == 1
-	vnoremap <leader>tr :Trans :zh<CR>
-endif
 nnoremap <leader>dg :diffget<CR>
 nnoremap <leader>dp :diffput<CR>
 tnoremap <Esc> <C-\><C-n>
@@ -663,9 +595,6 @@ autocmd BufWritePre * nested call FixInconsistFileFormat()
 autocmd BufWritePre *.cpp :FormatCode
 autocmd BufWritePre *.h :FormatCode
 
-if g:asynctasks_system == 'wsl'
-	autocmd TextYankPost * call system('echo '.shellescape(join(v:event.regcontents, "\<CR>")).' |  clip.exe')
-endif
 " }}}
 
 " quickfix and localtion list Settings ----------{{{

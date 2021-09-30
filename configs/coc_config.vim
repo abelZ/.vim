@@ -1,14 +1,8 @@
 if g:has_coc == 1
-
-if has('gui')
-	let g:coc_start_at_startup = 0
-endif
-
 	autocmd BufNew,BufEnter *.log execute "silent! CocDisable"
 	autocmd BufLeave *.log execute "silent! CocEnable"
 
-	let g:coc_global_extensions = ['coc-python', 'coc-java', 'coc-json', 'coc-vimlsp', 'coc-highlight', 'coc-snippets', 'coc-ultisnips', 'coc-cmake'] 
-
+	let g:coc_global_extensions = ['coc-python', 'coc-java', 'coc-json', 'coc-vimlsp', 'coc-highlight', 'coc-snippets', 'coc-ultisnips', 'coc-cmake', 'coc-restclient']
 
 	" TextEdit might fail if hidden is not set.
 	set hidden
