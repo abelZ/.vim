@@ -212,7 +212,7 @@ if has('win32')
 	set guifont=DejaVuSansMono_NF:h12
 endif
 if has('gui_macvim')
-	set guifont=Menlo:h14
+	set guifont=DejaVuSansMono_Nerd_Font_Mono:h14
 endif
 if has('unix')
 	set ambw=double
