@@ -1,6 +1,25 @@
 if g:has_coc == 1
-	autocmd BufNew,BufEnter *.log execute "silent! CocDisable"
-	autocmd BufLeave *.log execute "silent! CocEnable"
+	let s:coc_black_list = []
+	for key in keys(g:ycm_filetype_whitelist)
+		call add(s:coc_black_list, key)
+	endfor
+
+	function! s:disable_coc_for_type()
+		if index(s:coc_black_list, &filetype) != -1
+			if g:coc_enabled == 1
+				:silent! CocDisable
+			endif
+		else
+			if g:coc_enabled == 0
+				:silent! CocEnable
+			endif
+		endif
+	endfunction
+
+	augroup CocGroup
+		autocmd!
+		autocmd BufNew,BufEnter *.* call s:disable_coc_for_type()
+	augroup end
 
 	let g:coc_global_extensions = ['coc-python', 'coc-java', 'coc-json', 'coc-vimlsp', 'coc-highlight', 'coc-snippets', 'coc-ultisnips', 'coc-cmake', 'coc-restclient']
 

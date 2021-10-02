@@ -10,27 +10,6 @@
 	"python.linting.enabled": true,
 	"python.formatting.provider": "black",
     "languageserver": {
-        "ccls": {
-            "command": "ccls",
-            "filetypes": [
-                "c",
-                "cpp",
-                "objc",
-                "objcpp"
-            ],
-            "rootPatterns": [
-                ".ccls",
-                "compile_commands.json",
-                ".vim/",
-                ".git/",
-                ".svn/"
-            ],
-            "initializationOptions": {
-                "cache": {
-                    "directory": ".cclscache"
-                }
-            }
-        }
     },
     "python.linting.pylintArgs": [
         "--unsafe-load-any-extension=y"

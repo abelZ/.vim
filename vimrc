@@ -5,14 +5,9 @@ else
 	call plug#begin('~/.vim/bundle')
 endif
 
-if filereadable(getcwd() . '/compile_commands.json') || filereadable(getcwd() . '/.ycm_extra_conf.py')
-	let s:has_ycm = 1
-	let g:has_coc = 0
-else
-	let s:has_ycm = 0
-	let g:has_coc = 1
-endif
 let s:has_gtags = 1
+let s:has_ycm = 1
+let g:has_coc = 1
 
 if has('gui')
 	let s:has_keysound = 1
@@ -251,6 +246,12 @@ let g:ycm_semantic_triggers =  {
 	  \ 'VimspectorPrompt': [ '.', '->', ':', '<' ],
 	  \ 'bash,cmake,sh': ['re!\w{5}'],
 	  \}
+let g:ycm_filetype_whitelist = {
+			\ "c":1,
+			\ "cpp":1,
+			\ "h":1,
+			\ "hpp":1,
+			\ }
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_log_level = 'debug'
 let g:ycm_always_populate_location_list = 1
