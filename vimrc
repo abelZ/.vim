@@ -5,7 +5,7 @@ else
 	call plug#begin('~/.vim/bundle')
 endif
 
-let s:has_gtags = 1
+let s:has_gtags = 0
 let s:has_ycm = 1
 let g:has_coc = 1
 
@@ -275,7 +275,6 @@ else
 endif
 
 let g:ycm_auto_hover = ''
-nmap <leader>H <plug>(YCMHover)
 
 source ~/.vim/bundle/lsp-examples/vimrc.generated
 call g:quickmenu#append('# YCM', '')
@@ -283,11 +282,55 @@ call g:quickmenu#append(mapleader.'fx Ycm FixIt', 'YcmCompleter FixIt', 'fix the
 call g:quickmenu#append(mapleader.'gd Ycm GoToDef', 'YcmCompleter GoToDefinitionElseDeclaration', 'go to the var or function definition')
 call g:quickmenu#append(mapleader.'gr Ycm GoToRef', 'YcmCompleter GoToReferences', 'find all references of the var or function')
 call g:quickmenu#append(mapleader.'H', '_', 'get hover info')
-nnoremap <leader>fx :YcmCompleter FixIt<CR>
-nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
 endif
 " }}}
+
+" coc and ycm conflict----------------------------{{{
+let s:coc_black_list = ["log"]
+for key in keys(g:ycm_filetype_whitelist)
+	call add(s:coc_black_list, key)
+endfor
+
+function! s:disable_coc_for_type()
+	if index(s:coc_black_list, &filetype) != -1
+		if g:coc_enabled == 1
+			:silent! CocDisable
+			nnoremap <leader>fx :YcmCompleter FixIt<CR>
+			nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+			nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
+			nmap K <plug>(YCMHover)
+			echom "switch to YCM"
+		endif
+	else
+		if g:coc_enabled == 0
+			:silent! CocEnable
+			nmap <silent> <leader>gd <Plug>(coc-definition)
+			nmap <silent> <leader>gi <Plug>(coc-implementation)
+			nmap <silent> <leader>gr <Plug>(coc-references)
+			nnoremap <silent> K :call <SID>show_documentation()<CR>
+			echom "switch to COC"
+		endif
+	endif
+endfunction
+
+" augroup CocGroup
+	" autocmd!
+	" autocmd FileType * call s:disable_coc_for_type()
+	" autocmd BufNew,BufEnter,BufWinEnter * call s:disable_coc_for_type()
+" augroup end
+nmap <F8> :call <SID>disable_coc_for_type()<CR>
+
+function! s:show_documentation()
+	if (index(['vim','help'], &filetype) >= 0)
+		execute 'silent! h '.expand('<cword>')
+	elseif (coc#rpc#ready())
+		call CocActionAsync('doHover')
+	else
+		execute '!' . &keywordprg . " " . expand('<cword>')
+	endif
+endfunction
+
+"}}}
 
 " ultisnips options ------------------------------{{{
 let g:UltiSnipsExpandTrigger = "<C-j>"
@@ -353,11 +396,9 @@ endif
 call g:quickmenu#append('# LeaderF', '')
 call g:quickmenu#append(mapleader.mapleader.'t search file', 'LeaderfBufTag', 'search file in current path recursive')
 call g:quickmenu#append(mapleader.mapleader.'n search func', 'LeaderfFunction', 'search functions in current file')
-call g:quickmenu#append(mapleader.mapleader.'m search mark', 'LeaderfMarks', 'search marks in current buffer')
 call g:quickmenu#append(mapleader.mapleader.'r search mru', 'LeaderfMru', 'search file in most recently used files')
 nnoremap <silent> <leader><leader>t :LeaderfBufTag<CR>
 nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
-nnoremap <silent> <leader><leader>m :LeaderfMarks<CR>
 nnoremap <silent> <leader><leader>r :LeaderfMru<CR>
 " search visually selected text literally, don't quit LeaderF after accepting an entry
 xnoremap gf :<C-U><C-R>=printf("Leaderf! rg --no-ignore-vcs -F --stayOpen -e %s ", leaderf#Rg#visual())<CR><CR>
