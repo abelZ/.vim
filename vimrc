@@ -50,6 +50,7 @@ Plug 'chrisbra/vim-diff-enhanced'
 Plug 'will133/vim-dirdiff'
 Plug 'liuchengxu/vim-which-key'
 Plug 'gyim/vim-boxdraw'
+Plug 'voldikss/vim-floaterm'
 
 " file search tool
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
@@ -255,7 +256,7 @@ let g:ycm_filetype_whitelist = {
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_log_level = 'debug'
 let g:ycm_always_populate_location_list = 1
-let g:ycm_error_symbol = '⛔'
+let g:ycm_error_symbol = '!' "'⛔'
 let g:ycm_warning_symbol = '⚠'
 let g:ycm_max_diagnostics_to_display = 300
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
@@ -313,11 +314,11 @@ function! s:disable_coc_for_type()
 	endif
 endfunction
 
-" augroup CocGroup
-	" autocmd!
-	" autocmd FileType * call s:disable_coc_for_type()
+augroup CocGroup
+	autocmd!
+	autocmd FileType c,cpp call s:disable_coc_for_type()
 	" autocmd BufNew,BufEnter,BufWinEnter * call s:disable_coc_for_type()
-" augroup end
+augroup end
 nmap <F8> :call <SID>disable_coc_for_type()<CR>
 
 function! s:show_documentation()
@@ -416,6 +417,8 @@ nmap <F10> <Plug>VimspectorStepOver
 nmap <C-F10> <Plug>VimspectorRunToCursor
 nmap <F11> <Plug>VimspectorStepInto
 nmap <S-F11> <Plug>VimspectorStepOut
+nmap <C-F7> :AsyncTask compile<cr>
+nmap <C-F8> :AsyncTask build<cr>
 call g:quickmenu#append('# Vimspector', '')
 call g:quickmenu#append('C-F5 reset', 'VimspectorReset', 'reset')
 call g:quickmenu#append('S-F5 stop', 'echo', 'stop')
@@ -478,7 +481,7 @@ let g:ale_echo_delay = 20
 let g:ale_lint_delay = 500
 let g:ale_echo_msg_format = '[%linter%] %code: %%s'
 let g:ale_lint_on_save = 1
-let g:ale_lint_on_enter = 0
+let g:ale_lint_on_enter = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_filetype_changed = 0
@@ -666,6 +669,16 @@ function! ToggleList(bufname, pfx)
 	wincmd p
   endif
 endfunction
+
+function! ToggleFloatShell(bufname)
+  let buflist = GetBufferList()
+  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+      exec('FloatermKill!')
+	  return
+  endfor
+  exec('FloatermToggle')
+endfunction
+nmap <F6> :call ToggleFloatShell('Terminal')<CR>
 
 if has('win32')
 	"visual studio 2019 error format
