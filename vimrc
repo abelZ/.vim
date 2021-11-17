@@ -506,6 +506,7 @@ let g:ale_linters = {
 let g:ale_cpp_cppcheck_options = '--enable=all --suppress=unusedStructMember:*.h'
 let g:ale_cpp_cpplint_executable = 'cpplint.py'
 let g:ale_cmake_cmakelint_executable = 'cmake-lint'
+let g:ale_cmake_cmakelint_options = '-c .cmake-lint.yaml'
 
 nmap [g <Plug>(ale_previous)
 nmap ]g <Plug>(ale_next)
@@ -615,6 +616,12 @@ set termwinkey=<C-L>
 au BufRead *.log set ft=
 au BufRead,BufNewFile *.hla set ft=hla
 au BufRead,BufNewFile *.tasks set ft=dosini
+
+" fix terminal mode arrow key didn't work issue
+tnoremap <Esc> <C-W>N
+tnoremap <Esc><Esc> <C-W>N
+set timeout timeoutlen=1000  " Default
+set ttimeout ttimeoutlen=100  " Set by defaults.vim
 
 " copy to buffer
 vmap <C-c> :w! ~/.vimbuffer<CR>
