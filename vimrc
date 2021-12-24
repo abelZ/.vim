@@ -82,7 +82,6 @@ Plug 'google/vim-glaive'
 Plug 'google/vim-maktaba'
 Plug 'antmusco/vim-codefmt', { 'branch': 'feature/cmake-format-support' }
 Plug 'psf/black', { 'branch': 'stable' }
-Plug 'vim-scripts/timestamp.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'vim-scripts/Align'
 
@@ -391,9 +390,9 @@ let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
 let g:Lf_UseVersionControlTool = 0
 let g:Lf_DefaultMode = 'NameOnly'
-if v:version >=801 && has('patch1615')
-	let g:Lf_WindowPosition = 'popup'
-endif
+" if v:version >=801 && has('patch1615')
+	" let g:Lf_WindowPosition = 'popup'
+" endif
 call g:quickmenu#append('# LeaderF', '')
 call g:quickmenu#append(mapleader.mapleader.'t search file', 'LeaderfBufTag', 'search file in current path recursive')
 call g:quickmenu#append(mapleader.mapleader.'n search func', 'LeaderfFunction', 'search functions in current file')
@@ -622,6 +621,7 @@ tnoremap <Esc> <C-W>N
 tnoremap <Esc><Esc> <C-W>N
 set timeout timeoutlen=1000  " Default
 set ttimeout ttimeoutlen=100  " Set by defaults.vim
+set pastetoggle=<S-F2>
 
 " copy to buffer
 vmap <C-c> :w! ~/.vimbuffer<CR>

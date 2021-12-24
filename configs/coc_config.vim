@@ -1,5 +1,5 @@
 if g:has_coc == 1
-	let g:coc_global_extensions = ['coc-jedi', 'coc-java', 'coc-json', 'coc-vimlsp', 'coc-highlight', 'coc-snippets', 'coc-ultisnips', 'coc-cmake', 'coc-restclient', 'coc-sh', 'coc-yaml']
+	let g:coc_global_extensions = ['coc-jedi', 'coc-java', 'coc-json', 'coc-vimlsp', 'coc-highlight', 'coc-snippets', 'coc-ultisnips', 'coc-cmake', 'coc-restclient', 'coc-sh']
 
 	" TextEdit might fail if hidden is not set.
 	set hidden
