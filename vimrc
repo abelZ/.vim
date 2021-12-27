@@ -276,7 +276,9 @@ endif
 
 let g:ycm_auto_hover = ''
 
-source ~/.vim/bundle/lsp-examples/vimrc.generated
+if filereadable("~/.vim/bundle/lsp-examples/vimrc.generated")
+	source ~/.vim/bundle/lsp-examples/vimrc.generated
+endif
 call g:quickmenu#append('# YCM', '')
 call g:quickmenu#append(mapleader.'fx Ycm FixIt', 'YcmCompleter FixIt', 'fix the code error by clang', 'c,cpp')
 call g:quickmenu#append(mapleader.'gd Ycm GoToDef', 'YcmCompleter GoToDefinitionElseDeclaration', 'go to the var or function definition')
