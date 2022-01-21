@@ -495,7 +495,7 @@ let g:airline#extensions#ale#enabled = 1
 let g:ale_linters_explicit = 1
 let g:ale_linters = {
 			\ 'c' : [],
-			\ 'cpp' : ['cpplint'],
+			\ 'cpp' : ['cpplint', 'clang-tidy'],
 			\ 'python': ['flake8', 'pylint'],
 			\ 'java': ['javac'],
 			\ 'javascript': ['eslint'],

@@ -2,36 +2,42 @@
 
 # User specific aliases and functions
 
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-alias cls='clear'
-
-LS_COLORS=$LS_COLORS:'di=0;35:' ; export LS_COLORS
+#alias rm='rm -i'
+#alias cp='cp -i'
+#alias mv='mv -i'
 
 # Source global definitions
+# if [ -n "$TMUX" ]; then
+# if [ -f /etc/profile ]; then
+	# echo $TMUX
+	# export TERM=xterm-256color
+	# PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/snap/bin"
+	# PATH="/usr/bin:/usr/local/bin"
+	# source /etc/profile
+# fi
+
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
-eval "$(lua //home/z.lua/z.lua --init bash)"
+add_to_path() {
+    local dir re
 
-if [ -d "/home/.local/vim/bin" ] ; then
-	PATH="/home/.local/vim/bin:$PATH"
-fi
+    for dir; do
+        re="(^$dir:|:$dir:|:$dir$)"
+        if ! [[ $PATH =~ $re ]]; then
+            PATH="$PATH:$dir"
+        fi
+    done
+}
 
-if [ -d "/home/.local/ctags/bin" ] ; then
-	PATH="/home/.local/ctags/bin:$PATH"
-fi
+add_to_path "$HOME/.local/bin"
+add_to_path "$HOME/.ft"
+add_to_path "$HOME/cpplint_scan/tool"
+add_to_path "$HOME/.cargo/bin"
+# ExtraPath="$HOME/.ft:$HOME/cpplint_scan/tool:$HOME/.local/bin:$HOME/.cargo/bin"
+# PATH="$ExtraPath:$PATH"
 
-if [ -d "/home/cmake/bin" ] ; then
-	PATH="/home/cmake/bin:$PATH"
-fi
+eval "$(lua ~/z.lua/z.lua --init bash)"
 
-if [ -d "/home/.local/bin" ] ; then
-	PATH="/home/.local/bin:$PATH"
-fi
-
-if [ -d "/root/.cargo/bin" ] ; then
-	PATH="/root/.cargo/bin:$PATH"
-fi
+. "/root/.local/share/lscolors.sh"
