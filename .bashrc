@@ -23,3 +23,5 @@ add_to_path "$HOME/.cargo/bin"
 eval "$(lua ~/z.lua/z.lua --init bash)"
 
 . "/root/.local/share/lscolors.sh"
+
+alias ftput='ft put -o -s work'

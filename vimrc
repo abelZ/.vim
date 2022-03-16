@@ -387,7 +387,7 @@ let g:Lf_WildIgnore = {
             \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.user','*.vc*','*.pdb']
 			\}
 let g:Lf_WorkingDirectoryMode = 'c'
-let g:Lf_Ctags = "universal-ctags"
+" let g:Lf_Ctags = "universal-ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
 let g:Lf_UseVersionControlTool = 0
@@ -540,8 +540,8 @@ let g:airline_section_warning = ''
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline#extensions#tagbar#flags = 'f'
-let g:tagbar_ctags_bin = 'universal-ctags'
-let g:tagbar_width = 20
+" let g:tagbar_ctags_bin = 'universal-ctags'
+let g:tagbar_width = 40
 nnoremap <F2> :Tagbar<CR>
 if 1
 	let g:airline#extensions#branch#custom_head = 'GetScmBranch'
@@ -624,6 +624,7 @@ tnoremap <Esc><Esc> <C-W>N
 set timeout timeoutlen=1000  " Default
 set ttimeout ttimeoutlen=100  " Set by defaults.vim
 set pastetoggle=<S-F2>
+imap <leader>id <C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR>
 
 " copy to buffer
 vmap <C-c> :w! ~/.vimbuffer<CR>
