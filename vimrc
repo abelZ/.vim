@@ -107,6 +107,7 @@ endif
 
 " debuging
 Plug 'puremourning/vimspector'
+Plug 'gauteh/vim-cppman'
 
 call plug#end()
 " }}}
@@ -300,7 +301,7 @@ function! s:disable_coc_for_type()
 			nnoremap <leader>fx :YcmCompleter FixIt<CR>
 			nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 			nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
-			nmap K <plug>(YCMHover)
+			nmap M <plug>(YCMHover)
 			echom "switch to YCM"
 		endif
 	else
@@ -309,7 +310,7 @@ function! s:disable_coc_for_type()
 			nmap <silent> <leader>gd <Plug>(coc-definition)
 			nmap <silent> <leader>gi <Plug>(coc-implementation)
 			nmap <silent> <leader>gr <Plug>(coc-references)
-			nnoremap <silent> K :call <SID>show_documentation()<CR>
+			nnoremap <silent> M :call <SID>show_documentation()<CR>
 			echom "switch to COC"
 		endif
 	endif
@@ -355,7 +356,7 @@ if s:has_gtags == 1
 	let g:gutentags_ctags_tagfile = '.tags'
 	let g:gutentags_ctags_exclude = ['*.log', '*.xml', '*.tlog']
 
-	let g:gutentags_ctags_executable = 'universal-ctags'
+	let g:gutentags_ctags_executable = '~/.local/bin/ctags'
 	let g:gutentags_modules = ['ctags', 'gtags_cscope']
 	let g:gutentags_cache_dir = expand('/data/.cache/tags')
 
@@ -387,7 +388,7 @@ let g:Lf_WildIgnore = {
             \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.user','*.vc*','*.pdb']
 			\}
 let g:Lf_WorkingDirectoryMode = 'c'
-" let g:Lf_Ctags = "universal-ctags"
+let g:Lf_Ctags = "ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
 let g:Lf_UseVersionControlTool = 0
@@ -540,8 +541,8 @@ let g:airline_section_warning = ''
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline#extensions#tagbar#flags = 'f'
-" let g:tagbar_ctags_bin = 'universal-ctags'
-let g:tagbar_width = 40
+let g:tagbar_ctags_bin = 'ctags'
+let g:tagbar_width = 30
 nnoremap <F2> :Tagbar<CR>
 if 1
 	let g:airline#extensions#branch#custom_head = 'GetScmBranch'
