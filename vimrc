@@ -27,6 +27,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'altercation/vim-colors-solarized'
 Plug 'dracula/vim'
 Plug 'morhetz/gruvbox'
+Plug 'tomasr/molokai'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 Plug 'junegunn/limelight.vim'
@@ -157,6 +158,7 @@ autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 set background=dark
 let g:solarized_italic = 0
 let g:solarized_termtrans = 1
+let g:solarized_termcolors=256
 "color solarized
 call g:quickmenu#append('Solarized', 'color solarized', '')
 " }}}
@@ -169,6 +171,12 @@ call g:quickmenu#append('Dracula', 'color dracula', '')
 
 " Vim color scheme gruvbox -----------------------{{{
 call g:quickmenu#append('Gruvbox', 'color gruvbox', '')
+" }}}
+
+" Vim color scheme molokai -----------------------{{{
+let g:molokai_original = 1
+let g:rehash256 = 1
+call g:quickmenu#append('Molokai', 'color molokai', '')
 " }}}
 
 " Vim common Settings ----------------------------{{{
