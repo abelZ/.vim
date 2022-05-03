@@ -294,6 +294,10 @@ let g:ycm_auto_hover = ''
 if filereadable("~/.vim/bundle/lsp-examples/vimrc.generated")
 	source ~/.vim/bundle/lsp-examples/vimrc.generated
 endif
+nnoremap <leader>fx :YcmCompleter FixIt<CR>
+nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
+nmap M <plug>(YCMHover)
 call g:quickmenu#append('# YCM', '')
 call g:quickmenu#append(mapleader.'fx Ycm FixIt', 'YcmCompleter FixIt', 'fix the code error by clang', 'c,cpp')
 call g:quickmenu#append(mapleader.'gd Ycm GoToDef', 'YcmCompleter GoToDefinitionElseDeclaration', 'go to the var or function definition')
@@ -316,7 +320,7 @@ if g:has_coc == 1
 				nnoremap <leader>fx :YcmCompleter FixIt<CR>
 				nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 				nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
-				nmap K <plug>(YCMHover)
+				nmap M <plug>(YCMHover)
 				echom "switch to YCM"
 			endif
 		else
@@ -325,7 +329,7 @@ if g:has_coc == 1
 				nmap <silent> <leader>gd <Plug>(coc-definition)
 				nmap <silent> <leader>gi <Plug>(coc-implementation)
 				nmap <silent> <leader>gr <Plug>(coc-references)
-				nnoremap <silent> K :call <SID>show_documentation()<CR>
+				nnoremap <silent> M :call <SID>show_documentation()<CR>
 				echom "switch to COC"
 			endif
 		endif
