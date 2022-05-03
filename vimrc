@@ -7,7 +7,7 @@ endif
 
 let s:has_gtags = 0
 let s:has_ycm = 1
-let g:has_coc = 1
+let g:has_coc = 0
 
 if has('gui')
 	let s:has_keysound = 1
@@ -251,6 +251,12 @@ let g:ycm_filetype_whitelist = {
 			\ "cpp":1,
 			\ "h":1,
 			\ "hpp":1,
+			\ "python":1,
+			\ "go":1,
+			\ "js":1,
+			\ "cs":1,
+			\ "sh":1,
+			\ "cmake":1,
 			\ }
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_log_level = 'debug'
@@ -288,49 +294,51 @@ endif
 " }}}
 
 " coc and ycm conflict----------------------------{{{
-let s:coc_black_list = ["log"]
-for key in keys(g:ycm_filetype_whitelist)
-	call add(s:coc_black_list, key)
-endfor
+if g:has_coc == 1
+	let s:coc_black_list = ["log"]
+	for key in keys(g:ycm_filetype_whitelist)
+		call add(s:coc_black_list, key)
+	endfor
 
-function! s:disable_coc_for_type()
-	if index(s:coc_black_list, &filetype) != -1
-		if g:coc_enabled == 1
-			:silent! CocDisable
-			nnoremap <leader>fx :YcmCompleter FixIt<CR>
-			nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-			nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
-			nmap K <plug>(YCMHover)
-			echom "switch to YCM"
+	function! s:disable_coc_for_type()
+		if index(s:coc_black_list, &filetype) != -1
+			if g:coc_enabled == 1
+				:silent! CocDisable
+				nnoremap <leader>fx :YcmCompleter FixIt<CR>
+				nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+				nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
+				nmap K <plug>(YCMHover)
+				echom "switch to YCM"
+			endif
+		else
+			if g:coc_enabled == 0
+				:silent! CocEnable
+				nmap <silent> <leader>gd <Plug>(coc-definition)
+				nmap <silent> <leader>gi <Plug>(coc-implementation)
+				nmap <silent> <leader>gr <Plug>(coc-references)
+				nnoremap <silent> K :call <SID>show_documentation()<CR>
+				echom "switch to COC"
+			endif
 		endif
-	else
-		if g:coc_enabled == 0
-			:silent! CocEnable
-			nmap <silent> <leader>gd <Plug>(coc-definition)
-			nmap <silent> <leader>gi <Plug>(coc-implementation)
-			nmap <silent> <leader>gr <Plug>(coc-references)
-			nnoremap <silent> K :call <SID>show_documentation()<CR>
-			echom "switch to COC"
+	endfunction
+
+	augroup CocGroup
+		autocmd!
+		autocmd FileType c,cpp call s:disable_coc_for_type()
+		" autocmd BufNew,BufEnter,BufWinEnter * call s:disable_coc_for_type()
+	augroup end
+	nmap <F8> :call <SID>disable_coc_for_type()<CR>
+
+	function! s:show_documentation()
+		if (index(['vim','help'], &filetype) >= 0)
+			execute 'silent! h '.expand('<cword>')
+		elseif (coc#rpc#ready())
+			call CocActionAsync('doHover')
+		else
+			execute '!' . &keywordprg . " " . expand('<cword>')
 		endif
-	endif
-endfunction
-
-augroup CocGroup
-	autocmd!
-	autocmd FileType c,cpp call s:disable_coc_for_type()
-	" autocmd BufNew,BufEnter,BufWinEnter * call s:disable_coc_for_type()
-augroup end
-nmap <F8> :call <SID>disable_coc_for_type()<CR>
-
-function! s:show_documentation()
-	if (index(['vim','help'], &filetype) >= 0)
-		execute 'silent! h '.expand('<cword>')
-	elseif (coc#rpc#ready())
-		call CocActionAsync('doHover')
-	else
-		execute '!' . &keywordprg . " " . expand('<cword>')
-	endif
-endfunction
+	endfunction
+endif
 
 "}}}
 
