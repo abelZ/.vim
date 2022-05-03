@@ -27,6 +27,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'altercation/vim-colors-solarized'
 Plug 'dracula/vim'
 Plug 'morhetz/gruvbox'
+Plug 'tomasr/molokai'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 Plug 'junegunn/limelight.vim'
@@ -107,6 +108,7 @@ endif
 
 " debuging
 Plug 'puremourning/vimspector'
+Plug 'gauteh/vim-cppman'
 
 call plug#end()
 " }}}
@@ -156,6 +158,7 @@ autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 set background=dark
 let g:solarized_italic = 0
 let g:solarized_termtrans = 1
+let g:solarized_termcolors=256
 "color solarized
 call g:quickmenu#append('Solarized', 'color solarized', '')
 " }}}
@@ -168,6 +171,12 @@ call g:quickmenu#append('Dracula', 'color dracula', '')
 
 " Vim color scheme gruvbox -----------------------{{{
 call g:quickmenu#append('Gruvbox', 'color gruvbox', '')
+" }}}
+
+" Vim color scheme molokai -----------------------{{{
+let g:molokai_original = 1
+let g:rehash256 = 1
+call g:quickmenu#append('Molokai', 'color molokai', '')
 " }}}
 
 " Vim common Settings ----------------------------{{{
@@ -363,7 +372,7 @@ if s:has_gtags == 1
 	let g:gutentags_ctags_tagfile = '.tags'
 	let g:gutentags_ctags_exclude = ['*.log', '*.xml', '*.tlog']
 
-	let g:gutentags_ctags_executable = 'universal-ctags'
+	let g:gutentags_ctags_executable = '~/.local/bin/ctags'
 	let g:gutentags_modules = ['ctags', 'gtags_cscope']
 	let g:gutentags_cache_dir = expand('/data/.cache/tags')
 
@@ -395,7 +404,7 @@ let g:Lf_WildIgnore = {
             \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.user','*.vc*','*.pdb']
 			\}
 let g:Lf_WorkingDirectoryMode = 'c'
-" let g:Lf_Ctags = "universal-ctags"
+let g:Lf_Ctags = "ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
 let g:Lf_UseVersionControlTool = 0
@@ -548,8 +557,8 @@ let g:airline_section_warning = ''
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline#extensions#tagbar#flags = 'f'
-" let g:tagbar_ctags_bin = 'universal-ctags'
-let g:tagbar_width = 40
+let g:tagbar_ctags_bin = 'ctags'
+let g:tagbar_width = 30
 nnoremap <F2> :Tagbar<CR>
 if 1
 	let g:airline#extensions#branch#custom_head = 'GetScmBranch'
