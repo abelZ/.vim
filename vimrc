@@ -408,7 +408,7 @@ let g:Lf_WildIgnore = {
             \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.user','*.vc*','*.pdb']
 			\}
 let g:Lf_WorkingDirectoryMode = 'c'
-let g:Lf_Ctags = "ctags"
+let g:Lf_Ctags = "~/.local/bin/ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
 let g:Lf_UseVersionControlTool = 0
@@ -561,7 +561,7 @@ let g:airline_section_warning = ''
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline#extensions#tagbar#flags = 'f'
-let g:tagbar_ctags_bin = 'ctags'
+let g:tagbar_ctags_bin = '~/.local/bin/ctags'
 let g:tagbar_width = 30
 nnoremap <F2> :Tagbar<CR>
 if 1
