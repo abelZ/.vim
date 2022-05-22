@@ -28,6 +28,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'dracula/vim'
 Plug 'morhetz/gruvbox'
 Plug 'tomasr/molokai'
+Plug 'ptrr/phd-vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 Plug 'junegunn/limelight.vim'
@@ -178,6 +179,10 @@ let g:molokai_original = 1
 let g:rehash256 = 1
 call g:quickmenu#append('Molokai', 'color molokai', '')
 " }}}
+
+" Vim color scheme phd ---------------------------{{{
+call g:quickmenu#append('Phd', 'color phd', '')
+"}}}
 
 " Vim common Settings ----------------------------{{{
 set encoding=utf-8
