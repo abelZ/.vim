@@ -64,10 +64,9 @@ Plug 'Raimondi/delimitMate'
 Plug 'vimwiki/vimwiki'
 
 " skywind toolbox
-Plug 'skywind3000/vim-preview'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'skywind3000/asynctasks.vim'
-Plug 'skywind3000/quickmenu.vim'
+Plug 'skywind3000/vim-quickui'
 if s:has_keysound == 1
 	Plug 'skywind3000/vim-keysound'
 endif
@@ -122,18 +121,6 @@ filetype plugin on
 syntax on "syntax highlighting
 " }}}
 
-" quickmenu options ------------------------------{{{
-" choose a favorite key to show/hide quickmenu
-noremap <silent><F12> :call quickmenu#toggle(0)<cr>
-
-" enable cursorline (L) and cmdline help (H)
-let g:quickmenu_options = "HL"
-
-" clear all the items
-call g:quickmenu#reset()
-
-" }}}
-
 " color scheme helper ----------------------------{{{
 function! MyHighlights() abort
 	if g:has_coc == 1
@@ -146,8 +133,6 @@ augroup MyColors
     autocmd ColorScheme * call MyHighlights()
 	autocmd Syntax * call MyHighlights()
 augroup END
-
-call g:quickmenu#append('# ColorScheme', '')
 "}}}
 
 " nerdtree ----------------------------------------{{{
@@ -160,28 +145,22 @@ set background=dark
 let g:solarized_italic = 0
 let g:solarized_termtrans = 1
 let g:solarized_termcolors=256
-"color solarized
-call g:quickmenu#append('Solarized', 'color solarized', '')
 " }}}
 
 " Vim color scheme dracula -----------------------{{{
 let g:dracula_italic = 0
 color dracula
-call g:quickmenu#append('Dracula', 'color dracula', '')
 " }}}
 
 " Vim color scheme gruvbox -----------------------{{{
-call g:quickmenu#append('Gruvbox', 'color gruvbox', '')
 " }}}
 
 " Vim color scheme molokai -----------------------{{{
 let g:molokai_original = 1
 let g:rehash256 = 1
-call g:quickmenu#append('Molokai', 'color molokai', '')
 " }}}
 
 " Vim color scheme phd ---------------------------{{{
-call g:quickmenu#append('Phd', 'color phd', '')
 "}}}
 
 " Vim common Settings ----------------------------{{{
@@ -303,11 +282,6 @@ nnoremap <leader>fx :YcmCompleter FixIt<CR>
 nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
 nmap M <plug>(YCMHover)
-call g:quickmenu#append('# YCM', '')
-call g:quickmenu#append(mapleader.'fx Ycm FixIt', 'YcmCompleter FixIt', 'fix the code error by clang', 'c,cpp')
-call g:quickmenu#append(mapleader.'gd Ycm GoToDef', 'YcmCompleter GoToDefinitionElseDeclaration', 'go to the var or function definition')
-call g:quickmenu#append(mapleader.'gr Ycm GoToRef', 'YcmCompleter GoToReferences', 'find all references of the var or function')
-call g:quickmenu#append(mapleader.'H', '_', 'get hover info')
 endif
 " }}}
 
@@ -374,12 +348,12 @@ source ~/.vim/configs/coc_config.vim
 if s:has_gtags == 1
 	let $GTAGSLABEL = 'native-pygments'
 	let $VIMHOME=expand('<sfile>:p:h:h')
-	let $GTAGSCONF = $VIMHOME."/third-party/global-6.6/gtags.conf"
+	let $GTAGSCONF = $VIMHOME."/.vim/third-party/global-6.6/gtags.conf"
 
 	let gutentags_add_default_project_roots = 0
-	let g:gutentags_project_root = ['.tagroot']
+	let g:gutentags_project_root = ['.tagroot', '.git']
 	let g:gutentags_ctags_tagfile = '.tags'
-	let g:gutentags_ctags_exclude = ['*.log', '*.xml', '*.tlog']
+	let g:gutentags_ctags_exclude = ['*.log', '*.xml', '*.tlog', "*.vim", "*.json", "*.xml", "*vimrc"]
 
 	let g:gutentags_ctags_executable = '~/.local/bin/ctags'
 	let g:gutentags_modules = ['ctags', 'gtags_cscope']
@@ -397,10 +371,6 @@ if s:has_gtags == 1
 	let g:gutentags_define_advanced_commands = 1
 	let g:gutentags_plus_nomap = 1
 	let g:gutentags_generate_on_new = 0
-	call g:quickmenu#append('# Gtags', '')
-	call g:quickmenu#append(mapleader.'gs find symbol', 'GscopeFind s <C-R><C-W>', 'find all appearence of the symbol in gtags database')
-	call g:quickmenu#append(mapleader.'gc find calling', 'GscopeFind c <C-R><C-W>', 'find all function calling this function in gtags database')
-	call g:quickmenu#append(mapleader.'gt find text', 'GscopeFind t <C-R><C-W>', 'find the string appearence of the text in gtags database')
 	noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
 	noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
 	noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
@@ -421,10 +391,6 @@ let g:Lf_DefaultMode = 'NameOnly'
 " if v:version >=801 && has('patch1615')
 	" let g:Lf_WindowPosition = 'popup'
 " endif
-call g:quickmenu#append('# LeaderF', '')
-call g:quickmenu#append(mapleader.mapleader.'t search file', 'LeaderfBufTag', 'search file in current path recursive')
-call g:quickmenu#append(mapleader.mapleader.'n search func', 'LeaderfFunction', 'search functions in current file')
-call g:quickmenu#append(mapleader.mapleader.'r search mru', 'LeaderfMru', 'search file in most recently used files')
 nnoremap <silent> <leader><leader>t :LeaderfBufTag<CR>
 nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
 nnoremap <silent> <leader><leader>r :LeaderfMru<CR>
@@ -446,28 +412,6 @@ nmap <F11> <Plug>VimspectorStepInto
 nmap <S-F11> <Plug>VimspectorStepOut
 nmap <C-F7> :AsyncTask compile<cr>
 nmap <C-F8> :AsyncTask build<cr>
-call g:quickmenu#append('# Vimspector', '')
-call g:quickmenu#append('C-F5 reset', 'VimspectorReset', 'reset')
-call g:quickmenu#append('S-F5 stop', 'echo', 'stop')
-call g:quickmenu#append('C-S-F5 restart', 'echo', 'restart')
-call g:quickmenu#append('A-F9 condition break', 'echo', 'condition break')
-call g:quickmenu#append('S-F9 function break', 'echo', 'function break')
-call g:quickmenu#append('C-F10 run_to_cursor', 'echo', 'run to cursor')
-" }}}
-
-" preview_vim options ----------------------------{{{
-call g:quickmenu#append('# Preview_vim', '')
-call g:quickmenu#append('p preview quickfix', 'PreviewQuickfix', 'preview the item in quickfix window')
-call g:quickmenu#append('P preview close', 'PreviewClose', 'close the preview')
-autocmd FileType qf nnoremap <silent><buffer> p :PreviewQuickfix<cr>
-autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
-if has('gui_macvim')
-	noremap <D-k> :PreviewScroll -1<cr>
-	noremap <D-j> :PreviewScroll +1<cr>
-else
-	noremap <m-k> :PreviewScroll -1<cr>
-	noremap <m-j> :PreviewScroll +1<cr>
-endif
 " }}}
 
 " vim keysound options ---------------------------{{{
@@ -501,6 +445,10 @@ elseif has('linux')
 		let g:asynctasks_term_pos = 'bottom'
 	endif
 endif
+" }}}
+
+" vim-quickui options ----------------------------{{{
+source ~/.vim/configs/quickui.vim
 " }}}
 
 " ale options ------------------------------------{{{
@@ -537,8 +485,6 @@ let g:ale_cmake_cmakelint_options = '-c .cmake-lint.yaml'
 
 nmap [g <Plug>(ale_previous)
 nmap ]g <Plug>(ale_next)
-call g:quickmenu#append('# ALE', '')
-call g:quickmenu#append('ALELint ale lint', 'ALELint', 'mannuly run ALELint')
 " }}}
 
 " codefmt options --------------------------------{{{
@@ -597,13 +543,9 @@ endif
 " }}}
 
 " vim-limelight options --------------------------{{{
-call g:quickmenu#append('# Limelight', '')
-call g:quickmenu#append('Limelight', 'Limelight', 'toggle limelight')
 " }}}
 
 " vim-Goyo options -------------------------------{{{
-call g:quickmenu#append('# Goyo', '')
-call g:quickmenu#append('Goyo', 'Goyo', 'toggle Goyo')
 " }}}
 
 " signify options --------------------------------{{{
