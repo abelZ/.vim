@@ -402,6 +402,7 @@ xnoremap gf :<C-U><C-R>=printf("Leaderf! rg --no-ignore-vcs -F --stayOpen -e %s 
 nmap <F5> <Plug>VimspectorContinue
 nmap <S-F5> <Plug>VimspectorStop
 nmap <C-F5> :VimspectorReset<CR>
+nmap <A-F5> <Plug>VimspectorPause<CR>
 nmap <C-S-F5> <Plug>VimspectorRestart
 nmap <F9> <Plug>VimspectorToggleBreakpoint
 nmap <A-F9> <Plug>VimspectorToggleConditionalBreakpoint
@@ -580,9 +581,15 @@ nnoremap \ :Leaderf! rg -F --stayOpen -e<SPACE>
 vnoremap // y/\V<C-r>=escape(@",'/\')<CR><CR>
 nnoremap <leader>dg :diffget<CR>
 nnoremap <leader>dp :diffput<CR>
+nnoremap ]l :lnext<CR>
+nnoremap [l :lprev<CR>
+nnoremap ]q :cnext<CR>
+nnoremap [q :cprev<CR>
 tnoremap <Esc> <C-\><C-n>
 set termwinkey=<C-L>
 au BufRead *.log set ft=
+au BufRead *.pb.h set filetype=
+au BufRead *.pb.cc set filetype=
 au BufRead,BufNewFile *.hla set ft=hla
 au BufRead,BufNewFile *.tasks set ft=dosini
 

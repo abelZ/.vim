@@ -6,6 +6,8 @@
 "
 "======================================================================
 
+so ~/.vim/configs/menu_help.vim
+
 if has('patch-8.1.2292') == 0 && exists('*nvim_open_win') == 0
 	finish
 endif

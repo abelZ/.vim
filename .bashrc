@@ -20,6 +20,8 @@ add_to_path "$HOME/.ft"
 add_to_path "$HOME/cpplint_scan/tool"
 add_to_path "$HOME/.cargo/bin"
 
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/.local/llvm/lib
+
 eval "$(lua ~/z.lua/z.lua --init bash)"
 
 . "/root/.local/share/lscolors.sh"
