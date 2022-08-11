@@ -27,4 +27,4 @@ eval "$(lua ~/z.lua/z.lua --init bash)"
 . "/root/.local/share/lscolors.sh"
 
 alias ftput='ft put -o -s work'
-export CLE_TOKEN=ddafbc860585fa5d1e6cd9a1363bdc476708f37c
+export CLE_TOKEN=
