@@ -1,5 +1,5 @@
 if g:has_coc == 1
-	let g:coc_global_extensions = ['coc-jedi', 'coc-java', 'coc-json', 'coc-vimlsp', 'coc-highlight', 'coc-snippets', 'coc-ultisnips', 'coc-cmake', 'coc-restclient', 'coc-sh']
+	let g:coc_global_extensions = ['coc-jedi', 'coc-java', 'coc-json', 'coc-vimlsp', 'coc-highlight', 'coc-snippets', 'coc-ultisnips', 'coc-cmake', 'coc-restclient', 'coc-sh', 'coc-rome']
 
 	" TextEdit might fail if hidden is not set.
 	set hidden
@@ -29,6 +29,17 @@ if g:has_coc == 1
 
 	" Use <c-space> to trigger completion.
 	inoremap <silent><expr> <c-@> coc#refresh()
+
+	" Use tab for trigger completion with characters ahead and navigate.
+	" NOTE: There's always complete item selected by default, you may want to enable
+	" no select by `"suggest.noselect": true` in your configuration file.
+	" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+	" other plugin before putting this into your config.
+	inoremap <silent><expr> <TAB>
+				\ coc#pum#visible() ? coc#pum#next(1) :
+				\ CheckBackspace() ? "\<Tab>" :
+				\ coc#refresh()
+	inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 	" Make <CR> auto-select the first completion item and notify coc.nvim to
 	" format on enter, <cr> could be remapped by other vim plugin

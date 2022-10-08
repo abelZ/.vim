@@ -81,7 +81,7 @@ Plug 'sgur/vim-textobj-parameter'
 " formating
 Plug 'google/vim-glaive'
 Plug 'google/vim-maktaba'
-Plug 'antmusco/vim-codefmt', { 'branch': 'feature/cmake-format-support' }
+Plug 'antmusco/vim-codefmt'
 Plug 'psf/black', { 'branch': 'stable' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'vim-scripts/Align'
@@ -250,6 +250,8 @@ let g:ycm_filetype_whitelist = {
 			\ "cs":1,
 			\ "sh":1,
 			\ "cmake":1,
+			\ "html":1,
+			\ "javascript":1,
 			\ }
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_log_level = 'debug'
@@ -288,38 +290,38 @@ endif
 " coc and ycm conflict----------------------------{{{
 if g:has_coc == 1
 	let s:coc_black_list = ["log"]
-	for key in keys(g:ycm_filetype_whitelist)
-		call add(s:coc_black_list, key)
-	endfor
+	" for key in keys(g:ycm_filetype_whitelist)
+		" call add(s:coc_black_list, key)
+	" endfor
 
-	function! s:disable_coc_for_type()
-		if index(s:coc_black_list, &filetype) != -1
-			if g:coc_enabled == 1
-				:silent! CocDisable
-				nnoremap <leader>fx :YcmCompleter FixIt<CR>
-				nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-				nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
-				nmap M <plug>(YCMHover)
-				echom "switch to YCM"
-			endif
-		else
-			if g:coc_enabled == 0
-				:silent! CocEnable
-				nmap <silent> <leader>gd <Plug>(coc-definition)
-				nmap <silent> <leader>gi <Plug>(coc-implementation)
-				nmap <silent> <leader>gr <Plug>(coc-references)
-				nnoremap <silent> M :call <SID>show_documentation()<CR>
-				echom "switch to COC"
-			endif
-		endif
-	endfunction
+	" function! s:disable_coc_for_type()
+		" if index(s:coc_black_list, &filetype) != -1
+			" if g:coc_enabled == 1
+				" :silent! CocDisable
+				" nnoremap <leader>fx :YcmCompleter FixIt<CR>
+				" nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+				" nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
+				" nmap M <plug>(YCMHover)
+				" echom "switch to YCM"
+			" endif
+		" else
+			" if g:coc_enabled == 0
+				" :silent! CocEnable
+				" nmap <silent> <leader>gd <Plug>(coc-definition)
+				" nmap <silent> <leader>gi <Plug>(coc-implementation)
+				" nmap <silent> <leader>gr <Plug>(coc-references)
+				" nnoremap <silent> M :call <SID>show_documentation()<CR>
+				" echom "switch to COC"
+			" endif
+		" endif
+	" endfunction
 
-	augroup CocGroup
-		autocmd!
-		autocmd FileType c,cpp call s:disable_coc_for_type()
-		" autocmd BufNew,BufEnter,BufWinEnter * call s:disable_coc_for_type()
-	augroup end
-	nmap <F8> :call <SID>disable_coc_for_type()<CR>
+	" augroup CocGroup
+		" autocmd!
+		" autocmd FileType c,cpp call s:disable_coc_for_type()
+		" " autocmd BufNew,BufEnter,BufWinEnter * call s:disable_coc_for_type()
+	" augroup end
+	" nmap <F8> :call <SID>disable_coc_for_type()<CR>
 
 	function! s:show_documentation()
 		if (index(['vim','help'], &filetype) >= 0)
@@ -490,6 +492,20 @@ nmap ]g <Plug>(ale_next)
 
 " codefmt options --------------------------------{{{
 " manully install clang-format,shfmt,cmake-format
+augroup autoformat_settings
+  autocmd FileType bzl AutoFormatBuffer buildifier
+  autocmd FileType c,cpp,proto,javascript,arduino AutoFormatBuffer clang-format
+  autocmd FileType dart AutoFormatBuffer dartfmt
+  autocmd FileType go AutoFormatBuffer gofmt
+  autocmd FileType gn AutoFormatBuffer gn
+  autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
+  autocmd FileType java AutoFormatBuffer google-java-format
+  autocmd FileType python AutoFormatBuffer yapf
+  " Alternative: autocmd FileType python AutoFormatBuffer autopep8
+  autocmd FileType rust AutoFormatBuffer rustfmt
+  autocmd FileType vue AutoFormatBuffer prettier
+  autocmd FileType swift AutoFormatBuffer swift-format
+augroup END
 " }}}
 
 " rainbowparentheses options ---------------------{{{
@@ -622,8 +638,8 @@ function! FixInconsistFileFormat()
 	endif
 endfunction
 autocmd BufWritePre * nested call FixInconsistFileFormat()
-autocmd BufWritePre *.cpp :FormatCode
-autocmd BufWritePre *.h :FormatCode
+" autocmd BufWritePre *.cpp :FormatCode
+" autocmd BufWritePre *.h :FormatCode
 
 " }}}
 
