@@ -1,0 +1,306 @@
+" Vim Installed plugins -----------------------{{{
+if has('win32')
+	call plug#begin('~/vimfiles/bundle')
+else
+	call plug#begin('~/.vim/bundle')
+endif
+
+" vim folder tree and font support
+Plug 'preservim/nerdtree'
+Plug 'ryanoasis/vim-devicons'
+
+" color scheme
+Plug 'dracula/vim'
+
+" cursor move and edit
+Plug 'easymotion/vim-easymotion'
+Plug 'terryma/vim-multiple-cursors'
+
+" tool plug
+Plug 'voldikss/vim-floaterm'
+
+" file search tool
+Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+" auto close [ ( {
+Plug 'Raimondi/delimitMate'
+
+" skywind toolbox
+Plug 'skywind3000/asyncrun.vim'
+Plug 'skywind3000/asynctasks.vim'
+
+" more text object
+Plug 'kana/vim-textobj-user'
+Plug 'kana/vim-textobj-indent'
+Plug 'kana/vim-textobj-syntax'
+Plug 'kana/vim-textobj-function'
+Plug 'sgur/vim-textobj-parameter'
+
+" formating
+Plug 'google/vim-glaive'
+Plug 'google/vim-maktaba'
+Plug 'antmusco/vim-codefmt'
+Plug 'scrooloose/nerdcommenter'
+
+call plug#end()
+" }}}
+
+call glaive#Install()
+
+" detect file type -------------------------------{{{
+filetype on "file type
+filetype plugin on
+syntax on "syntax highlighting
+" }}}
+
+" nerdtree ----------------------------------------{{{
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+" }}}
+
+" Vim color scheme dracula -----------------------{{{
+let g:dracula_italic = 0
+color dracula
+" }}}
+
+" Vim common Settings ----------------------------{{{
+set encoding=utf-8
+set fileencoding=utf-8
+set number "display line number
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set cindent "use c\c++ indent style
+set autoindent
+set history=50
+set nobackup
+set hlsearch
+set incsearch
+set ignorecase
+set showcmd
+set autoread
+set backspace=2
+set gcr=a:block-blinkon0
+set completeopt=menuone
+set cursorline
+set cursorcolumn
+set noswapfile
+set belloff=all
+set virtualedit=block
+if has('win32')
+	set guioptions-=l
+	set guioptions-=L
+	"set guioptions-=r
+	"set guioptions-=R
+	set guioptions-=m
+	"set guioptions-=T
+	source $VIMRUNTIME/delmenu.vim
+	source $VIMRUNTIME/menu.vim
+	"set guifont=DejaVu_Sans_Mono:h12
+	set guifont=DejaVuSansMono_NF:h12
+endif
+if has('gui_macvim')
+	set guifont=DejaVuSansMono_Nerd_Font_Mono:h14
+endif
+if has('unix')
+	set ambw=double
+endif
+let mapleader = ","
+set grepprg=rg\ --vimgrep
+
+nnoremap <leader>ev :e $MYVIMRC<CR>
+nnoremap <leader>" viw<ESC>a"<ESC>bi"<ESC>lel
+vnoremap <leader>" <ESC>a"<ESC>`<i"<ESC>`>ll
+nnoremap <leader>' viw<ESC>a'<ESC>bi'<ESC>lel
+vnoremap <leader>' <ESC>a'<ESC>`<i'<ESC>`>ll
+vnoremap <leader>( <ESC>a)<ESC>`<i(<ESC>`>ll
+nnoremap H 0
+nnoremap L $
+inoremap jk <ESC>
+" }}}
+
+" leaderF options --------------------------------{{{
+let g:Lf_WildIgnore = {
+			\ 'dir': ['.svn','.git','.hg'],
+            \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.user','*.vc*','*.pdb']
+			\}
+let g:Lf_WorkingDirectoryMode = 'c'
+let g:Lf_Ctags = "ctags"
+let g:Lf_ShortcutF = '<leader><leader>f'
+let g:Lf_DefaultExternalTool = 'rg'
+let g:Lf_UseVersionControlTool = 0
+let g:Lf_DefaultMode = 'NameOnly'
+" if v:version >=801 && has('patch1615')
+	" let g:Lf_WindowPosition = 'popup'
+" endif
+nnoremap <silent> <leader><leader>t :LeaderfBufTag<CR>
+nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
+nnoremap <silent> <leader><leader>r :LeaderfMru<CR>
+" search visually selected text literally, don't quit LeaderF after accepting an entry
+xnoremap gf :<C-U><C-R>=printf("Leaderf! rg --no-ignore-vcs -F --stayOpen -e %s ", leaderf#Rg#visual())<CR><CR>
+" }}}
+
+" asyncrun options -------------------------------{{{
+let g:asyncrun_open = 10
+let g:asyncrun_bell = 1
+let g:asyncrun_encs = 'gbk'
+let g:asyncrun_stdin = 0
+" }}}
+
+" asynctasks options -----------------------------{{{
+if has('win32')
+	let g:asynctasks_system = 'win32'
+	let g:asynctasks_term_pos = 'bottom'
+elseif has('macunix')
+	let g:asynctasks_system = 'macos'
+	let g:asynctasks_term_pos = 'bottom'
+elseif has('linux')
+	let lines = readfile('/proc/version')
+	if lines[0] =~ "Microsoft"
+		let g:asynctasks_system = 'wsl'
+		let g:asynctasks_term_pos = 'bottom'
+	else
+		let g:asynctasks_system = 'linux'
+		let g:asynctasks_term_pos = 'bottom'
+	endif
+endif
+" }}}
+
+" codefmt options --------------------------------{{{
+" manully install clang-format,shfmt,cmake-format
+augroup autoformat_settings
+  autocmd FileType bzl AutoFormatBuffer buildifier
+  autocmd FileType c,cpp,proto,javascript,arduino AutoFormatBuffer clang-format
+  autocmd FileType dart AutoFormatBuffer dartfmt
+  autocmd FileType go AutoFormatBuffer gofmt
+  autocmd FileType gn AutoFormatBuffer gn
+  autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
+  autocmd FileType java AutoFormatBuffer google-java-format
+  autocmd FileType python AutoFormatBuffer yapf
+  " Alternative: autocmd FileType python AutoFormatBuffer autopep8
+  autocmd FileType rust AutoFormatBuffer rustfmt
+  autocmd FileType vue AutoFormatBuffer prettier
+  autocmd FileType swift AutoFormatBuffer swift-format
+augroup END
+" }}}
+
+" nerdcommenter options --------------------------------{{{
+let NERDSpaceDelims=1
+" }}}
+
+" Vim script file Settings -----------------------{{{
+augroup filetype_vim
+    autocmd!
+    autocmd FileType vim setlocal foldmethod=marker
+    autocmd FileType xml setlocal foldmethod=indent
+	autocmd FileType python setlocal tabstop=4
+    autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o iskeyword-=.
+	autocmd FileType cpp,cmake setlocal expandtab
+augroup END
+" }}}
+
+" user defined mappings --------------------------{{{
+nnoremap \ :Leaderf! rg -F --stayOpen -e<SPACE>
+vnoremap // y/\V<C-r>=escape(@",'/\')<CR><CR>
+nnoremap <leader>dg :diffget<CR>
+nnoremap <leader>dp :diffput<CR>
+nnoremap ]l :lnext<CR>
+nnoremap [l :lprev<CR>
+nnoremap ]q :cnext<CR>
+nnoremap [q :cprev<CR>
+tnoremap <Esc> <C-\><C-n>
+set termwinkey=<C-L>
+au BufRead *.log set ft=
+au BufRead *.pb.h set filetype=
+au BufRead *.pb.cc set filetype=
+au BufRead,BufNewFile *.hla set ft=hla
+au BufRead,BufNewFile *.tasks set ft=dosini
+
+" fix terminal mode arrow key didn't work issue
+tnoremap <Esc> <C-W>N
+tnoremap <Esc><Esc> <C-W>N
+set timeout timeoutlen=1000  " Default
+set ttimeout ttimeoutlen=100  " Set by defaults.vim
+set pastetoggle=<S-F2>
+imap <leader>id <C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR>
+
+" copy to buffer
+vmap <C-c> :w! ~/.vimbuffer<CR>
+nmap <C-c> :.w! ~/.vimbuffer<CR>
+" paste from buffer
+map <C-p> :r ~/.vimbuffer<CR>
+
+function! RemoveTrailingSpace()
+	if $VIM_HATE_SPACE_ERRORS != '0'
+		normal m`
+		silent! :%s/\s\+$//e
+		normal ``
+	endif
+endfunction
+autocmd BufWritePre * nested call RemoveTrailingSpace()
+
+function! FixInconsistFileFormat()
+	if &fileformat == 'unix'
+		silent! :%s/\r$//e
+	endif
+endfunction
+autocmd BufWritePre * nested call FixInconsistFileFormat()
+" autocmd BufWritePre *.cpp :FormatCode
+" autocmd BufWritePre *.h :FormatCode
+
+" }}}
+
+" quickfix and localtion list Settings ----------{{{
+function! GetBufferList()
+  redir =>buflist
+  silent! ls!
+  redir END
+  return buflist
+endfunction
+
+function! ToggleList(bufname, pfx)
+  let buflist = GetBufferList()
+  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+    if bufwinnr(bufnum) != -1
+      exec(a:pfx.'close')
+      return
+    endif
+  endfor
+  if a:pfx == 'l' && len(getloclist(0)) == 0
+      echohl ErrorMsg
+      echo "Location List is Empty."
+      return
+  endif
+  let winnr = winnr()
+  exec(a:pfx.'open')
+  if winnr() != winnr
+	wincmd p
+  endif
+endfunction
+
+function! ToggleFloatShell(bufname)
+  let buflist = GetBufferList()
+  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+      exec('FloatermKill!')
+	  return
+  endfor
+  exec('FloatermToggle')
+endfunction
+nmap <F6> :call ToggleFloatShell('Terminal')<CR>
+
+if has('win32')
+	"visual studio 2019 error format
+	set errorformat=%.%#>%f(%l\\\,%c):\ %m
+	set errorformat+=%.%#>%f(%l%.%#):\ %m
+	nnoremap <F3> :call ToggleList("Location 列表", 'l')<CR>
+	nnoremap <F4> :call ToggleList("QuickFix 列表", 'c')<CR>
+else
+	nnoremap <F3> :call ToggleList("Location", 'l')<CR>
+	nnoremap <F4> :call ToggleList("QuickFix", 'c')<CR>
+endif
+" }}}
+
+"--Ctrl + X map--
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l

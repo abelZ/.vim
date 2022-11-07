@@ -263,6 +263,8 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_comments = 1
 let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_key_invoke_completion = '<c-l>'
+let g:ycm_enable_inlay_hints = 1
+let g:ycm_clear_inlay_hints_in_insert_mode = 1
 noremap <c-l> <NOP>
 if has('gui')
 	let g:ycm_use_clangd = 0
@@ -276,6 +278,11 @@ else
 endif
 
 let g:ycm_auto_hover = ''
+
+nnoremap <silent> <leader>hi <Plug>(YCMToggleInlayHints)
+augroup ycm_color
+  autocmd FileType * hi link YcmInlayHint Comment
+augroup END
 
 if filereadable("~/.vim/bundle/lsp-examples/vimrc.generated")
 	source ~/.vim/bundle/lsp-examples/vimrc.generated
