@@ -263,6 +263,8 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_comments = 1
 let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_key_invoke_completion = '<c-l>'
+let g:ycm_enable_inlay_hints = 1
+let g:ycm_clear_inlay_hints_in_insert_mode = 1
 noremap <c-l> <NOP>
 if has('gui')
 	let g:ycm_use_clangd = 0
@@ -272,10 +274,15 @@ if has('gui')
 	endif
 else
 	let g:ycm_use_clangd = 1
-	let g:ycm_clangd_binary_path = '~/.vim/third-party/llvm-project/build/bin/clangd'
+	let g:ycm_clangd_binary_path = 'clangd'
 endif
 
 let g:ycm_auto_hover = ''
+
+nnoremap <silent> <leader>hi <Plug>(YCMToggleInlayHints)
+augroup ycm_color
+  autocmd FileType * hi link YcmInlayHint Comment
+augroup END
 
 if filereadable("~/.vim/bundle/lsp-examples/vimrc.generated")
 	source ~/.vim/bundle/lsp-examples/vimrc.generated
@@ -357,7 +364,7 @@ if s:has_gtags == 1
 	let g:gutentags_ctags_tagfile = '.tags'
 	let g:gutentags_ctags_exclude = ['*.log', '*.xml', '*.tlog', "*.vim", "*.json", "*.xml", "*vimrc"]
 
-	let g:gutentags_ctags_executable = '~/.local/bin/ctags'
+	let g:gutentags_ctags_executable = 'ctags'
 	let g:gutentags_modules = ['ctags', 'gtags_cscope']
 	let g:gutentags_cache_dir = expand('/data/.cache/tags')
 
@@ -385,7 +392,7 @@ let g:Lf_WildIgnore = {
             \ 'file': ['*.sw?','~$*','*.exe','*.o','*.so','*.py[co]','*.dll','*.obj','*.lib','*.ax','*.user','*.vc*','*.pdb']
 			\}
 let g:Lf_WorkingDirectoryMode = 'c'
-let g:Lf_Ctags = "~/.local/bin/ctags"
+let g:Lf_Ctags = "ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
 let g:Lf_UseVersionControlTool = 0
@@ -536,7 +543,7 @@ let g:airline_section_warning = ''
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline#extensions#tagbar#flags = 'f'
-let g:tagbar_ctags_bin = '~/.local/bin/ctags'
+let g:tagbar_ctags_bin = 'ctags'
 let g:tagbar_width = 30
 nnoremap <F2> :Tagbar<CR>
 if 1
@@ -582,7 +589,7 @@ let NERDSpaceDelims=1
 " }}}
 
 " vimwiki options --------------------------------------{{{
-let g:vimwiki_list = [{'path': '~/vimwiki/',
+let g:vimwiki_list = [{'path': '/data/vimwiki/',
                       \ 'syntax': 'markdown', 'ext': '.md'}]
 
 let g:vimwiki_listsyms = '✗○◐●✓'

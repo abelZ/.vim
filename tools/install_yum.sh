@@ -1,0 +1,1 @@
+yum install -y tcl-devel ruby ruby-devel lua lua-devel luajit luajit-devel python python-devel python3 python3-devel perl perl-devel perl-ExtUtils-ParseXS perl-ExtUtils-XSpp perl-ExtUtils-CBuilder perl-ExtUtils-Embe
