@@ -506,6 +506,13 @@ augroup autoformat_settings
   autocmd FileType vue AutoFormatBuffer prettier
   autocmd FileType swift AutoFormatBuffer swift-format
 augroup END
+if has('linux')
+	let lines = readfile('/proc/version')
+	if lines[0] =~ "Microsoft"
+		" WSL
+		Glaive codefmt clang_format_executable='/root/.local/bin/clang-format'
+	endif
+endif
 " }}}
 
 " rainbowparentheses options ---------------------{{{
