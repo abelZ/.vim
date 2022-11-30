@@ -137,7 +137,7 @@ augroup END
 
 " nerdtree ----------------------------------------{{{
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | color dracula | endif
 " }}}
 
 " Vim color sheme solarized -----------------------{{{
@@ -263,8 +263,9 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_comments = 1
 let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_key_invoke_completion = '<c-l>'
-let g:ycm_enable_inlay_hints = 1
+let g:ycm_enable_inlay_hints = 0
 let g:ycm_clear_inlay_hints_in_insert_mode = 1
+let g:ycm_enable_semantic_highlighting=1
 noremap <c-l> <NOP>
 if has('gui')
 	let g:ycm_use_clangd = 0
