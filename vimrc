@@ -196,7 +196,7 @@ if has('win32')
 	"set guioptions-=T
 	source $VIMRUNTIME/delmenu.vim
 	source $VIMRUNTIME/menu.vim
-	"set guifont=DejaVu_Sans_Mono:h12
+	" set guifont=FiraCode_NF:h12
 	set guifont=DejaVuSansMono_NF:h12
 endif
 if has('gui_macvim')
@@ -520,6 +520,9 @@ if has('linux')
 		" WSL
 		Glaive codefmt clang_format_executable='/root/.local/bin/clang-format'
 	endif
+endif
+if has('win32')
+	call maktaba#syscall#SetUsableShellRegex('\v^/bin/sh|cmd|cmd\.exe|command\.com$')
 endif
 " }}}
 
