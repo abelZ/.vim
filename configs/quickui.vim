@@ -108,6 +108,11 @@ call quickui#menu#install('&ColorScheme', [
 			\ ["&Phd", 'color phd'],
 			\ ])
 
+call quickui#menu#install('&CharSet', [
+			\ ["&DejaVuSansMono", 'set guifont=DejaVuSansMono_NF:h12'],
+			\ ["&FiraCode", 'set guifont=FiraCode_NF:h12'],
+			\ ])
+
 call quickui#menu#install('Help (&?)', [
 			\ ["&Index", 'tab help index', ''],
 			\ ['Ti&ps', 'tab help tips', ''],
