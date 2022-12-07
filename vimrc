@@ -30,6 +30,7 @@ Plug 'morhetz/gruvbox'
 Plug 'tomasr/molokai'
 Plug 'ptrr/phd-vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'ap/vim-css-color'
 Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
@@ -45,6 +46,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-fugitive'
 Plug 'juneedahamed/vc.vim'
 Plug 'mhinz/vim-signify'
+Plug 'Eliot00/git-lens.vim'
 
 " tool plug
 Plug 'drmikehenry/vim-fixkey'
@@ -137,7 +139,7 @@ augroup END
 
 " nerdtree ----------------------------------------{{{
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | color dracula | endif
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 " }}}
 
 " Vim color sheme solarized -----------------------{{{
