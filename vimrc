@@ -30,10 +30,10 @@ Plug 'morhetz/gruvbox'
 Plug 'tomasr/molokai'
 Plug 'ptrr/phd-vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'ap/vim-css-color'
+" Plug 'ap/vim-css-color'
 Plug 'pboettch/vim-cmake-syntax', { 'for':['cmake'] }
-Plug 'junegunn/limelight.vim'
-Plug 'junegunn/goyo.vim'
+" Plug 'junegunn/limelight.vim'
+" Plug 'junegunn/goyo.vim'
 if s:has_rainbow == 1
 	Plug 'kien/rainbow_parentheses.vim'
 endif
@@ -41,18 +41,21 @@ endif
 " cursor move and edit
 Plug 'easymotion/vim-easymotion'
 Plug 'terryma/vim-multiple-cursors'
+" show which function the cursor is in
+Plug 'wellle/context.vim'
 
 " version control tools
 Plug 'tpope/vim-fugitive'
-Plug 'juneedahamed/vc.vim'
+" Plug 'juneedahamed/vc.vim'
 Plug 'mhinz/vim-signify'
 Plug 'Eliot00/git-lens.vim'
 
 " tool plug
+" fix terminal keyboard mapping issue
 Plug 'drmikehenry/vim-fixkey'
 Plug 'chrisbra/vim-diff-enhanced'
 Plug 'will133/vim-dirdiff'
-Plug 'liuchengxu/vim-which-key'
+" Plug 'liuchengxu/vim-which-key'
 Plug 'gyim/vim-boxdraw'
 Plug 'voldikss/vim-floaterm'
 
@@ -84,15 +87,15 @@ Plug 'sgur/vim-textobj-parameter'
 Plug 'google/vim-glaive'
 Plug 'google/vim-maktaba'
 Plug 'antmusco/vim-codefmt'
-Plug 'psf/black', { 'branch': 'stable' }
+" Plug 'psf/black', { 'branch': 'stable' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'vim-scripts/Align'
 
 " coding
 Plug 'mattn/emmet-vim'
 Plug 'w0rp/ale'
-Plug 'majutsushi/tagbar'
-Plug 'Shougo/echodoc.vim'
+" Plug 'majutsushi/tagbar'
+" Plug 'Shougo/echodoc.vim'
 Plug 'SirVer/ultisnips'
 Plug 'abelZ/vim-snippets'
 if s:has_gtags == 1
@@ -132,7 +135,7 @@ endfunction
 
 augroup MyColors
     autocmd!
-    autocmd ColorScheme * call MyHighlights()
+	autocmd ColorScheme * call MyHighlights()
 	autocmd Syntax * call MyHighlights()
 augroup END
 "}}}
@@ -227,8 +230,8 @@ set timeoutlen=1000
 " }}}
 
 " echodoc options --------------------------------{{{
-let g:echodoc#enable_at_startup = 1
-set noshowmode
+" let g:echodoc#enable_at_startup = 1
+" set noshowmode
 " }}}
 
 " ycm options ------------------------------------{{{
@@ -479,7 +482,7 @@ let g:ale_disable_lsp = 1
 if has('win32') == 0 && has('win64') == 0 && has('win32unix') == 0
 	let g:ale_command_wrapper = 'nice -n5'
 endif
-let g:airline#extensions#ale#enabled = 1
+" let g:airline#extensions#ale#enabled = 1
 
 let g:ale_linters_explicit = 1
 let g:ale_linters = {
@@ -504,7 +507,7 @@ nmap ]g <Plug>(ale_next)
 " manully install clang-format,shfmt,cmake-format
 augroup autoformat_settings
   autocmd FileType bzl AutoFormatBuffer buildifier
-  autocmd FileType c,cpp,proto,javascript,arduino AutoFormatBuffer clang-format
+  autocmd FileType c,cpp,javascript,arduino AutoFormatBuffer clang-format
   autocmd FileType dart AutoFormatBuffer dartfmt
   autocmd FileType go AutoFormatBuffer gofmt
   autocmd FileType gn AutoFormatBuffer gn
@@ -542,17 +545,18 @@ endif
 " }}}
 
 " airline options --------------------------------{{{
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_section_error = ''
 let g:airline_section_warning = ''
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#tagbar#enabled = 1
+let g:airline#extensions#tagbar#enabled = 0
 let g:airline#extensions#tagbar#flags = 'f'
+let g:airline_extensions = ['branch', 'tabline']
 let g:tagbar_ctags_bin = 'ctags'
 let g:tagbar_width = 30
 nnoremap <F2> :Tagbar<CR>
-if 1
+if 0
 	let g:airline#extensions#branch#custom_head = 'GetScmBranch'
 	function! GetScmBranch()
 		if !exists('b:perforce_client')
@@ -621,6 +625,7 @@ nnoremap ]l :lnext<CR>
 nnoremap [l :lprev<CR>
 nnoremap ]q :cnext<CR>
 nnoremap [q :cprev<CR>
+nnoremap gh [m<CR>
 tnoremap <Esc> <C-\><C-n>
 set termwinkey=<C-L>
 au BufRead *.log set ft=
