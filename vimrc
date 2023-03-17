@@ -192,6 +192,7 @@ set cursorcolumn
 set noswapfile
 set belloff=all
 set virtualedit=block
+set shortmess-=S " show search match count like 2/17
 if has('win32')
 	set guioptions-=l
 	set guioptions-=L
@@ -484,6 +485,7 @@ if has('win32') == 0 && has('win64') == 0 && has('win32unix') == 0
 	let g:ale_command_wrapper = 'nice -n5'
 endif
 " let g:airline#extensions#ale#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
 
 let g:ale_linters_explicit = 1
 let g:ale_linters = {
