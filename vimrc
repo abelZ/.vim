@@ -206,7 +206,7 @@ if has('win32')
 	source $VIMRUNTIME/menu.vim
 	" set guifont=FiraCode_NF:h12
 	" set guifont=DejaVuSansMono_NF:h12
-	set guifont=DejaVuSansMono_Nerd_Font_Mono:h14
+	set guifont=DejaVuSansMono_Nerd_Font_Mono:h12
 endif
 if has('gui_macvim')
 	set guifont=DejaVuSansMono_Nerd_Font_Mono:h14
