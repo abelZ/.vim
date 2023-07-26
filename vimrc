@@ -113,7 +113,9 @@ endif
 
 " debuging
 Plug 'puremourning/vimspector'
-Plug 'gauteh/vim-cppman'
+if !has('win32')
+	Plug 'gauteh/vim-cppman'
+endif
 
 call plug#end()
 " }}}
@@ -275,7 +277,7 @@ let g:ycm_clear_inlay_hints_in_insert_mode = 1
 let g:ycm_enable_semantic_highlighting=1
 noremap <c-l> <NOP>
 if has('gui')
-	let g:ycm_use_clangd = 0
+	let g:ycm_use_clangd = 1
 	let g:ycm_clangd_args = ["--background-index=false"]
 	if has('gui_macvim')
 		let g:ycm_python_binary_path = 'python3'
