@@ -89,7 +89,8 @@ Plug 'google/vim-maktaba'
 Plug 'antmusco/vim-codefmt'
 " Plug 'psf/black', { 'branch': 'stable' }
 Plug 'scrooloose/nerdcommenter'
-Plug 'vim-scripts/Align'
+" Plug 'vim-scripts/Align'
+Plug 'junegunn/vim-easy-align'
 
 " coding
 Plug 'mattn/emmet-vim'
@@ -429,6 +430,10 @@ nmap <F11> <Plug>VimspectorStepInto
 nmap <S-F11> <Plug>VimspectorStepOut
 nmap <C-F7> :AsyncTask compile<cr>
 nmap <C-F8> :AsyncTask build<cr>
+" for normal mode - the word under the cursor
+nmap <Leader>di <Plug>VimspectorBalloonEval
+" for visual mode, the visually selected text
+xmap <Leader>di <Plug>VimspectorBalloonEval
 " }}}
 
 " vim keysound options ---------------------------{{{
@@ -466,6 +471,14 @@ endif
 
 " vim-quickui options ----------------------------{{{
 source ~/.vim/configs/quickui.vim
+" }}}
+
+" vim-easy-align options ----------------------------{{{
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap <leader>a <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap <leader>a <Plug>(EasyAlign)
 " }}}
 
 " ale options ------------------------------------{{{
@@ -614,7 +627,7 @@ augroup filetype_vim
     autocmd FileType xml setlocal foldmethod=indent
 	autocmd FileType python setlocal tabstop=4
     autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o iskeyword-=.
-	autocmd FileType cpp,cmake setlocal expandtab
+	autocmd FileType c,cpp,cmake setlocal expandtab
 augroup END
 " }}}
 
