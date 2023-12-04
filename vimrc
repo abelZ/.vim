@@ -72,6 +72,9 @@ Plug 'vimwiki/vimwiki'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'skywind3000/asynctasks.vim'
 Plug 'skywind3000/vim-quickui'
+Plug 'skywind3000/vim-rt-format', { 'do': 'pip3 install autopep8' }
+Plug 'skywind3000/vim-auto-popmenu'
+Plug 'skywind3000/vim-dict'
 if s:has_keysound == 1
 	Plug 'skywind3000/vim-keysound'
 endif
@@ -474,6 +477,30 @@ endif
 
 " vim-quickui options ----------------------------{{{
 source ~/.vim/configs/quickui.vim
+" }}}
+
+" vim-rt-format options ----------------------------{{{
+" By default, it will be triggered by `ENTER` in insert mode.
+" set this to 1 to use `CTRL+ENTER` instead, and keep the
+" default `ENTER` behavior unchanged.
+let g:rtf_ctrl_enter = 0
+
+" Enable formatting when leaving insert mode
+let g:rtf_on_insert_leave = 1
+" }}}
+
+" vim-quickui options ----------------------------{{{
+" enable this plugin for filetypes, '*' for all files.
+let g:apc_enable_ft = {'text':1, 'markdown':1}
+
+" source for dictionary, current or other loaded buffers, see ':help cpt'
+set cpt=.,k,w,b
+
+" don't select the first item.
+set completeopt=menu,menuone,noselect
+
+" suppress annoy messages.
+set shortmess+=c
 " }}}
 
 " vim-easy-align options ----------------------------{{{
