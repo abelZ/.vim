@@ -176,6 +176,7 @@ set fileencoding=utf-8
 set number "display line number
 set tabstop=4
 set softtabstop=4
+set expandtab
 set shiftwidth=4
 set cindent "use c\c++ indent style
 set autoindent
@@ -278,7 +279,7 @@ let g:ycm_enable_semantic_highlighting=1
 noremap <c-l> <NOP>
 if has('gui')
 	let g:ycm_use_clangd = 1
-	let g:ycm_clangd_args = ["--background-index=false"]
+    " let g:ycm_clangd_args = ["--background-index=false"]
 	if has('gui_macvim')
 		let g:ycm_python_binary_path = 'python3'
 	endif
@@ -510,29 +511,30 @@ nmap ]g <Plug>(ale_next)
 
 " codefmt options --------------------------------{{{
 " manully install clang-format,shfmt,cmake-format
-augroup autoformat_settings
-  autocmd FileType bzl AutoFormatBuffer buildifier
-  autocmd FileType c,cpp,javascript,arduino AutoFormatBuffer clang-format
-  autocmd FileType dart AutoFormatBuffer dartfmt
-  autocmd FileType go AutoFormatBuffer gofmt
-  autocmd FileType gn AutoFormatBuffer gn
-  autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
-  autocmd FileType java AutoFormatBuffer google-java-format
-  autocmd FileType python AutoFormatBuffer yapf
-  " Alternative: autocmd FileType python AutoFormatBuffer autopep8
-  autocmd FileType rust AutoFormatBuffer rustfmt
-  autocmd FileType vue AutoFormatBuffer prettier
-  autocmd FileType swift AutoFormatBuffer swift-format
-augroup END
+if has('win32')
+	call maktaba#syscall#SetUsableShellRegex('\v^/bin/sh|cmd|cmd\.exe|command\.com$')
+else
+    augroup autoformat_settings
+      autocmd FileType bzl AutoFormatBuffer buildifier
+      autocmd FileType c,cpp,javascript,arduino AutoFormatBuffer clang-format
+      autocmd FileType dart AutoFormatBuffer dartfmt
+      autocmd FileType go AutoFormatBuffer gofmt
+      autocmd FileType gn AutoFormatBuffer gn
+      autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
+      autocmd FileType java AutoFormatBuffer google-java-format
+      autocmd FileType python AutoFormatBuffer yapf
+      " Alternative: autocmd FileType python AutoFormatBuffer autopep8
+      autocmd FileType rust AutoFormatBuffer rustfmt
+      autocmd FileType vue AutoFormatBuffer prettier
+      autocmd FileType swift AutoFormatBuffer swift-format
+    augroup END
+endif
 if has('linux')
 	let lines = readfile('/proc/version')
 	if lines[0] =~ "Microsoft"
 		" WSL
 		Glaive codefmt clang_format_executable='/root/.local/bin/clang-format'
 	endif
-endif
-if has('win32')
-	call maktaba#syscall#SetUsableShellRegex('\v^/bin/sh|cmd|cmd\.exe|command\.com$')
 endif
 " }}}
 
