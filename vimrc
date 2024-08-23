@@ -19,6 +19,7 @@ endif
 
 " vim folder tree and font support
 Plug 'preservim/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
 
 " color scheme
@@ -551,6 +552,7 @@ nmap ]g <Plug>(ale_next)
 " codefmt options --------------------------------{{{
 " manully install clang-format,shfmt,cmake-format
 augroup autoformat_settings
+  autocmd!
   autocmd FileType bzl AutoFormatBuffer buildifier
   autocmd FileType c,cpp,javascript,arduino AutoFormatBuffer clang-format
   autocmd FileType dart AutoFormatBuffer dartfmt
@@ -564,6 +566,42 @@ augroup autoformat_settings
   autocmd FileType vue AutoFormatBuffer prettier
   autocmd FileType swift AutoFormatBuffer swift-format
 augroup END
+
+" Function to check for the existence of a file
+function! FileExists(filepath)
+  return filereadable(a:filepath)
+endfunction
+
+" Function to recursively check for .auto-format file
+function! CheckAutoFormatRecursive(dir)
+  let l:current_dir = a:dir
+  while 1
+    if FileExists(l:current_dir . '/.auto-format')
+      return 1
+    endif
+    if isdirectory(l:current_dir . '/.git')
+      return 0
+    endif
+    let l:parent_dir = fnamemodify(l:current_dir, ':h')
+    if l:parent_dir == l:current_dir
+      return 0
+    endif
+    let l:current_dir = l:parent_dir
+  endwhile
+endfunction
+
+" Function to check for .auto-format file and run NoAutoFormatBuffer if not found
+function! CheckAutoFormat()
+  let l:current_dir = expand('%:p:h')
+
+  if !CheckAutoFormatRecursive(l:current_dir)
+    " Run NoAutoFormatBuffer command if .auto-format file is not found
+    NoAutoFormatBuffer
+  endif
+endfunction
+
+autocmd BufReadPost,BufNewFile * call CheckAutoFormat()
+
 if has('linux')
 	let lines = readfile('/proc/version')
 	if lines[0] =~ "Microsoft"
