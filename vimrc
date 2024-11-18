@@ -686,6 +686,8 @@ let g:vimwiki_list = [{'path': '/data/vimwiki/',
                       \ 'syntax': 'markdown', 'ext': '.md'}]
 
 let g:vimwiki_listsyms = '✗○◐●✓'
+nmap <leader><leader>v <Plug>VimwikiToggleListItem
+map <leader>D :put =strftime('* %a %Y-%m-%d')<CR>
 " }}}
 
 " Vim script file Settings -----------------------{{{
