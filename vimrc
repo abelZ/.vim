@@ -264,9 +264,11 @@ let g:ycm_filetype_whitelist = {
 			\ "js":1,
 			\ "cs":1,
 			\ "sh":1,
+			\ "bash":1,
 			\ "cmake":1,
 			\ "html":1,
 			\ "javascript":1,
+			\ "vim":1,
 			\ }
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_log_level = 'debug'
@@ -300,7 +302,7 @@ augroup ycm_color
   autocmd FileType * hi link YcmInlayHint Comment
 augroup END
 
-if filereadable("~/.vim/bundle/lsp-examples/vimrc.generated")
+if filereadable(expand('~/.vim/bundle/lsp-examples/vimrc.generated'))
 	source ~/.vim/bundle/lsp-examples/vimrc.generated
 endif
 nnoremap <leader>fx :YcmCompleter FixIt<CR>
