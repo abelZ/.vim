@@ -215,9 +215,9 @@ if has('win32')
 	"set guioptions-=T
 	source $VIMRUNTIME/delmenu.vim
 	source $VIMRUNTIME/menu.vim
-	" set guifont=FiraCode_NF:h12
+    " set guifont=FiraCode_Nerd_Font_Mono:h14
 	" set guifont=DejaVuSansMono_NF:h12
-	set guifont=DejaVuSansMono_Nerd_Font_Mono:h12
+    set guifont=DejaVuSansM_Nerd_Font_Mono:h14
 endif
 if has('gui_macvim')
 	set guifont=DejaVuSansMono_Nerd_Font_Mono:h14
@@ -421,6 +421,7 @@ let g:Lf_DefaultExternalTool = 'rg'
 let g:Lf_UseVersionControlTool = 0
 let g:Lf_PreviewInPopup = 0
 let g:Lf_DefaultMode = 'NameOnly'
+let g:Lf_PreviewInPopup = 0
 " if v:version >=801 && has('patch1615')
 	" let g:Lf_WindowPosition = 'popup'
 " endif
