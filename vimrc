@@ -161,7 +161,12 @@ let g:solarized_termcolors=256
 
 " Vim color scheme dracula -----------------------{{{
 let g:dracula_italic = 0
-color dracula
+function! SwitchColorScheme(_)
+    execute "normal! \<C-W>l"
+    color dracula
+endfunction
+
+call timer_start(1000, "SwitchColorScheme")
 " }}}
 
 " Vim color scheme gruvbox -----------------------{{{
@@ -414,6 +419,7 @@ let g:Lf_Ctags = "ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
 let g:Lf_UseVersionControlTool = 0
+let g:Lf_PreviewInPopup = 0
 let g:Lf_DefaultMode = 'NameOnly'
 " if v:version >=801 && has('patch1615')
 	" let g:Lf_WindowPosition = 'popup'
