@@ -109,7 +109,7 @@ if s:has_gtags == 1
 endif
 if s:has_ycm == 1
 	Plug 'ycm-core/YouCompleteMe'
-	Plug 'ycm-core/lsp-examples', { 'do': './viml/install.py'}
+	Plug 'ycm-core/lsp-examples'
 	Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 endif
 if g:has_coc == 1
@@ -166,7 +166,7 @@ function! SwitchColorScheme(_)
     color dracula
 endfunction
 
-call timer_start(1000, "SwitchColorScheme")
+call timer_start(500, "SwitchColorScheme")
 " }}}
 
 " Vim color scheme gruvbox -----------------------{{{
