@@ -44,6 +44,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'terryma/vim-multiple-cursors'
 " show which function the cursor is in
 Plug 'wellle/context.vim'
+Plug 'Yggdroot/indentLine'
 
 " version control tools
 Plug 'tpope/vim-fugitive'
@@ -419,17 +420,19 @@ let g:Lf_Ctags = "ctags"
 let g:Lf_ShortcutF = '<leader><leader>f'
 let g:Lf_DefaultExternalTool = 'rg'
 let g:Lf_UseVersionControlTool = 0
-let g:Lf_PreviewInPopup = 0
 let g:Lf_DefaultMode = 'NameOnly'
-let g:Lf_PreviewInPopup = 0
-" if v:version >=801 && has('patch1615')
-	" let g:Lf_WindowPosition = 'popup'
-" endif
+" let g:Lf_PreviewPosition = 'right'
+let g:Lf_PreviewInPopup = 1
+let g:Lf_WindowPosition = 'popup'
 nnoremap <silent> <leader><leader>t :LeaderfBufTag<CR>
 nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
 nnoremap <silent> <leader><leader>r :LeaderfMru<CR>
 " search visually selected text literally, don't quit LeaderF after accepting an entry
 xnoremap gf :<C-U><C-R>=printf("Leaderf! rg --no-ignore-vcs -F --stayOpen -e %s ", leaderf#Rg#visual())<CR><CR>
+" }}}
+
+" indentLine options --------------------------------{{{
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 " }}}
 
 " vimspector options -----------------------------{{{
