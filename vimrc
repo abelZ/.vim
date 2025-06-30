@@ -44,7 +44,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'terryma/vim-multiple-cursors'
 " show which function the cursor is in
 Plug 'wellle/context.vim'
-Plug 'Yggdroot/indentLine'
+" Plug 'Yggdroot/indentLine'
 
 " version control tools
 Plug 'tpope/vim-fugitive'
@@ -427,6 +427,7 @@ let g:Lf_WindowPosition = 'popup'
 nnoremap <silent> <leader><leader>t :LeaderfBufTag<CR>
 nnoremap <silent> <leader><leader>n :LeaderfFunction<CR>
 nnoremap <silent> <leader><leader>r :LeaderfMru<CR>
+let g:Lf_PreviewResult = {'Rg': 1 }
 " search visually selected text literally, don't quit LeaderF after accepting an entry
 xnoremap gf :<C-U><C-R>=printf("Leaderf! rg --no-ignore-vcs -F --stayOpen -e %s ", leaderf#Rg#visual())<CR><CR>
 " }}}
@@ -546,7 +547,7 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:ale_linters_explicit = 1
 let g:ale_linters = {
 			\ 'c' : [],
-			\ 'cpp' : ['cpplint', 'clang-tidy'],
+			\ 'cpp' : ['cpplint', 'clangtidy'],
 			\ 'python': ['flake8', 'pylint'],
 			\ 'java': ['javac'],
 			\ 'javascript': ['eslint'],
@@ -555,6 +556,7 @@ let g:ale_linters = {
 			\ }
 let g:ale_cpp_cppcheck_options = '--enable=all --suppress=unusedStructMember:*.h'
 let g:ale_cpp_cpplint_executable = 'cpplint.py'
+let g:ale_cpp_clangtidy_checks= ['-*', 'concurrency-*', 'clang-analyzer-core.ThreadSafety', 'bugprone-unsafe-functions']
 let g:ale_cmake_cmakelint_executable = 'cmake-lint'
 let g:ale_cmake_cmakelint_options = '-c .cmake-lint.yaml'
 
