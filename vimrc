@@ -733,6 +733,15 @@ au BufRead *.pb.cc set filetype=
 au BufRead,BufNewFile *.hla set ft=hla
 au BufRead,BufNewFile *.tasks set ft=dosini
 
+" Filter function to close on ESC
+function! PopupCloseOnEsc(winid, key)
+    if a:key ==# "\<Esc>"
+        call popup_close(a:winid)
+        return 1  " Key handled
+    endif
+    return 0    " Key not handled
+endfunction
+
 function! ShowHexToBinary()
     let l:old_reg = @"
     normal! gvy
@@ -796,20 +805,33 @@ function! ShowHexToBinary()
         \ {'text': '+----------------------+'}
         \ ]
 
-    " Create quickfix entries with better formatting
-    let l:qf_list1 = [
-        \ {'text': '┌─ Binary Conversion ─────────────────────────┐'},
-        \ {'text': '│ Original: ' . l:original . repeat(' ', max([0, 30 - len(l:original)])) . '│'},
-        \ {'text': '│ Hex:      ' . l:hex . repeat(' ', max([0, 30 - len(l:hex)])) . '│'},
-        \ {'text': '│ Binary:   ' . l:binary . repeat(' ', max([0, 30 - len(l:binary)])) . '│'},
-        \ {'text': '│ Decimal:  ' . l:decimal . repeat(' ', max([0, 30 - len(string(l:decimal))])) . '│'},
-        \ {'text': '└─────────────────────────────────────────────┘'}
+    " 0x386d
+    " Create quickfix entries
+    let l:popup_list = [
+        \ '+-- Binary Conversion --+',
+        \ '| Original: ' . l:original,
+        \ '| Hex:      ' . l:hex_spaced,
+        \ '| Binary:   ' . l:formatted_binary,
+        \ '| Decimal:  ' . l:decimal,
+        \ '+----------------------+'
         \ ]
 
+    let pos = screenpos(win_getid(), line('.'), col('.'))
+	let border = ['╭─', '│ ', '╰─']  " Custom border chars
+	call popup_create(popup_list, #{
+				\ pos: 'topleft',
+				\ line: pos.row - len(l:popup_list),
+				\ col: pos.col + len(l:text),
+				\ border: border,
+				\ borderhighlight: ['Comment'],
+				\ padding: [0,1,0,1],
+                \ moved: 'word',
+				\ })
+
     " Set quickfix list and open it
-    call setqflist(l:qf_list, 'r')
-    below copen 6
-    wincmd p
+    " call setqflist(l:qf_list, 'r')
+    " below copen 6
+    " wincmd p
 
     " Auto-close after 4 seconds
     " call timer_start(4000, {-> execute('cclose')})
