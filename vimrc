@@ -547,7 +547,7 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:ale_linters_explicit = 1
 let g:ale_linters = {
 			\ 'c' : [],
-			\ 'cpp' : ['cpplint', 'clangtidy'],
+			\ 'cpp' : ['cpplint'],
 			\ 'python': ['flake8', 'pylint'],
 			\ 'java': ['javac'],
 			\ 'javascript': ['eslint'],
@@ -732,6 +732,89 @@ au BufRead *.pb.h set filetype=
 au BufRead *.pb.cc set filetype=
 au BufRead,BufNewFile *.hla set ft=hla
 au BufRead,BufNewFile *.tasks set ft=dosini
+
+function! ShowHexToBinary()
+    let l:old_reg = @"
+    normal! gvy
+    let l:text = @"
+    let @" = l:old_reg
+
+    " Remove whitespace and convert to lowercase
+    let l:text = substitute(l:text, '\s', '', 'g')
+    let l:text = tolower(l:text)
+
+    " Check if it's a hex value
+    if l:text =~ '^0x[0-9a-f]\+$'
+        let l:hex = strpart(l:text, 2)
+        let l:original = l:text
+    elseif l:text =~ '^[0-9a-f]\+$'
+        let l:hex = l:text
+        let l:original = '0x' . l:text
+    else
+        echo "Not a valid hex value"
+        return
+    endif
+
+    " Convert to binary
+    let l:decimal = str2nr(l:hex, 16)
+    let l:bits = len(l:hex) * 4
+    if l:bits < 8
+        let l:bits = 8
+    endif
+    let l:format = '%0' . l:bits . 'b'
+    let l:binary = printf(l:format, l:decimal)
+
+    " Format binary with 4-digit groups
+    let l:formatted_binary = ""
+    let l:i = 0
+    while l:i < len(l:binary)
+        if l:i > 0 && l:i % 4 == 0
+            let l:formatted_binary .= " "
+        endif
+        let l:formatted_binary .= l:binary[l:i]
+        let l:i += 1
+    endwhile
+
+    " Create hex digits with spaces for alignment
+    let l:hex_spaced = ""
+    let l:i = 0
+    while l:i < len(l:hex)
+        if l:i > 0
+            let l:hex_spaced .= "    "  " 4 spaces between hex digits
+        endif
+        let l:hex_spaced .= l:hex[l:i]
+        let l:i += 1
+    endwhile
+
+    " Create quickfix entries
+    let l:qf_list = [
+        \ {'text': '+-- Binary Conversion --+'},
+        \ {'text': '| Original: ' . l:original},
+        \ {'text': '| Hex:      ' . l:hex_spaced},
+        \ {'text': '| Binary:   ' . l:formatted_binary},
+        \ {'text': '| Decimal:  ' . l:decimal},
+        \ {'text': '+----------------------+'}
+        \ ]
+
+    " Create quickfix entries with better formatting
+    let l:qf_list1 = [
+        \ {'text': '┌─ Binary Conversion ─────────────────────────┐'},
+        \ {'text': '│ Original: ' . l:original . repeat(' ', max([0, 30 - len(l:original)])) . '│'},
+        \ {'text': '│ Hex:      ' . l:hex . repeat(' ', max([0, 30 - len(l:hex)])) . '│'},
+        \ {'text': '│ Binary:   ' . l:binary . repeat(' ', max([0, 30 - len(l:binary)])) . '│'},
+        \ {'text': '│ Decimal:  ' . l:decimal . repeat(' ', max([0, 30 - len(string(l:decimal))])) . '│'},
+        \ {'text': '└─────────────────────────────────────────────┘'}
+        \ ]
+
+    " Set quickfix list and open it
+    call setqflist(l:qf_list, 'r')
+    below copen 6
+    wincmd p
+
+    " Auto-close after 4 seconds
+    " call timer_start(4000, {-> execute('cclose')})
+endfunction
+vnoremap <leader>hb :call ShowHexToBinary()<CR>
 
 " fix terminal mode arrow key didn't work issue
 tnoremap <Esc> <C-W>N
