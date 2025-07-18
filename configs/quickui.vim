@@ -129,28 +129,118 @@ call quickui#menu#install('Help (&?)', [
 
 " let g:quickui_show_tip = 1
 
+function! ShowHexToBinary()
+    " let l:old_reg = @"
+    " normal! gvy
+    " let l:text = @"
+    " let @" = l:old_reg
+    let l:text = expand("<cword>")
+
+    " Remove whitespace and convert to lowercase
+    let l:text = substitute(l:text, '\s', '', 'g')
+    let l:text = tolower(l:text)
+
+    " Check if it's a hex value
+    if l:text =~ '^0x[0-9a-f]\+$'
+        let l:hex = strpart(l:text, 2)
+        let l:original = l:text
+    elseif l:text =~ '^[0-9a-f]\+$'
+        let l:hex = l:text
+        let l:original = '0x' . l:text
+    else
+        echo "Not a valid hex value"
+        return
+    endif
+
+    " Convert to binary
+    let l:decimal = str2nr(l:hex, 16)
+    let l:bits = len(l:hex) * 4
+    if l:bits < 8
+        let l:bits = 8
+    endif
+    let l:format = '%0' . l:bits . 'b'
+    let l:binary = printf(l:format, l:decimal)
+
+    " Format binary with 4-digit groups
+    let l:formatted_binary = ""
+    let l:i = 0
+    while l:i < len(l:binary)
+        if l:i > 0 && l:i % 4 == 0
+            let l:formatted_binary .= " "
+        endif
+        let l:formatted_binary .= l:binary[l:i]
+        let l:i += 1
+    endwhile
+
+    " Create hex digits with spaces for alignment
+    let l:hex_spaced = ""
+    let l:i = 0
+    while l:i < len(l:hex)
+        if l:i > 0
+            let l:hex_spaced .= "    "  " 4 spaces between hex digits
+        endif
+        let l:hex_spaced .= l:hex[l:i]
+        let l:i += 1
+    endwhile
+
+    " Create quickfix entries
+    let l:qf_list = [
+        \ {'text': '+-- Binary Conversion --+'},
+        \ {'text': '| Original: ' . l:original},
+        \ {'text': '| Hex:      ' . l:hex_spaced},
+        \ {'text': '| Binary:   ' . l:formatted_binary},
+        \ {'text': '| Decimal:  ' . l:decimal},
+        \ {'text': '+----------------------+'}
+        \ ]
+
+    " 0x386d
+    " Create quickfix entries
+    let l:popup_list = [
+        \ '+-- Binary Conversion --+',
+        \ '| Original: ' . l:original,
+        \ '| Hex:      ' . l:hex_spaced,
+        \ '| Binary:   ' . l:formatted_binary,
+        \ '| Decimal:  ' . l:decimal,
+        \ '+----------------------+'
+        \ ]
+
+    let pos = screenpos(win_getid(), line('.'), col('.'))
+	let border = ['╭─', '│ ', '╰─']  " Custom border chars
+	call popup_create(popup_list, #{
+				\ pos: 'topleft',
+				\ line: pos.row - len(l:popup_list),
+				\ col: pos.col + len(l:text),
+				\ border: border,
+				\ borderhighlight: ['Comment'],
+				\ padding: [0,1,0,1],
+                \ moved: 'word',
+				\ })
+
+    " Set quickfix list and open it
+    " call setqflist(l:qf_list, 'r')
+    " below copen 6
+    " wincmd p
+
+    " Auto-close after 4 seconds
+    " call timer_start(4000, {-> execute('cclose')})
+endfunction
+" vnoremap <leader>hb :call ShowHexToBinary()<CR>
 
 "----------------------------------------------------------------------
 " context menu
 "----------------------------------------------------------------------
 let g:context_menu_k = [
 			\ ["S&earch in Project\t\\cx", 'exec "silent! Leaderf! rg --no-ignore-vcs -F --stayOpen -w -e " . expand("<cword>")'],
-			\ ["&Peek Definition\tAlt+;", 'call quickui#tools#preview_tag("")'],
 			\ [ "--", ],
 			\ [ "Goto D&efinition\t(YCM)", 'YcmCompleter GoToDefinitionElseDeclaration'],
 			\ [ "Goto &References\t(YCM)", 'YcmCompleter GoToReferences'],
 			\ [ "Get D&oc\t(YCM)", 'YcmCompleter GetDoc'],
 			\ [ "Get &Type\t(YCM)", 'YcmCompleter GetTypeImprecise'],
 			\ [ "--", ],
-			\ [ "Find &Definition\t\\cg", 'call MenuHelp_Fscope("g")', 'GNU Global search g'],
-			\ [ "Find &Symbol\t\\cs", 'call MenuHelp_Fscope("s")', 'GNU Gloal search s'],
-			\ [ "Find &Called by\t\\cd", 'call MenuHelp_Fscope("d")', 'GNU Global search d'],
-			\ [ "Find C&alling\t\\cc", 'call MenuHelp_Fscope("c")', 'GNU Global search c'],
-			\ [ "Find &From Ctags\t\\cz", 'call MenuHelp_Fscope("z")', 'GNU Global search c'],
-			\ [ "--", ],
-			\ ['Dash &Help', 'call asclib#utils#dash_ft(&ft, expand("<cword>"))'],
 			\ ['Cpp&man', 'exec "Cppman " . expand("<cword>")', '', 'c,cpp'],
 			\ ['P&ython Doc', 'call quickui#tools#python_help("")', '', 'python'],
+			\ [ "--", ],
+			\ ["&Hex2Binary", 'call ShowHexToBinary()'],
 			\ ]
 
 
