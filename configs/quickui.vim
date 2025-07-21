@@ -129,12 +129,16 @@ call quickui#menu#install('Help (&?)', [
 
 " let g:quickui_show_tip = 1
 
-function! ShowHexToBinary()
-    " let l:old_reg = @"
-    " normal! gvy
-    " let l:text = @"
-    " let @" = l:old_reg
-    let l:text = expand("<cword>")
+function! ShowHexToBinary(mode)
+    let l:text = ''
+    if a:mode == 'v'
+        let l:old_reg = @"
+        normal! gvy
+        let l:text = @"
+        let @" = l:old_reg
+    else
+        let l:text = expand("<cword>")
+    endif
 
     " Remove whitespace and convert to lowercase
     let l:text = substitute(l:text, '\s', '', 'g')
@@ -226,10 +230,65 @@ function! ShowHexToBinary()
 endfunction
 " vnoremap <leader>hb :call ShowHexToBinary()<CR>
 
+function! ShowDictionaryPopup(mode)
+
+    let l:text = ''
+
+    " 1. Check the mode and get the appropriate text
+    if a:mode == 'v'
+        " In Visual mode, get the selected text
+        " The '< and '> marks represent the start and end of the last visual selection
+        " let l:text = getreg('"')
+        let l:old_reg = @"
+        normal! gvy
+        let l:text = @"
+        let @" = l:old_reg
+    else
+        " In Normal mode, get the word under the cursor
+        let l:text = expand('<cword>')
+    endif
+
+    " Exit if we have no text
+    if empty(trim(l:text))
+        return
+    endif
+
+    " 2. Build the shell command to call sdcv
+    "    -n for non-interactive mode, perfect for scripts
+    "    shellescape() is crucial for security and words with special characters
+    let command = 'sdcv -n ' . shellescape(l:text)
+
+    " 3. Execute the command and get the result
+    let definition = trim(system(command))
+
+    let l:popup_list = split(definition, "\n")
+    let pos = screenpos(win_getid(), line('.'), col('.'))
+    " 4. If the definition is not empty, show it in a popup
+    if !empty(definition)
+        call popup_create(l:popup_list, {
+                    \ 'line': pos.row - len(l:popup_list) - 4,
+                    \ 'col': pos.col + len(l:text),
+                    \ 'pos': 'topleft',
+                    \ 'wrap': v:true,
+                    \ 'padding': [1, 1, 1, 1],
+                    \ 'border': [1, 1, 1, 1],
+                    \ 'borderchars': ['─', '│', '─', '│', '╭', '╮', '╯', '╰'],
+                    \ 'highlight': 'PopupTranslate',
+                    \ 'moved': 'word',
+                    \ 'maxheight': 20
+                    \ })
+    else
+        echo "No definition found for '" . word . "'"
+    endif
+endfunction
+
+" --- Optional: Define a nice highlight group for the popup ---
+highlight default link PopupTranslate Pmenu
+
 "----------------------------------------------------------------------
 " context menu
 "----------------------------------------------------------------------
-let g:context_menu_k = [
+let g:context_menu_n = [
 			\ ["S&earch in Project\t\\cx", 'exec "silent! Leaderf! rg --no-ignore-vcs -F --stayOpen -w -e " . expand("<cword>")'],
 			\ [ "--", ],
 			\ [ "Goto D&efinition\t(YCM)", 'YcmCompleter GoToDefinitionElseDeclaration'],
@@ -240,16 +299,32 @@ let g:context_menu_k = [
 			\ ['Cpp&man', 'exec "Cppman " . expand("<cword>")', '', 'c,cpp'],
 			\ ['P&ython Doc', 'call quickui#tools#python_help("")', '', 'python'],
 			\ [ "--", ],
-			\ ["&Hex2Binary", 'call ShowHexToBinary()'],
+			\ ["&Hex2Binary", 'call ShowHexToBinary("n")'],
+			\ ["Trans&late", 'call ShowDictionaryPopup("n")'],
 			\ ]
 
+let g:context_menu_v = [
+			\ ["S&earch in Project\t\\cx", 'exec "silent! Leaderf! rg --no-ignore-vcs -F --stayOpen -w -e " . expand("<cword>")'],
+			\ [ "--", ],
+			\ [ "Goto D&efinition\t(YCM)", 'YcmCompleter GoToDefinitionElseDeclaration'],
+			\ [ "Goto &References\t(YCM)", 'YcmCompleter GoToReferences'],
+			\ [ "Get D&oc\t(YCM)", 'YcmCompleter GetDoc'],
+			\ [ "Get &Type\t(YCM)", 'YcmCompleter GetTypeImprecise'],
+			\ [ "--", ],
+			\ ['Cpp&man', 'exec "Cppman " . expand("<cword>")', '', 'c,cpp'],
+			\ ['P&ython Doc', 'call quickui#tools#python_help("")', '', 'python'],
+			\ [ "--", ],
+			\ ["&Hex2Binary", 'call ShowHexToBinary("v")'],
+			\ ["Trans&late", 'call ShowDictionaryPopup("v")'],
+			\ ]
 
 "----------------------------------------------------------------------
 " hotkey
 "----------------------------------------------------------------------
 nnoremap <silent><space><space> :call quickui#menu#open()<cr>
 
-nnoremap <silent>K :call quickui#tools#clever_context('k', g:context_menu_k, {})<cr>
+nnoremap <silent>K :call quickui#tools#clever_context('k', g:context_menu_n, {})<cr>
+vnoremap <silent>K :call quickui#tools#clever_context('k', g:context_menu_v, {})<cr>
 
 if has('gui_running') || has('nvim')
 	noremap <c-f10> :call MenuHelp_TaskList()<cr>
